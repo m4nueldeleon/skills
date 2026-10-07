@@ -1,0 +1,15 @@
+{
+  "name": "editor-de-reels-con-ia",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Skill pública de Manuel de León para editar videos propios con asistencia de IA y FFmpeg.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "editar": "node scripts/editar.mjs",
+    "broll": "node scripts/broll.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:video": "node test/video.mjs"
+  },
+  "dependencies": { "sharp": "0.35.4", "zod": "4.5.4" }
+}

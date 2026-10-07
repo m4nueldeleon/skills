@@ -1,0 +1,35 @@
+{
+  "name": "manuel-de-leon",
+  "owner": {
+    "name": "Manuel de León"
+  },
+  "metadata": {
+    "description": "Skills gratuitas de Manuel de León para usar la IA en tu negocio. Guía paso a paso en https://manueldeleonm.com/recursos/"
+  },
+  "plugins": [
+    {
+      "name": "analizar-anuncios",
+      "description": "Analiza anuncios públicos proporcionados por el usuario y desarrolla conceptos propios distinguiendo evidencia, hipótesis y resultados desconocidos.",
+      "source": "./plugins/analizar-anuncios",
+      "strict": false
+    },
+    {
+      "name": "editor-de-reels-con-ia",
+      "description": "Edita grabaciones propias para Reels con FFmpeg, elige un inicio con evidencia de la transcripción y exporta subtítulos sincronizados, audio normalizado y formato vertical u horizontal.",
+      "source": "./plugins/editor-de-reels-con-ia",
+      "strict": false
+    },
+    {
+      "name": "humaniza-tu-ia",
+      "description": "Edita textos de negocio usando ejemplos reales de la voz del autor, quitando relleno y preservando hechos y condiciones.",
+      "source": "./plugins/humaniza-tu-ia",
+      "strict": false
+    },
+    {
+      "name": "lbo-respuestas-precisas",
+      "description": "Produce respuestas de negocio proporcionadas al encargo, definiendo resultado, evidencia, límites y formato antes de ampliar explicaciones.",
+      "source": "./plugins/lbo-respuestas-precisas",
+      "strict": false
+    }
+  ]
+}
