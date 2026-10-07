@@ -10,8 +10,10 @@ en `manueldeleonm.com/recursos`, tiene que estar en este repositorio: el sitio n
   veces a propósito: así cada instalación carga solo esa skill).
 - `.claude-plugin/marketplace.json` es el catálogo que lee Claude Code (`/plugin marketplace add m4nueldeleon/skills`,
   `/plugin install <nombre>@manuel-de-leon`). **No se edita a mano**: lo genera el script, igual que la tabla del README.
-- Cada push a `main` corre «Validar y publicar skills» (GitHub Actions): pruebas, validación y los ZIP de la
-  release `descargas` → `https://github.com/m4nueldeleon/skills/releases/download/descargas/<nombre>.zip`.
+- Los ZIP viven en la release `descargas` → `https://github.com/m4nueldeleon/skills/releases/download/descargas/<nombre>.zip`.
+  Los sube `node scripts/skills.mjs publicar` (valida antes y se niega si algo falla). Cuando se active el workflow
+  «Validar y publicar skills» (pendiente: el token de `gh` necesita el permiso `workflow`), GitHub lo hará solo en
+  cada push a `main`; mientras tanto, **córrelo tú después de cada push**.
 - Sin `version` en el marketplace a propósito: quien instaló recibe cada mejora con `/plugin marketplace update`.
 
 ## Crear una skill nueva (paso a paso)
@@ -29,11 +31,12 @@ en `manueldeleonm.com/recursos`, tiene que estar en este repositorio: el sitio n
    git commit -m "feat: skill <nombre>"
    git push origin main
    ```
-7. Espera la palomita verde de «Validar y publicar skills» y abre el ZIP de la release para confirmar.
+7. Publica los ZIP: `node scripts/skills.mjs publicar` (necesita `gh` con sesión). Abre el ZIP de la release para
+   confirmar.
 8. Para mostrarla en `/recursos`, sigue la sección «Recurso de tipo skill» del `CLAUDE.md` del sitio
    (`m4nueldeleon/manueldeleonm-website`).
 
-Para editar una skill: cambia sus archivos y repite los pasos 4, 6 y 7. Después, en el sitio, corre
+Para editar una skill: cambia sus archivos y repite los pasos 4, 6 y 7 (sin el 7, el ZIP queda viejo). Después, en el sitio, corre
 `npm run skills:sincronizar` para que la página use la versión nueva.
 
 ## Reglas (el repositorio es público)
@@ -53,6 +56,7 @@ Para editar una skill: cambia sus archivos y repite los pasos 4, 6 y 7. Después
 node scripts/skills.mjs nueva <nombre>   # crea la carpeta y la suma al catálogo
 node scripts/skills.mjs validar          # revisa todo (también lo corre GitHub)
 node scripts/skills.mjs marketplace      # regenera marketplace.json y la tabla del README
-node scripts/skills.mjs empaquetar       # crea dist/<nombre>.zip como los publica GitHub
+node scripts/skills.mjs empaquetar       # crea dist/<nombre>.zip (valida antes)
+node scripts/skills.mjs publicar         # valida, empaqueta y sube los ZIP a la release «descargas»
 node --test scripts/*.test.mjs           # pruebas del motor
 ```

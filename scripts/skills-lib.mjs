@@ -37,10 +37,10 @@ function parsearFrontmatter(texto) {
     const m = lineas[i].match(/^([A-Za-z][\w-]*):\s*(.*)$/);
     if (!m) continue;
     let valor = m[2].trim();
-    if (valor === '>' || valor === '|') {
+    if (/^[>|][+-]?$/.test(valor)) {
       const bloque = [];
       while (i + 1 < lineas.length && /^\s+\S/.test(lineas[i + 1])) bloque.push(lineas[++i].trim());
-      valor = bloque.join(valor === '>' ? ' ' : '\n');
+      valor = bloque.join(valor.startsWith('>') ? ' ' : '\n');
     }
     datos[m[1]] = valor.replace(/^(['"])(.*)\1$/, '$2');
   }
@@ -90,6 +90,7 @@ export function validarSkill(dir) {
   const nombre = path.basename(dir);
   const errores = [];
   if (!NOMBRE_VALIDO.test(nombre) || nombre.length > 64) errores.push(`Nombre inválido «${nombre}»: usa minúsculas, números y guiones (máximo 64).`);
+  if (/claude|anthropic/.test(nombre)) errores.push(`Nombre inválido «${nombre}»: Claude rechaza skills cuyo nombre contiene «claude» o «anthropic».`);
   const contenedor = path.dirname(dir);
   const vecinas = fs.existsSync(contenedor) ? fs.readdirSync(contenedor).filter(n => !n.startsWith('.') && n !== nombre) : [];
   if (vecinas.length) errores.push(`plugins/${nombre}/skills/ solo debe contener la carpeta ${nombre} (sobra: ${vecinas.join(', ')}).`);
@@ -98,6 +99,7 @@ export function validarSkill(dir) {
   if (frontmatter.name !== nombre) errores.push(`El name del SKILL.md («${frontmatter.name ?? ''}») no coincide con la carpeta «${nombre}».`);
   if (!frontmatter.description) errores.push(`Falta la descripción en el SKILL.md de ${nombre}.`);
   else if (frontmatter.description.length > MAX_DESCRIPCION) errores.push(`La descripción de ${nombre} pasa de ${MAX_DESCRIPCION} caracteres.`);
+  else if (/<[^>]+>/.test(frontmatter.description)) errores.push(`La descripción de ${nombre} no puede llevar etiquetas tipo <xml>: Claude la rechaza al subirla.`);
   if (!cuerpo) errores.push(`El SKILL.md de ${nombre} no tiene instrucciones.`);
   for (const f of archivosOcultosProhibidos(dir)) errores.push(`Archivo prohibido en ${nombre}: ${f} (nunca subas credenciales).`);
   let total = 0;

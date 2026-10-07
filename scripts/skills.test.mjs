@@ -122,3 +122,15 @@ test('readmeConCatalogo reemplaza solo lo que está entre las marcas', () => {
   assert.equal(readmeConCatalogo(raiz, nuevo), nuevo);
   assert.throws(() => readmeConCatalogo(raiz, 'sin marcas'), /marcas/);
 });
+
+test('acepta descripciones YAML en bloque (>- y |) y rechaza lo que Claude no deja subir', () => {
+  const raiz = repoTemporal({
+    'plegada': { 'SKILL.md': '---\nname: plegada\ndescription: >-\n  Primera línea\n  y segunda.\n---\n\nCuerpo' },
+    'mi-claude': { 'SKILL.md': skillMd('mi-claude') },
+    'con-xml': { 'SKILL.md': skillMd('con-xml', 'Usa <tag> raro.') },
+  });
+  assert.equal(leerSkill(dirSkill(raiz, 'plegada')).frontmatter.description, 'Primera línea y segunda.');
+  assert.deepEqual(validarSkill(dirSkill(raiz, 'plegada')), []);
+  assert.match(validarSkill(dirSkill(raiz, 'mi-claude')).join(' '), /«claude» o «anthropic»/);
+  assert.match(validarSkill(dirSkill(raiz, 'con-xml')).join(' '), /etiquetas/);
+});

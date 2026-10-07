@@ -58,6 +58,6 @@ Si quieres llevar la IA a más áreas de tu negocio, [agenda tu diagnóstico](ht
 
 ## Para el equipo
 
-Cómo crear, probar y publicar una skill: [CLAUDE.md](CLAUDE.md). Cada cambio en `main` publica los ZIP solo (GitHub Actions → «Validar y publicar skills»).
+Cómo crear, probar y publicar una skill: [CLAUDE.md](CLAUDE.md). Los ZIP se publican con `node scripts/skills.mjs publicar`.
 
 Licencia [MIT](LICENSE) · © 2026 Manuel de León
