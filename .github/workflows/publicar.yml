@@ -1,0 +1,43 @@
+name: Validar y publicar skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test scripts/*.test.mjs
+      - run: node scripts/skills.mjs validar
+      - run: node scripts/skills.mjs empaquetar
+
+  publicar:
+    needs: validar
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    concurrency:
+      group: publicar-descargas
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validar, empaquetar y subir los ZIP a la release «descargas»
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/skills.mjs publicar
