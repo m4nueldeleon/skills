@@ -3,7 +3,7 @@ import path from 'node:path';
 import { rm, writeFile } from 'node:fs/promises';
 import sharp from 'sharp';
 import { z } from 'zod';
-import { archivoLocal, ffmpeg, inspeccionar, prepararSalida, publicar } from './archivos.mjs';
+import { archivoLocal, argGrafo, ffmpeg, inspeccionar, prepararSalida, publicar } from './archivos.mjs';
 
 const esquema = z.object({
   input: z.string().min(1), image: z.string().min(1), output: z.string().min(1),
@@ -26,7 +26,7 @@ async function insertar(opciones) {
     const filtro = `[0:v]scale=${ancho}:${alto},setsar=1[v];[1:v]format=rgba[imagen];[v][imagen]overlay=eof_action=repeat:enable='gte(t,${opciones.from})*lt(t,${opciones.to})',format=yuv420p[final]`;
     await writeFile(path.join(temporal, 'broll.txt'), filtro);
     const final = path.join(temporal, 'final.mp4');
-    await ffmpeg(['-v', 'warning', '-protocol_whitelist', 'file,pipe', '-i', entrada, '-i', imagenLista, '-filter_complex_script', 'broll.txt', '-map', '[final]', '-map', '0:a:0', '-t', String(video.duracion), '-c:v', 'libx264', '-preset', 'fast', '-crf', '20', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', '-map_metadata', '-1', final], { cwd: temporal });
+    await ffmpeg(['-v', 'warning', '-protocol_whitelist', 'file,pipe', '-i', entrada, '-i', imagenLista, await argGrafo(), 'broll.txt', '-map', '[final]', '-map', '0:a:0', '-t', String(video.duracion), '-c:v', 'libx264', '-preset', 'fast', '-crf', '20', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', '-map_metadata', '-1', final], { cwd: temporal });
     const resultado = await inspeccionar(final);
     if (Math.abs(resultado.duracion - video.duracion) > 0.2) throw new Error('El video cambió de duración. No se publicó la salida.');
     await publicar([final], destinos);

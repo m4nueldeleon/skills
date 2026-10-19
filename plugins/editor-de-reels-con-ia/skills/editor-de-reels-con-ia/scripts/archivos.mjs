@@ -92,3 +92,21 @@ export async function inspeccionar(entrada) {
 }
 
 export const ffmpeg = (args, opciones) => ejecutar('ffmpeg', ['-hide_banner', '-nostdin', '-n', ...args], opciones);
+
+/**
+ * Opción para pasar el grafo de filtros desde un archivo. ffmpeg 9 quitó -filter_complex_script; desde ffmpeg 7 se
+ * usa «-/filter_complex <archivo>». Las versiones 4 a 6 (apt de Ubuntu y Debian) solo entienden la vieja. Una
+ * compilación nocturna o con fecha en vez de número se trata como nueva.
+ */
+export function opcionGrafo(versionTexto) {
+  const numero = /ffmpeg version n?(\d+)[.-]/.exec(versionTexto ?? '');
+  if (!numero) return '-/filter_complex';
+  const mayor = Number(numero[1]);
+  return mayor >= 7 ? '-/filter_complex' : '-filter_complex_script';
+}
+
+let grafo;
+export async function argGrafo() {
+  grafo ??= ejecutar('ffmpeg', ['-hide_banner', '-version']).then(({ salida }) => opcionGrafo(salida));
+  return grafo;
+}
