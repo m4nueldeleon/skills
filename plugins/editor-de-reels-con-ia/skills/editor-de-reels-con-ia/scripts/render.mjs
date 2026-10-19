@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { writeFile } from 'node:fs/promises';
-import { ffmpeg } from './archivos.mjs';
+import { argGrafo, ffmpeg } from './archivos.mjs';
 
 export function filtroFormato(ancho, alto, encuadre, entrada = '[cortado]', salida = '[formato]') {
   const escala = `scale=${ancho}:${alto}:force_original_aspect_ratio=decrease:force_divisible_by=2`;
@@ -26,6 +26,6 @@ export async function renderizar({ entrada, mapa, capa, ancho, alto, opciones, t
   const grafo = `${filtroCortes(mapa)};${filtroFormato(ancho, alto, opciones.framing)};[formato]${movimiento}[movimiento];[movimiento][1:v]overlay=eof_action=pass:shortest=0,format=yuv420p[v];[sonido]${limpieza}loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000[a]`;
   await writeFile(path.join(temporal, 'filtros.txt'), grafo);
   const final = path.join(temporal, 'final.mp4');
-  await ffmpeg(['-v', 'warning', '-protocol_whitelist', 'file,pipe', '-i', entrada, '-i', capa, '-filter_complex_script', 'filtros.txt', '-map', '[v]', '-map', '[a]', '-t', String(mapa.at(-1).output_end), '-c:v', 'libx264', '-preset', 'fast', '-crf', '20', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', '-map_metadata', '-1', final], { cwd: temporal });
+  await ffmpeg(['-v', 'warning', '-protocol_whitelist', 'file,pipe', '-i', entrada, '-i', capa, await argGrafo(), 'filtros.txt', '-map', '[v]', '-map', '[a]', '-t', String(mapa.at(-1).output_end), '-c:v', 'libx264', '-preset', 'fast', '-crf', '20', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', '-map_metadata', '-1', final], { cwd: temporal });
   return final;
 }
