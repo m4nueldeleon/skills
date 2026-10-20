@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="presentacion-cinematografica v1 · muestrario">
+<!-- Muestrario de estilos (paso 2 de la skill). Solo cambia TITULO, SUBTITULO y NEGOCIO en el <script>.
+     Si el usuario dio colores de marca, agrega la 4.ª opción como dice el comentario de OPCIONES. -->
+<title>Elige el estilo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..100,400..900;1,75..100,400..900&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap">
+<style>
+:root{--sans:"Avenir Next","Segoe UI","Helvetica Neue",Arial,system-ui,sans-serif}
+[data-look="cine"]{--fondo:#0b0c0f;--fondo-imagen:radial-gradient(120% 95% at 50% 38%,#171a20 0%,#0b0c0f 58%,#050607 100%);--texto:#f2f1ed;--suave:#9196a0;--acento:#ff5b2e;--fuente:"Archivo",var(--sans);--ancho:88%;--peso:800}
+[data-look="estudio"]{--fondo:#f5f5f3;--fondo-imagen:none;--texto:#111216;--suave:#5f636d;--acento:#2448e0;--fuente:"Manrope",var(--sans);--ancho:100%;--peso:800}
+[data-look="bosque"]{--fondo:#10271f;--fondo-imagen:radial-gradient(110% 90% at 30% 30%,#173529 0%,#10271f 60%,#0a1a14 100%);--texto:#edf0e8;--suave:#a3b5ab;--acento:#f2b33d;--fuente:"Bricolage Grotesque",var(--sans);--ancho:100%;--peso:750}
+[data-look="marca"]{--fondo-imagen:none;--fuente:"Manrope",var(--sans);--ancho:100%;--peso:800}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:#141416;color:#eee;font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+h1{font-size:20px;font-weight:600;margin:0 0 18px}
+.opciones{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px}
+.opcion{margin:0}
+.marco{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:10px;container-type:inline-size;outline:1px solid rgba(255,255,255,.14)}
+.portada{position:absolute;inset:0;padding:6.25cqw 8.33cqw;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:2.1cqw;background-color:var(--fondo);background-image:var(--fondo-imagen);color:var(--texto);font-family:var(--fuente)}
+.portada h2{margin:0;font-family:var(--fuente);font-weight:var(--peso);font-stretch:var(--ancho);font-size:8.75cqw;line-height:.94;letter-spacing:-.035em;word-spacing:.05em;max-width:78cqw;text-wrap:balance}
+.portada em{font-style:italic;color:var(--acento);white-space:nowrap}
+.regla{width:10.4cqw;height:.52cqw;background:var(--acento);border-radius:.1cqw}
+.portada p{margin:0;font-size:2.7cqw;line-height:1.25;color:var(--suave);max-width:65cqw}
+.pie{position:absolute;left:8.33cqw;bottom:3.1cqw;font-size:1.67cqw;color:var(--suave)}
+figcaption{margin-top:10px}
+figcaption strong{color:#fff}
+</style>
+</head>
+<body>
+<h1>Elige el estilo de tu presentación: responde 1, 2 o 3</h1>
+<div class="opciones" id="opciones"></div>
+<script>
+// ── Cambia solo estos tres textos ──
+const TITULO = 'Título de la presentación con <em>una palabra resaltada</em>';
+const SUBTITULO = 'Subtítulo: para quién es y qué se lleva';
+const NEGOCIO = 'Nombre del negocio';
+// Opción de marca (solo si el usuario dio sus colores): agrega a la lista
+//   ['marca', 'Tu marca', 'con tus colores', { fondo: '#0e1f3a', texto: '#ffffff', suave: '#9fb0c8', acento: '#ffb000' }]
+const OPCIONES = [
+  ['cine', 'Cine', 'oscuro y dramático; luce en pantalla grande y proyector'],
+  ['estudio', 'Estudio', 'claro y limpio; cómodo para juntas y videollamadas'],
+  ['bosque', 'Bosque', 'cálido y cercano; para salud, comida y servicios personales'],
+];
+const lista = document.getElementById('opciones');
+OPCIONES.forEach(([look, nombre, cuando, colores], i) => {
+  const fig = document.createElement('figure');
+  fig.className = 'opcion';
+  fig.innerHTML = '<div class="marco"><div class="portada"><h2></h2><div class="regla"></div><p></p><div class="pie"></div></div></div><figcaption></figcaption>';
+  const portada = fig.querySelector('.portada');
+  portada.dataset.look = look;
+  if (colores) Object.entries(colores).forEach(([k, v]) => portada.style.setProperty('--' + k, v));
+  portada.querySelector('h2').innerHTML = TITULO;
+  portada.querySelector('p').textContent = SUBTITULO;
+  portada.querySelector('.pie').textContent = NEGOCIO;
+  fig.querySelector('figcaption').innerHTML = '<strong>' + (i + 1) + ' · ' + nombre + '</strong> · ' + cuando;
+  lista.appendChild(fig);
+});
+</script>
+</body>
+</html>

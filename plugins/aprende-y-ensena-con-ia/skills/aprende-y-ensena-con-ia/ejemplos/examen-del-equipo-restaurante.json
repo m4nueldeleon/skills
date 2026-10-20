@@ -1,0 +1,139 @@
+{
+  "titulo": "Examen del equipo: meseros",
+  "negocio": "La Cazuela, restaurante (negocio de ejemplo)",
+  "puesto": "Meseros",
+  "fuente": "Basado en: el «Manual del mesero» que pegó el dueño.",
+  "minimo": 80,
+  "aviso": "Este examen sale de tu manual: si el manual tiene un error, el examen también. Valida los procedimientos de alergias con el responsable de cocina.",
+  "dudas": [
+    "Propinas: en «Cobro» dice que no se sugieren y en «Grupos» que en mesas de 8 o más se sugiere 10 %. ¿Cuál vale? No hice preguntas de propina hasta que lo decidas.",
+    "El manual no dice qué hacer si la terminal no funciona al momento de cobrar."
+  ],
+  "temas": ["Antes de abrir", "Recibir y ordenar", "Alergias", "Quejas y tiempos", "Cobro"],
+  "tarjetas": [
+    { "tema": "Antes de abrir", "pregunta": "¿Cuánto tiempo antes de tu turno tienes que llegar?", "respuesta": "20 minutos antes." },
+    { "tema": "Antes de abrir", "pregunta": "¿Para qué lees el pizarrón de la cocina antes de abrir?", "respuesta": "Para saber qué platillos están agotados hoy y no ofrecerlos." },
+    { "tema": "Recibir y ordenar", "pregunta": "¿En cuánto tiempo saludas a una mesa que se acaba de sentar?", "respuesta": "En máximo 1 minuto, aunque estés ocupado: «Buenas tardes, enseguida los atiendo»." },
+    { "tema": "Recibir y ordenar", "pregunta": "¿Qué ofreces primero y qué mencionas al llegar a la mesa?", "respuesta": "Ofreces las bebidas y mencionas el platillo del día." },
+    { "tema": "Recibir y ordenar", "pregunta": "¿Qué haces justo antes de mandar la comanda?", "respuesta": "Repites la orden completa al cliente para confirmarla." },
+    { "tema": "Recibir y ordenar", "pregunta": "¿En cuánto tiempo tiene que salir la comanda a cocina?", "respuesta": "En menos de 2 minutos, por la tablet." },
+    { "tema": "Alergias", "pregunta": "¿Qué pregunta haces siempre al tomar la orden?", "respuesta": "«¿Alguien en la mesa tiene alguna alergia?»" },
+    { "tema": "Alergias", "pregunta": "Un cliente tiene una alergia. ¿Qué dos cosas haces con la comanda?", "respuesta": "La marcas con la palabra ALERGIA y el ingrediente, y avisas de viva voz al cocinero en turno." },
+    { "tema": "Alergias", "pregunta": "¿Por qué nunca dices que un platillo está «libre de» algo?", "respuesta": "Porque en nuestra cocina se preparan mariscos y cacahuate en la misma área." },
+    { "tema": "Quejas y tiempos", "pregunta": "¿Cuánto tarda un plato fuerte y cuándo avisas que va tarde?", "respuesta": "Tarda 20 minutos. Si pasa de 25, avisas a la mesa y al gerente." },
+    { "tema": "Quejas y tiempos", "pregunta": "¿Quién autoriza un refresco de cortesía?", "respuesta": "El gerente. Sin su autorización no se da." },
+    { "tema": "Quejas y tiempos", "pregunta": "Un cliente se queja. ¿Cuáles son tus cuatro pasos?", "respuesta": "Escuchas sin interrumpir, te disculpas, no discutes y ofreces cambiar el platillo." },
+    { "tema": "Quejas y tiempos", "pregunta": "¿Puedes hacer un descuento? ¿A quién llamas?", "respuesta": "No puedes. Si el cliente sigue molesto o lo pide, llamas al gerente; si no está, a la encargada." },
+    { "tema": "Cobro", "pregunta": "¿Qué haces cuando un cliente paga con tarjeta?", "respuesta": "Llevas la terminal a la mesa. Nunca te llevas la tarjeta del cliente." },
+    { "tema": "Cobro", "pregunta": "¿Cuándo cuenta como pagada una transferencia?", "respuesta": "Cuando aparece la confirmación en la pantalla de caja." },
+    { "tema": "Cobro", "pregunta": "Te piden factura. ¿Qué haces?", "respuesta": "Les das el QR del formulario de facturación. No anotas sus datos en papel." }
+  ],
+  "examen": [
+    {
+      "tema": "Recibir y ordenar", "tipo": "opcion",
+      "pregunta": "Una mesa se acaba de sentar y tú vas cargando platos para otra. ¿Qué haces?",
+      "opciones": [
+        "Terminas de servir la otra mesa y luego vas a saludarlos",
+        "Le pides a otro mesero que la atienda por ti",
+        "Esperas a que la mesa te haga una seña para ir",
+        "En menos de 1 minuto: «Buenas tardes, enseguida los atiendo»"
+      ],
+      "correcta": 3,
+      "explicacion": "El manual pide saludar en máximo 1 minuto, aunque estés ocupado."
+    },
+    {
+      "tema": "Recibir y ordenar", "tipo": "opcion",
+      "pregunta": "¿Qué haces justo antes de mandar la comanda a cocina?",
+      "opciones": [
+        "Repites la orden completa al cliente para confirmarla",
+        "Preguntas si van a querer postre para mandarlo de una vez",
+        "Preguntas cómo van a pagar para tener lista la cuenta",
+        "Revisas primero si llegaron mesas nuevas a tu sección"
+      ],
+      "correcta": 0,
+      "explicacion": "El manual pide repetir la orden completa al cliente antes de mandarla."
+    },
+    {
+      "tema": "Alergias", "tipo": "opcion",
+      "pregunta": "Un cliente te dice que es alérgico al cacahuate. ¿Qué haces con su orden?",
+      "opciones": [
+        "Le recomiendas un platillo que no lleve cacahuate y la mandas normal",
+        "Marcas la comanda con ALERGIA: cacahuate y avisas de viva voz al cocinero",
+        "Escribes «sin cacahuate» en la comanda y confías en que la lean",
+        "Le aseguras que el platillo está libre de cacahuate para tranquilizarlo"
+      ],
+      "correcta": 1,
+      "explicacion": "El manual pide dos cosas: marcar la comanda con ALERGIA y el ingrediente, y avisar de viva voz al cocinero en turno."
+    },
+    {
+      "tema": "Quejas y tiempos", "tipo": "opcion",
+      "pregunta": "Un plato fuerte lleva 27 minutos y no ha salido. ¿Qué haces?",
+      "opciones": [
+        "Esperas un poco más, porque seguro ya casi sale",
+        "Le llevas un refresco de cortesía para que no se moleste",
+        "Avisas a la mesa y al gerente que el plato va tarde",
+        "Le explicas al cliente que la cocina anda lenta hoy"
+      ],
+      "correcta": 2,
+      "explicacion": "Si un plato pasa de 25 minutos, se avisa a la mesa y al gerente. El refresco de cortesía necesita autorización del gerente."
+    },
+    {
+      "tema": "Cobro", "tipo": "opcion",
+      "pregunta": "Un cliente quiere pagar con tarjeta. ¿Qué haces?",
+      "opciones": [
+        "Te llevas la tarjeta a la caja y se la regresas con el ticket",
+        "Le pides que pase a pagar directamente a la caja",
+        "Le pides que mejor te pague con transferencia bancaria",
+        "Llevas la terminal a la mesa para que pague ahí mismo"
+      ],
+      "correcta": 3,
+      "explicacion": "El manual dice: con tarjeta, lleva la terminal a la mesa; nunca te lleves la tarjeta del cliente."
+    },
+    {
+      "tema": "Antes de abrir", "tipo": "opcion",
+      "pregunta": "¿Para qué lees el pizarrón de la cocina antes de abrir?",
+      "opciones": [
+        "Para ver en qué sección te toca trabajar ese día",
+        "Para saber qué platillos están agotados y no ofrecerlos",
+        "Para saber cuántas reservaciones hay en el turno",
+        "Para revisar cuánto se vendió en el turno anterior"
+      ],
+      "correcta": 1,
+      "explicacion": "El manual pide leer el pizarrón para saber qué platillos están agotados hoy y no ofrecerlos."
+    },
+    {
+      "tema": "Quejas y tiempos", "tipo": "vf",
+      "pregunta": "Si un cliente está muy molesto, puedes hacerle un descuento para calmarlo.",
+      "correcta": false,
+      "explicacion": "El mesero no puede hacer descuentos. Si el cliente sigue molesto o pide descuento, llamas al gerente; si no está, a la encargada."
+    },
+    {
+      "tema": "Cobro", "tipo": "vf",
+      "pregunta": "Con transferencia, el pago cuenta cuando aparece la confirmación en la pantalla de caja.",
+      "correcta": true,
+      "explicacion": "Así lo dice el manual: no basta con que el cliente enseñe una captura en su celular."
+    },
+    {
+      "tema": "Alergias", "tipo": "abierta",
+      "pregunta": "Un cliente te pregunta: «¿Los tacos de pescado están libres de cacahuate?». ¿Qué le contestas?",
+      "respuesta_modelo": "«No le puedo asegurar que estén libres: en nuestra cocina se preparan mariscos y cacahuate en la misma área. Déjeme preguntar en cocina cómo se preparan.» Si los pide, marco ALERGIA en la comanda y aviso al cocinero.",
+      "debe_mencionar": [
+        "No dice que el platillo esté «libre de» cacahuate",
+        "Explica que en la cocina se prepara cacahuate en la misma área",
+        "Pregunta en cocina antes de contestar",
+        "Si lo ordena, marca ALERGIA y avisa al cocinero"
+      ]
+    },
+    {
+      "tema": "Quejas y tiempos", "tipo": "abierta",
+      "pregunta": "Un cliente se queja muy molesto de que su carne llegó fría. ¿Qué haces y qué le dices?",
+      "respuesta_modelo": "Lo escucho sin interrumpir, me disculpo y no discuto. Le ofrezco cambiar el platillo. Si sigue molesto o pide descuento, llamo al gerente; si no está, a la encargada.",
+      "debe_mencionar": [
+        "Escucha sin interrumpir",
+        "Se disculpa y no discute",
+        "Ofrece cambiar el platillo",
+        "Si sigue molesto o pide descuento, llama al gerente (o a la encargada si no está)"
+      ]
+    }
+  ]
+}

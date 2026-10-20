@@ -1,0 +1,74 @@
+{
+  "titulo": "Hábitos atómicos",
+  "tipo": "libro",
+  "autor": "James Clear",
+  "negocio": "Tienda de ropa (negocio de ejemplo)",
+  "idea_central": "Los grandes cambios salen de hábitos pequeños repetidos a diario. Diseña tu sistema y tu entorno; no dependas de la fuerza de voluntad.",
+  "ramas": [
+    {
+      "titulo": "Mejoras pequeñas que se acumulan",
+      "puntos": [
+        "Mejorar un poco cada día se acumula como el interés compuesto.",
+        "Al principio no se nota: los resultados llegan después de una meseta."
+      ],
+      "en_tu_negocio": "Mejora una sola cosa por semana: la vitrina, el saludo o el tiempo de respuesta en WhatsApp."
+    },
+    {
+      "titulo": "Sistemas, no solo metas",
+      "puntos": [
+        "La meta dice a dónde vas; el sistema es lo que haces diario.",
+        "Quien gana y quien pierde suelen tener la misma meta: cambia el sistema."
+      ],
+      "en_tu_negocio": "En vez de «vender más», decide: publicar tres prendas al día y contestar mensajes antes de 15 minutos."
+    },
+    {
+      "titulo": "Hábitos que nacen de tu identidad",
+      "puntos": [
+        "Cambia quién crees que eres, no solo lo que quieres lograr.",
+        "Cada vez que cumples, es un voto a favor de esa persona."
+      ],
+      "en_tu_negocio": "Piensa «en mi tienda damos seguimiento» y demuéstralo con un mensaje diario a quien preguntó y no compró."
+    },
+    {
+      "titulo": "Ley 1: hazlo obvio",
+      "puntos": [
+        "Pon a la vista la señal que dispara el hábito.",
+        "Apila hábitos: «después de [lo que ya haces], haré [lo nuevo]».",
+        "Para quitar un mal hábito, hazlo invisible."
+      ],
+      "en_tu_negocio": "«Después de abrir la cortina, contesto los mensajes pendientes.» Deja la libreta de apartados junto a la caja."
+    },
+    {
+      "titulo": "Ley 2: hazlo atractivo",
+      "puntos": [
+        "Junta lo que debes hacer con algo que disfrutas.",
+        "Rodéate de gente para la que ese hábito ya es normal."
+      ],
+      "en_tu_negocio": "Escucha tu programa favorito solo mientras acomodas el inventario."
+    },
+    {
+      "titulo": "Ley 3: hazlo fácil",
+      "puntos": [
+        "Quita pasos y estorbos: lo fácil se repite.",
+        "Regla de los dos minutos: empieza con una versión mínima.",
+        "Repetir importa más que hacerlo perfecto."
+      ],
+      "en_tu_negocio": "Ten respuestas guardadas para las preguntas de siempre: precio, tallas, envíos y horario."
+    },
+    {
+      "titulo": "Ley 4: hazlo satisfactorio",
+      "puntos": [
+        "Lo que se premia al momento se repite.",
+        "Lleva un registro visible: una palomita por día cumplido.",
+        "Si fallas un día, que no sean dos seguidos."
+      ],
+      "en_tu_negocio": "Pega un calendario en la caja y palomea cada día que diste seguimiento a tus clientes."
+    }
+  ],
+  "preguntas": [
+    "¿Cuál es la diferencia entre una meta y un sistema? Da un ejemplo de tu tienda.",
+    "¿Cuáles son las cuatro leyes para crear un buen hábito?",
+    "¿Qué hábito vas a apilar esta semana, y después de qué?"
+  ],
+  "fuente": "Basado en lo que conozco del libro (Hábitos atómicos, James Clear). Verifica los detalles con tu ejemplar."
+}

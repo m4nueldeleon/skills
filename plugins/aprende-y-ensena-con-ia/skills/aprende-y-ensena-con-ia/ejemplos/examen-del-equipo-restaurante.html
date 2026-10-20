@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tarjetas y examen</title>
+<!--
+  PLANTILLA «tarjetas-y-examen» · skill aprende-y-ensena-con-ia
+  La usan dos códigos: /tarjetas (sin examen) y /examen-del-equipo (con examen).
+  Cambia SOLO el JSON del bloque de datos (la etiqueta script con id «datos», casi al final).
+  El resto del archivo se copia tal cual. Ningún texto puede llevar la secuencia «</».
+
+  {
+    "titulo": "Examen del equipo: meseros",                 obligatorio
+    "negocio": "Nombre o giro del negocio",                 opcional
+    "puesto": "Para quién es (meseros, recepción…)",        opcional (vacío en /tarjetas)
+    "fuente": "De dónde sale: «Manual del mesero que pegó el dueño»",
+    "minimo": 80,                                           solo cuenta en temas de 5 preguntas o más; con menos, cualquier fallo pide repaso
+    "aviso": "Solo en temas de salud, seguridad, legales o de dinero",   opcional
+    "dudas": ["Lo que el material no deja claro"],          opcional; solo en pantalla, como borrador para el dueño (no se imprime)
+    "temas": ["Tema 1", "Tema 2"],                          de 1 a 6; cada tarjeta y pregunta usa uno
+    "tarjetas": [ { "tema": "Tema 1", "pregunta": "máx. 18 palabras", "respuesta": "máx. 30 palabras" } ],   de 6 a 30
+    "examen": [                                             vacío o ausente en /tarjetas; de 5 a 20 en /examen-del-equipo
+      { "tema": "Tema 1", "tipo": "opcion", "pregunta": "…", "opciones": ["a", "b", "c", "d"], "correcta": 2, "explicacion": "…" },
+      { "tema": "Tema 2", "tipo": "vf", "pregunta": "Afirmación…", "correcta": false, "explicacion": "…" },
+      { "tema": "Tema 2", "tipo": "abierta", "pregunta": "Situación: ¿qué haces o qué dices?",
+        "respuesta_modelo": "…", "debe_mencionar": ["idea 1", "idea 2"] }
+    ]
+  }
+  «correcta» en tipo opcion es la posición de la opción buena, contando desde 0.
+-->
+<style>
+  :root {
+    --papel: #ffffff;
+    --mesa: #e7e7ea;
+    --tinta: #18181b;
+    --tinta-2: #3f3f46;
+    --tinta-3: #6b6b74;
+    --filete: #d4d4d8;
+    --acento: #2f55c8;
+    --acento-suave: #e6ecfb;
+    --bien: #1d6b3a;
+    --bien-suave: #e3f2e8;
+    --mal: #a3261b;
+    --mal-suave: #f8e6e3;
+    --radio: 6px;
+    --curva: cubic-bezier(0.23, 1, 0.32, 1);
+    --fuente: "Avenir Next", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--mesa);
+    color: var(--tinta);
+    font-family: var(--fuente);
+    font-size: 16px;
+    line-height: 1.45;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .hoja {
+    max-width: 860px;
+    margin: 16px auto 40px;
+    background: var(--papel);
+    border-radius: var(--radio);
+    box-shadow: 0 1px 2px rgba(24, 24, 27, 0.08), 0 8px 24px rgba(24, 24, 27, 0.08);
+    padding: 26px 30px 30px;
+  }
+  h1 { margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 800; }
+  h2 { margin: 0 0 10px; font-size: 19px; line-height: 1.2; font-weight: 800; letter-spacing: -0.01em; }
+  h3 { margin: 0 0 6px; font-size: 16px; font-weight: 750; }
+  p { margin: 0; }
+  .meta { margin-top: 6px; color: var(--tinta-2); font-size: 14.5px; }
+  .chip {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--acento);
+    background: var(--acento-suave);
+    border-radius: var(--radio);
+    padding: 5px 8px;
+  }
+  button {
+    font: 650 16px/1 var(--fuente);
+    color: #fff;
+    background: var(--acento);
+    border: 1.5px solid var(--acento);
+    border-radius: var(--radio);
+    padding: 13px 18px;
+    cursor: pointer;
+    transition: transform 120ms var(--curva), background-color 150ms var(--curva);
+  }
+  button:active { transform: scale(0.97); }
+  button:focus-visible, .tarjeta:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 3px solid var(--tinta);
+    outline-offset: 2px;
+  }
+  button.secundario { background: var(--papel); color: var(--acento); }
+  button.texto { background: none; border-color: transparent; color: var(--acento); padding: 10px 6px; text-decoration: underline; text-underline-offset: 3px; }
+  .revisar {
+    margin-top: 16px;
+    border-left: 5px solid var(--tinta);
+    padding: 10px 14px;
+    background: #f4f4f5;
+    border-radius: 0 var(--radio) var(--radio) 0;
+    font-size: 14.5px;
+  }
+  .revisar ul { margin: 6px 0 0; padding-left: 20px; }
+  .revisar, table.calif { break-inside: avoid; }
+  .aviso { margin-top: 12px; font-size: 14px; font-weight: 650; }
+
+  /* Pestañas */
+  .pestanas { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 18px; border-bottom: 1px solid var(--filete); padding-bottom: 12px; }
+  .pestanas button { background: var(--papel); color: var(--tinta-2); border-color: var(--filete); }
+  .pestanas button[aria-selected="true"] { background: var(--tinta); color: #fff; border-color: var(--tinta); }
+
+  /* Tarjetas en pantalla */
+  .progreso { color: var(--tinta-2); font-size: 14.5px; margin-bottom: 10px; }
+  .tarjeta { perspective: 1200px; cursor: pointer; border-radius: var(--radio); }
+  .interior {
+    position: relative;
+    min-height: 240px;
+    transform-style: preserve-3d;
+    transition: transform 240ms var(--curva);
+  }
+  .tarjeta.volteada .interior { transform: rotateY(180deg); }
+  .cara {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: 1.5px solid var(--tinta);
+    border-radius: var(--radio);
+    background: var(--papel);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: auto;
+  }
+  .cara.atras { transform: rotateY(180deg); background: var(--acento-suave); border-color: var(--acento); }
+  .cara .chip { align-self: flex-start; }
+  .cara .grande { font-size: 22px; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; }
+  .cara.atras .grande { font-weight: 600; }
+  .pista { margin-top: auto; color: var(--tinta-3); font-size: 13.5px; }
+  .acciones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .acciones[hidden], .final[hidden], .resultado[hidden], .retro[hidden], [hidden] { display: none !important; }
+  .consejo { margin-top: 16px; color: var(--tinta-2); font-size: 14.5px; max-width: 62ch; }
+  .final { border: 1.5px solid var(--bien); background: var(--bien-suave); border-radius: var(--radio); padding: 16px 18px; }
+  .final ul { margin: 8px 0 0; padding-left: 20px; }
+
+  /* Examen en pantalla */
+  .campo { display: grid; gap: 6px; max-width: 360px; margin-bottom: 18px; font-weight: 650; }
+  input[type="text"], textarea {
+    font: 400 16px/1.4 var(--fuente);
+    color: var(--tinta);
+    border: 1.5px solid var(--filete);
+    border-radius: var(--radio);
+    padding: 10px 12px;
+    width: 100%;
+    background: var(--papel);
+  }
+  textarea { min-height: 84px; resize: vertical; }
+  .preguntas { list-style: none; margin: 0; padding: 0; counter-reset: p; }
+  .preguntas > li { counter-increment: p; border-top: 1px solid var(--filete); padding: 16px 0; }
+  .enunciado { display: flex; gap: 10px; align-items: baseline; font-weight: 700; margin-bottom: 10px; }
+  .enunciado::before { content: counter(p) "."; color: var(--acento); font-weight: 800; flex: none; }
+  .enunciado .chip { margin-left: auto; flex: none; }
+  .opciones { display: grid; gap: 8px; }
+  .opcion { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--filete); border-radius: var(--radio); padding: 10px 12px; cursor: pointer; }
+  .opcion input { margin-top: 3px; width: 18px; height: 18px; flex: none; accent-color: var(--acento); }
+  .opcion.es-correcta { border-color: var(--bien); background: var(--bien-suave); }
+  .opcion.es-error { border-color: var(--mal); background: var(--mal-suave); }
+  .retro { margin-top: 10px; font-size: 14.5px; border-radius: var(--radio); padding: 10px 12px; background: #f4f4f5; }
+  .retro.bien { background: var(--bien-suave); }
+  .retro.mal { background: var(--mal-suave); }
+  .retro ul { margin: 4px 0 6px; padding-left: 20px; }
+  .autocalifica { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .autocalifica button { font-size: 14.5px; padding: 9px 12px; background: var(--papel); color: var(--tinta); border-color: var(--filete); }
+  .autocalifica button[aria-pressed="true"] { background: var(--tinta); color: #fff; border-color: var(--tinta); }
+  .botones-examen { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .resultado { margin-top: 20px; border: 1.5px solid var(--tinta); border-radius: var(--radio); padding: 18px; }
+  .resultado .total { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+  .barras { display: grid; gap: 10px; margin: 14px 0; }
+  .barra-tema { display: grid; grid-template-columns: minmax(110px, 0.9fr) 2fr 58px; gap: 10px; align-items: center; font-size: 14.5px; }
+  .pista-barra { height: 12px; background: #f0f0f2; border-radius: var(--radio); overflow: hidden; }
+  .relleno { height: 100%; background: var(--bien); border-radius: var(--radio); }
+  .relleno.bajo { background: var(--mal); }
+  .barra-tema b { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* Vista para imprimir */
+  .controles-impresion { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-bottom: 16px; }
+  .controles-impresion label { display: flex; gap: 8px; align-items: center; font-size: 15px; }
+  .controles-impresion input { width: 18px; height: 18px; accent-color: var(--acento); }
+  .controles-impresion p { flex-basis: 100%; font-size: 13px; color: var(--tinta-2); }
+  .pagina { border: 1px solid var(--filete); border-radius: var(--radio); padding: 22px 24px; margin-bottom: 16px; background: var(--papel); }
+  .cab-imp { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 2px solid var(--tinta); padding-bottom: 6px; margin-bottom: 12px; }
+  .cab-imp h2 { margin: 0; }
+  .cab-imp p { color: var(--tinta-2); font-size: 13px; text-align: right; }
+  .como-usar { margin: 0 0 12px; padding-left: 20px; font-size: 14px; }
+  .como-usar li { margin-bottom: 2px; }
+  .instruccion { font-size: 13.5px; font-weight: 650; margin-bottom: 8px; }
+  .tira { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--tinta); min-height: 27mm; break-inside: avoid; }
+  .tira + .tira { border-top: 0; }
+  .lado { padding: 8px 11px; font-size: 13.5px; display: flex; flex-direction: column; gap: 4px; }
+  .lado.frente { border-right: 1.5px dashed var(--tinta-3); }
+  .lado.frente .pregunta { font-weight: 700; font-size: 14.5px; }
+  .lado .nota { font-size: 11px; color: var(--tinta-3); font-weight: 650; }
+  .campos { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; margin-bottom: 12px; font-size: 13.5px; }
+  .campos span { border-bottom: 1px solid var(--tinta); padding-bottom: 14px; }
+  .examen-imp { margin: 0; padding-left: 22px; }
+  .examen-imp > li { margin-bottom: 12px; break-inside: avoid; font-size: 14px; }
+  .examen-imp .q { font-weight: 700; }
+  .ops-imp { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px; margin: 4px 0 0 4px; }
+  .vf-imp { display: flex; gap: 32px; margin: 4px 0 0 4px; }
+  .circulo::before { content: ""; display: inline-block; width: 10px; height: 10px; border: 1.2px solid var(--tinta); border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+  .renglon { display: block; height: 22px; border-bottom: 1px solid var(--tinta-3); }
+  .clave-imp { margin: 0 0 12px; padding-left: 22px; font-size: 13.5px; }
+  .clave-imp li { margin-bottom: 6px; break-inside: avoid; }
+  .clave-imp .r { font-weight: 700; }
+  table.calif { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 6px 0 10px; }
+  table.calif th, table.calif td { border: 1px solid var(--tinta-3); padding: 6px 8px; text-align: left; }
+  table.calif th { background: #f4f4f5; }
+  .regla { font-size: 13px; color: var(--tinta-2); }
+  .aviso-error { border: 2px solid #b42318; border-radius: var(--radio); padding: 16px; color: #7a1a12; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .opcion:hover { border-color: var(--acento); }
+    button.secundario:hover { background: var(--acento-suave); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .interior, button { transition: none; }
+  }
+  @media screen and (max-width: 640px) {
+    .hoja { margin: 10px 6px 28px; padding: 20px 14px 24px; }
+    h1 { font-size: 25px; }
+    .cara .grande { font-size: 19px; }
+    .interior { min-height: 260px; }
+    .barra-tema { grid-template-columns: 1fr 52px; }
+    .barra-tema .pista-barra { grid-column: 1 / -1; grid-row: 2; }
+    .campos { grid-template-columns: 1fr; }
+    .enunciado { flex-wrap: wrap; }
+  }
+
+  @page { size: letter portrait; margin: 12mm; }
+  @media print {
+    body { background: #fff; font-size: 10pt; }
+    .hoja { max-width: none; margin: 0; padding: 0; box-shadow: none; border-radius: 0; }
+    .pantalla, .pestanas, #panel-tarjetas, #panel-examen, .controles-impresion { display: none !important; }
+    #panel-imprimir, #panel-imprimir[hidden] { display: block !important; }
+    .pagina { border: 0; border-radius: 0; padding: 0; margin: 0; break-after: page; }
+    .pagina:last-child { break-after: auto; }
+    .pagina.sin-clave { display: none; }
+    .cab-imp { padding-bottom: 4px; margin-bottom: 8px; }
+    .cab-imp h2 { font-size: 14pt; }
+    .cab-imp p { font-size: 8.4pt; max-width: 52%; }
+    .como-usar { font-size: 9.2pt; margin-bottom: 8px; }
+    .instruccion { font-size: 9.2pt; margin-bottom: 6px; }
+    .tira { min-height: 24mm; }
+    .lado { font-size: 9.6pt; padding: 6px 10px; }
+    .lado.frente .pregunta { font-size: 10.2pt; }
+    .lado .nota { font-size: 7.8pt; }
+    .campos { font-size: 9.4pt; margin-bottom: 8px; }
+    .campos span { padding-bottom: 10px; }
+    .examen-imp > li { margin-bottom: 7px; font-size: 9.4pt; }
+    .ops-imp { gap: 1px 16px; margin-top: 2px; }
+    .renglon { height: 19px; }
+    .clave-imp { font-size: 8.8pt; margin-bottom: 8px; }
+    .clave-imp li { margin-bottom: 3px; }
+    table.calif { font-size: 9pt; margin: 4px 0 6px; }
+    table.calif th, table.calif td { padding: 3px 7px; }
+    .regla, .revisar, .aviso { font-size: 8.6pt; }
+    .revisar { padding: 6px 10px; margin-top: 8px; }
+  }
+</style>
+</head>
+<body>
+<main class="hoja" id="hoja"></main>
+
+<script type="application/json" id="datos">
+{
+  "titulo": "Examen del equipo: meseros",
+  "negocio": "La Cazuela, restaurante (negocio de ejemplo)",
+  "puesto": "Meseros",
+  "fuente": "Basado en: el «Manual del mesero» que pegó el dueño.",
+  "minimo": 80,
+  "aviso": "Este examen sale de tu manual: si el manual tiene un error, el examen también. Valida los procedimientos de alergias con el responsable de cocina.",
+  "dudas": [
+    "Propinas: en «Cobro» dice que no se sugieren y en «Grupos» que en mesas de 8 o más se sugiere 10 %. ¿Cuál vale? No hice preguntas de propina hasta que lo decidas.",
+    "El manual no dice qué hacer si la terminal no funciona al momento de cobrar."
+  ],
+  "temas": [
+    "Antes de abrir",
+    "Recibir y ordenar",
+    "Alergias",
+    "Quejas y tiempos",
+    "Cobro"
+  ],
+  "tarjetas": [
+    {
+      "tema": "Antes de abrir",
+      "pregunta": "¿Cuánto tiempo antes de tu turno tienes que llegar?",
+      "respuesta": "20 minutos antes."
+    },
+    {
+      "tema": "Antes de abrir",
+      "pregunta": "¿Para qué lees el pizarrón de la cocina antes de abrir?",
+      "respuesta": "Para saber qué platillos están agotados hoy y no ofrecerlos."
+    },
+    {
+      "tema": "Recibir y ordenar",
+      "pregunta": "¿En cuánto tiempo saludas a una mesa que se acaba de sentar?",
+      "respuesta": "En máximo 1 minuto, aunque estés ocupado: «Buenas tardes, enseguida los atiendo»."
+    },
+    {
+      "tema": "Recibir y ordenar",
+      "pregunta": "¿Qué ofreces primero y qué mencionas al llegar a la mesa?",
+      "respuesta": "Ofreces las bebidas y mencionas el platillo del día."
+    },
+    {
+      "tema": "Recibir y ordenar",
+      "pregunta": "¿Qué haces justo antes de mandar la comanda?",
+      "respuesta": "Repites la orden completa al cliente para confirmarla."
+    },
+    {
+      "tema": "Recibir y ordenar",
+      "pregunta": "¿En cuánto tiempo tiene que salir la comanda a cocina?",
+      "respuesta": "En menos de 2 minutos, por la tablet."
+    },
+    {
+      "tema": "Alergias",
+      "pregunta": "¿Qué pregunta haces siempre al tomar la orden?",
+      "respuesta": "«¿Alguien en la mesa tiene alguna alergia?»"
+    },
+    {
+      "tema": "Alergias",
+      "pregunta": "Un cliente tiene una alergia. ¿Qué dos cosas haces con la comanda?",
+      "respuesta": "La marcas con la palabra ALERGIA y el ingrediente, y avisas de viva voz al cocinero en turno."
+    },
+    {
+      "tema": "Alergias",
+      "pregunta": "¿Por qué nunca dices que un platillo está «libre de» algo?",
+      "respuesta": "Porque en nuestra cocina se preparan mariscos y cacahuate en la misma área."
+    },
+    {
+      "tema": "Quejas y tiempos",
+      "pregunta": "¿Cuánto tarda un plato fuerte y cuándo avisas que va tarde?",
+      "respuesta": "Tarda 20 minutos. Si pasa de 25, avisas a la mesa y al gerente."
+    },
+    {
+      "tema": "Quejas y tiempos",
+      "pregunta": "¿Quién autoriza un refresco de cortesía?",
+      "respuesta": "El gerente. Sin su autorización no se da."
+    },
+    {
+      "tema": "Quejas y tiempos",
+      "pregunta": "Un cliente se queja. ¿Cuáles son tus cuatro pasos?",
+      "respuesta": "Escuchas sin interrumpir, te disculpas, no discutes y ofreces cambiar el platillo."
+    },
+    {
+      "tema": "Quejas y tiempos",
+      "pregunta": "¿Puedes hacer un descuento? ¿A quién llamas?",
+      "respuesta": "No puedes. Si el cliente sigue molesto o lo pide, llamas al gerente; si no está, a la encargada."
+    },
+    {
+      "tema": "Cobro",
+      "pregunta": "¿Qué haces cuando un cliente paga con tarjeta?",
+      "respuesta": "Llevas la terminal a la mesa. Nunca te llevas la tarjeta del cliente."
+    },
+    {
+      "tema": "Cobro",
+      "pregunta": "¿Cuándo cuenta como pagada una transferencia?",
+      "respuesta": "Cuando aparece la confirmación en la pantalla de caja."
+    },
+    {
+      "tema": "Cobro",
+      "pregunta": "Te piden factura. ¿Qué haces?",
+      "respuesta": "Les das el QR del formulario de facturación. No anotas sus datos en papel."
+    }
+  ],
+  "examen": [
+    {
+      "tema": "Recibir y ordenar",
+      "tipo": "opcion",
+      "pregunta": "Una mesa se acaba de sentar y tú vas cargando platos para otra. ¿Qué haces?",
+      "opciones": [
+        "Terminas de servir la otra mesa y luego vas a saludarlos",
+        "Le pides a otro mesero que la atienda por ti",
+        "Esperas a que la mesa te haga una seña para ir",
+        "En menos de 1 minuto: «Buenas tardes, enseguida los atiendo»"
+      ],
+      "correcta": 3,
+      "explicacion": "El manual pide saludar en máximo 1 minuto, aunque estés ocupado."
+    },
+    {
+      "tema": "Recibir y ordenar",
+      "tipo": "opcion",
+      "pregunta": "¿Qué haces justo antes de mandar la comanda a cocina?",
+      "opciones": [
+        "Repites la orden completa al cliente para confirmarla",
+        "Preguntas si van a querer postre para mandarlo de una vez",
+        "Preguntas cómo van a pagar para tener lista la cuenta",
+        "Revisas primero si llegaron mesas nuevas a tu sección"
+      ],
+      "correcta": 0,
+      "explicacion": "El manual pide repetir la orden completa al cliente antes de mandarla."
+    },
+    {
+      "tema": "Alergias",
+      "tipo": "opcion",
+      "pregunta": "Un cliente te dice que es alérgico al cacahuate. ¿Qué haces con su orden?",
+      "opciones": [
+        "Le recomiendas un platillo que no lleve cacahuate y la mandas normal",
+        "Marcas la comanda con ALERGIA: cacahuate y avisas de viva voz al cocinero",
+        "Escribes «sin cacahuate» en la comanda y confías en que la lean",
+        "Le aseguras que el platillo está libre de cacahuate para tranquilizarlo"
+      ],
+      "correcta": 1,
+      "explicacion": "El manual pide dos cosas: marcar la comanda con ALERGIA y el ingrediente, y avisar de viva voz al cocinero en turno."
+    },
+    {
+      "tema": "Quejas y tiempos",
+      "tipo": "opcion",
+      "pregunta": "Un plato fuerte lleva 27 minutos y no ha salido. ¿Qué haces?",
+      "opciones": [
+        "Esperas un poco más, porque seguro ya casi sale",
+        "Le llevas un refresco de cortesía para que no se moleste",
+        "Avisas a la mesa y al gerente que el plato va tarde",
+        "Le explicas al cliente que la cocina anda lenta hoy"
+      ],
+      "correcta": 2,
+      "explicacion": "Si un plato pasa de 25 minutos, se avisa a la mesa y al gerente. El refresco de cortesía necesita autorización del gerente."
+    },
+    {
+      "tema": "Cobro",
+      "tipo": "opcion",
+      "pregunta": "Un cliente quiere pagar con tarjeta. ¿Qué haces?",
+      "opciones": [
+        "Te llevas la tarjeta a la caja y se la regresas con el ticket",
+        "Le pides que pase a pagar directamente a la caja",
+        "Le pides que mejor te pague con transferencia bancaria",
+        "Llevas la terminal a la mesa para que pague ahí mismo"
+      ],
+      "correcta": 3,
+      "explicacion": "El manual dice: con tarjeta, lleva la terminal a la mesa; nunca te lleves la tarjeta del cliente."
+    },
+    {
+      "tema": "Antes de abrir",
+      "tipo": "opcion",
+      "pregunta": "¿Para qué lees el pizarrón de la cocina antes de abrir?",
+      "opciones": [
+        "Para ver en qué sección te toca trabajar ese día",
+        "Para saber qué platillos están agotados y no ofrecerlos",
+        "Para saber cuántas reservaciones hay en el turno",
+        "Para revisar cuánto se vendió en el turno anterior"
+      ],
+      "correcta": 1,
+      "explicacion": "El manual pide leer el pizarrón para saber qué platillos están agotados hoy y no ofrecerlos."
+    },
+    {
+      "tema": "Quejas y tiempos",
+      "tipo": "vf",
+      "pregunta": "Si un cliente está muy molesto, puedes hacerle un descuento para calmarlo.",
+      "correcta": false,
+      "explicacion": "El mesero no puede hacer descuentos. Si el cliente sigue molesto o pide descuento, llamas al gerente; si no está, a la encargada."
+    },
+    {
+      "tema": "Cobro",
+      "tipo": "vf",
+      "pregunta": "Con transferencia, el pago cuenta cuando aparece la confirmación en la pantalla de caja.",
+      "correcta": true,
+      "explicacion": "Así lo dice el manual: no basta con que el cliente enseñe una captura en su celular."
+    },
+    {
+      "tema": "Alergias",
+      "tipo": "abierta",
+      "pregunta": "Un cliente te pregunta: «¿Los tacos de pescado están libres de cacahuate?». ¿Qué le contestas?",
+      "respuesta_modelo": "«No le puedo asegurar que estén libres: en nuestra cocina se preparan mariscos y cacahuate en la misma área. Déjeme preguntar en cocina cómo se preparan.» Si los pide, marco ALERGIA en la comanda y aviso al cocinero.",
+      "debe_mencionar": [
+        "No dice que el platillo esté «libre de» cacahuate",
+        "Explica que en la cocina se prepara cacahuate en la misma área",
+        "Pregunta en cocina antes de contestar",
+        "Si lo ordena, marca ALERGIA y avisa al cocinero"
+      ]
+    },
+    {
+      "tema": "Quejas y tiempos",
+      "tipo": "abierta",
+      "pregunta": "Un cliente se queja muy molesto de que su carne llegó fría. ¿Qué haces y qué le dices?",
+      "respuesta_modelo": "Lo escucho sin interrumpir, me disculpo y no discuto. Le ofrezco cambiar el platillo. Si sigue molesto o pide descuento, llamo al gerente; si no está, a la encargada.",
+      "debe_mencionar": [
+        "Escucha sin interrumpir",
+        "Se disculpa y no discute",
+        "Ofrece cambiar el platillo",
+        "Si sigue molesto o pide descuento, llama al gerente (o a la encargada si no está)"
+      ]
+    }
+  ]
+}
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var hoja = document.getElementById("hoja");
+
+  function el(etiqueta, clase, texto) {
+    var nodo = document.createElement(etiqueta);
+    if (clase) nodo.className = clase;
+    if (texto !== undefined && texto !== null) nodo.textContent = String(texto);
+    return nodo;
+  }
+  function texto(valor) { return typeof valor === "string" ? valor.trim() : ""; }
+  function boton(etiqueta, clase) { var b = el("button", clase || "", etiqueta); b.type = "button"; return b; }
+  function mostrarError(mensaje) {
+    hoja.textContent = "";
+    var caja = el("div", "aviso-error");
+    caja.appendChild(el("strong", null, "Esta página no se pudo armar."));
+    caja.appendChild(el("p", null, mensaje));
+    caja.appendChild(el("p", null, "Pídele a Claude: «revisa los datos de las tarjetas y vuelve a armarlas»."));
+    hoja.appendChild(caja);
+  }
+  function pct(valor) { return Math.round(valor * 100); }
+  function revolver(arreglo) {
+    var copia = arreglo.slice();
+    for (var i = copia.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = copia[i]; copia[i] = copia[j]; copia[j] = t;
+    }
+    return copia;
+  }
+
+  var datos;
+  try {
+    datos = JSON.parse(document.getElementById("datos").textContent);
+  } catch (e) {
+    mostrarError("Los datos tienen un error de formato: " + e.message);
+    return;
+  }
+  if (!datos || !texto(datos.titulo)) { mostrarError("Falta el título."); return; }
+
+  var tarjetas = (Array.isArray(datos.tarjetas) ? datos.tarjetas : []).filter(function (t) { return t && texto(t.pregunta) && texto(t.respuesta); });
+  var examen = (Array.isArray(datos.examen) ? datos.examen : []).filter(function (q) { return q && texto(q.pregunta) && /^(opcion|vf|abierta)$/.test(q.tipo); });
+  var minimo = typeof datos.minimo === "number" && datos.minimo > 0 && datos.minimo <= 100 ? datos.minimo : 80;
+  var temasDeclarados = (Array.isArray(datos.temas) ? datos.temas : []).map(texto).filter(Boolean);
+  function ordenTemas(nombres) {
+    return nombres.slice().sort(function (a, b) {
+      var ia = temasDeclarados.indexOf(a), ib = temasDeclarados.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+  }
+  /* Con menos de 5 preguntas en un tema, cualquier fallo pide repaso; con 5 o más, el porcentaje mínimo. */
+  function pideRepaso(suma, n) { return n < 5 ? suma < n : pct(suma / n) < minimo; }
+  var esEquipo = examen.length > 0;
+  if (!tarjetas.length && !esEquipo) { mostrarError("No hay tarjetas ni preguntas."); return; }
+  document.title = texto(datos.titulo);
+
+  /* ── Encabezado de pantalla ── */
+  var cabeza = el("header", "pantalla");
+  cabeza.appendChild(el("h1", null, texto(datos.titulo)));
+  var partesMeta = [texto(datos.negocio), texto(datos.puesto) ? "Para: " + texto(datos.puesto) : "", texto(datos.fuente)].filter(Boolean);
+  if (partesMeta.length) cabeza.appendChild(el("p", "meta", partesMeta.join(" · ")));
+  var dudas = (Array.isArray(datos.dudas) ? datos.dudas : []).map(texto).filter(Boolean);
+  if (dudas.length) {
+    var rev = el("div", "revisar");
+    rev.appendChild(el("strong", null, "Borrador para ti: tu equipo no debe ver este recuadro. Tu material no deja claro lo siguiente. Resuélvelo, pide que lo vuelvan a armar sin estas dudas y compártelo hasta entonces."));
+    var ulD = el("ul");
+    dudas.forEach(function (d) { ulD.appendChild(el("li", null, d)); });
+    rev.appendChild(ulD);
+    cabeza.appendChild(rev);
+  }
+  if (texto(datos.aviso)) cabeza.appendChild(el("p", "aviso", texto(datos.aviso)));
+  hoja.appendChild(cabeza);
+
+  /* ── Pestañas ── */
+  var paneles = [];
+  var nav = el("div", "pestanas");
+  nav.setAttribute("role", "tablist");
+  function crearPanel(id, titulo) {
+    var b = boton(titulo);
+    b.setAttribute("role", "tab");
+    b.id = "tab-" + id;
+    b.setAttribute("aria-controls", "panel-" + id);
+    var panel = el("section");
+    panel.id = "panel-" + id;
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", b.id);
+    b.addEventListener("click", function () { activar(id); });
+    nav.appendChild(b);
+    paneles.push({ id: id, boton: b, panel: panel });
+    return panel;
+  }
+  function activar(id) {
+    paneles.forEach(function (p) {
+      var activo = p.id === id;
+      p.boton.setAttribute("aria-selected", String(activo));
+      p.panel.hidden = !activo;
+    });
+  }
+
+  var panelTarjetas = tarjetas.length ? crearPanel("tarjetas", "Practicar tarjetas") : null;
+  var panelExamen = esEquipo ? crearPanel("examen", "Hacer el examen") : null;
+  var panelImprimir = crearPanel("imprimir", "Versión para imprimir");
+  hoja.appendChild(nav);
+  paneles.forEach(function (p) { hoja.appendChild(p.panel); });
+
+  /* ── Tarjetas: una a la vez; la que no sabes regresa al final ── */
+  if (panelTarjetas) {
+    var cola = tarjetas.map(function (_, i) { return i; });
+    var fallidas = {};
+    var sabidas = 0;
+    var progreso = el("p", "progreso");
+    progreso.setAttribute("aria-live", "polite");
+    var tarjeta = el("div", "tarjeta");
+    tarjeta.setAttribute("role", "button");
+    tarjeta.tabIndex = 0;
+    tarjeta.setAttribute("aria-label", "Voltear la tarjeta");
+    var interior = el("div", "interior");
+    var frente = el("div", "cara frente");
+    var atras = el("div", "cara atras");
+    interior.appendChild(frente);
+    interior.appendChild(atras);
+    tarjeta.appendChild(interior);
+    var verResp = boton("Ver respuesta");
+    var acciones = el("div", "acciones");
+    var bSabia = boton("La sabía");
+    var bNo = boton("Todavía no", "secundario");
+    acciones.appendChild(bSabia);
+    acciones.appendChild(bNo);
+    var controles = el("div", "acciones");
+    controles.appendChild(verResp);
+    var final = el("div", "final");
+    final.hidden = true;
+    var bRevolver = boton("Revolver y empezar de nuevo", "texto");
+
+    function pintar() {
+      if (!cola.length) {
+        tarjeta.hidden = true; acciones.hidden = true; controles.hidden = true;
+        final.hidden = false;
+        final.textContent = "";
+        final.appendChild(el("h3", null, "Terminaste el mazo."));
+        var nFallidas = Object.keys(fallidas).length;
+        final.appendChild(el("p", null, "Te sabías " + (tarjetas.length - nFallidas) + " de " + tarjetas.length + " a la primera."));
+        if (nFallidas) {
+          final.appendChild(el("p", null, "Las que te costaron (repásalas mañana antes que las demás):"));
+          var ul = el("ul");
+          Object.keys(fallidas).forEach(function (k) { ul.appendChild(el("li", null, tarjetas[k].pregunta)); });
+          final.appendChild(ul);
+        }
+        final.appendChild(el("p", null, "Vuelve a repasarlas mañana, en 3 días y en 7 días. Cada repaso cuesta menos y se queda más."));
+        progreso.textContent = "Mazo completo.";
+        return;
+      }
+      var t = tarjetas[cola[0]];
+      tarjeta.hidden = false; final.hidden = true;
+      tarjeta.classList.remove("volteada");
+      frente.textContent = ""; atras.textContent = "";
+      if (texto(t.tema)) frente.appendChild(el("span", "chip", t.tema));
+      frente.appendChild(el("p", "grande", t.pregunta));
+      frente.appendChild(el("span", "pista", "Di la respuesta en voz alta y luego toca la tarjeta."));
+      atras.appendChild(el("span", "chip", "Respuesta"));
+      atras.appendChild(el("p", "grande", t.respuesta));
+      atras.setAttribute("aria-hidden", "true");
+      frente.removeAttribute("aria-hidden");
+      acciones.hidden = true; controles.hidden = false;
+      progreso.textContent = "Te faltan " + cola.length + " de " + tarjetas.length + " · Ya te sabes " + sabidas;
+    }
+    function voltear() {
+      if (!cola.length) return;
+      var volteada = tarjeta.classList.toggle("volteada");
+      atras.setAttribute("aria-hidden", String(!volteada));
+      frente.setAttribute("aria-hidden", String(volteada));
+      acciones.hidden = !volteada; controles.hidden = volteada;
+    }
+    tarjeta.addEventListener("click", voltear);
+    tarjeta.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); voltear(); }
+    });
+    verResp.addEventListener("click", voltear);
+    bSabia.addEventListener("click", function () { cola.shift(); sabidas++; pintar(); });
+    bNo.addEventListener("click", function () { var i = cola.shift(); fallidas[i] = true; cola.push(i); pintar(); });
+    bRevolver.addEventListener("click", function () {
+      cola = revolver(tarjetas.map(function (_, i) { return i; }));
+      fallidas = {}; sabidas = 0; pintar();
+    });
+
+    panelTarjetas.appendChild(progreso);
+    panelTarjetas.appendChild(tarjeta);
+    panelTarjetas.appendChild(controles);
+    panelTarjetas.appendChild(acciones);
+    panelTarjetas.appendChild(final);
+    panelTarjetas.appendChild(bRevolver);
+    panelTarjetas.appendChild(el("p", "consejo", "Primero contesta tú, sin ver. Lo que te cuesta sacar de la cabeza es justo lo que más se te queda. La que no te sabes regresa al final del mazo."));
+    pintar();
+  }
+
+  /* ── Examen en pantalla ── */
+  var puntos = examen.map(function () { return null; });
+  if (panelExamen) {
+    var form = el("form");
+    form.noValidate = true;
+    var campo = el("label", "campo", "Nombre de quien contesta");
+    var nombre = el("input");
+    nombre.type = "text";
+    nombre.autocomplete = "off";
+    campo.appendChild(nombre);
+    form.appendChild(campo);
+    var ol = el("ol", "preguntas");
+    var resultado = el("div", "resultado");
+    resultado.hidden = true;
+    resultado.setAttribute("aria-live", "polite");
+
+    var filas = examen.map(function (q, i) {
+      var li = el("li");
+      var en = el("p", "enunciado");
+      en.appendChild(el("span", null, q.pregunta));
+      if (texto(q.tema)) en.appendChild(el("span", "chip", q.tema));
+      li.appendChild(en);
+      var fila = { q: q, li: li, entradas: [], etiquetas: [], retro: el("div", "retro") };
+      fila.retro.hidden = true;
+      if (q.tipo === "opcion" || q.tipo === "vf") {
+        var ops = q.tipo === "vf" ? ["Verdadero", "Falso"] : (Array.isArray(q.opciones) ? q.opciones : []);
+        var caja = el("div", "opciones");
+        ops.forEach(function (o, j) {
+          var etq = el("label", "opcion");
+          var r = el("input");
+          r.type = "radio"; r.name = "p" + i; r.value = String(j);
+          etq.appendChild(r);
+          etq.appendChild(el("span", null, (q.tipo === "opcion" ? String.fromCharCode(97 + j) + ") " : "") + o));
+          caja.appendChild(etq);
+          fila.entradas.push(r); fila.etiquetas.push(etq);
+        });
+        li.appendChild(caja);
+      } else {
+        var area = el("textarea");
+        area.setAttribute("aria-label", "Tu respuesta a la pregunta " + (i + 1));
+        area.placeholder = "Escribe lo que harías o dirías.";
+        li.appendChild(area);
+        fila.entradas.push(area);
+      }
+      li.appendChild(fila.retro);
+      ol.appendChild(li);
+      return fila;
+    });
+    form.appendChild(ol);
+
+    var botones = el("div", "botones-examen");
+    var calificar = el("button", "", "Calificar");
+    calificar.type = "submit";
+    var borrar = boton("Borrar respuestas", "secundario");
+    botones.appendChild(calificar);
+    botones.appendChild(borrar);
+    form.appendChild(botones);
+    panelExamen.appendChild(el("p", "consejo", "Esto es para practicar: al calificar se ven las respuestas y no se guarda ningún resultado. El examen del día 7 se hace impreso, sin la hoja de respuestas."));
+    panelExamen.appendChild(form);
+    panelExamen.appendChild(resultado);
+
+    function indiceCorrecto(q) { return q.tipo === "vf" ? (q.correcta === true ? 0 : 1) : q.correcta; }
+
+    function pintarResultado() {
+      var porTema = {};
+      var total = 0, calificadas = 0, pendientes = 0;
+      examen.forEach(function (q, i) {
+        var tema = texto(q.tema) || "General";
+        if (!porTema[tema]) porTema[tema] = { suma: 0, n: 0 };
+        if (puntos[i] === null) { pendientes++; return; }
+        porTema[tema].suma += puntos[i]; porTema[tema].n += 1;
+        total += puntos[i]; calificadas++;
+      });
+      resultado.textContent = "";
+      var quien = texto(nombre.value);
+      var cabeza = (quien ? "Resultado de " + quien + ": " : "Resultado: ") +
+        (Math.round(total * 10) / 10) + " de " + calificadas + (calificadas ? " (" + pct(total / calificadas) + " %)" : "");
+      resultado.appendChild(el("p", "total", cabeza));
+      if (pendientes) resultado.appendChild(el("p", null, "Faltan " + pendientes + " respuesta(s) abierta(s) por calificar: lee la respuesta modelo y marca si lo dijo completo, a medias o no."));
+      var barras = el("div", "barras");
+      var bajos = [];
+      ordenTemas(Object.keys(porTema)).forEach(function (tema) {
+        var d = porTema[tema];
+        if (!d.n) return;
+        var valor = pct(d.suma / d.n);
+        var repasar = pideRepaso(d.suma, d.n);
+        if (repasar) bajos.push(tema + " (" + valor + " %)");
+        var fila = el("div", "barra-tema");
+        fila.appendChild(el("span", null, tema));
+        var pista = el("div", "pista-barra");
+        var relleno = el("div", "relleno" + (repasar ? " bajo" : ""));
+        relleno.style.width = Math.max(valor, 2) + "%";
+        pista.appendChild(relleno);
+        fila.appendChild(pista);
+        fila.appendChild(el("b", null, valor + " %"));
+        barras.appendChild(fila);
+      });
+      resultado.appendChild(barras);
+      resultado.appendChild(el("p", null, bajos.length
+        ? "Repasa primero: " + bajos.join(", ") + ". Vuelve a contestar esos temas en 2 días."
+        : "Ningún tema pide repaso. Repasa las tarjetas una vez a la semana para que no se olvide."));
+      resultado.hidden = false;
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      filas.forEach(function (f, i) {
+        var q = f.q;
+        f.retro.textContent = "";
+        f.retro.className = "retro";
+        if (q.tipo === "abierta") {
+          f.retro.appendChild(el("strong", null, "Respuesta modelo: "));
+          f.retro.appendChild(document.createTextNode(texto(q.respuesta_modelo)));
+          var menciones = (Array.isArray(q.debe_mencionar) ? q.debe_mencionar : []).map(texto).filter(Boolean);
+          if (menciones.length) {
+            f.retro.appendChild(el("p", null, "Debe mencionar:"));
+            var ul = el("ul");
+            menciones.forEach(function (m) { ul.appendChild(el("li", null, m)); });
+            f.retro.appendChild(ul);
+          }
+          var auto = el("div", "autocalifica");
+          [["Lo dijo completo", 1], ["A medias", 0.5], ["No lo dijo", 0]].forEach(function (par) {
+            var b = boton(par[0]);
+            b.setAttribute("aria-pressed", String(puntos[i] === par[1]));
+            b.addEventListener("click", function () {
+              puntos[i] = par[1];
+              Array.prototype.forEach.call(auto.children, function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+              pintarResultado();
+            });
+            auto.appendChild(b);
+          });
+          f.retro.appendChild(auto);
+        } else {
+          var elegido = -1;
+          f.entradas.forEach(function (r, j) { if (r.checked) elegido = j; });
+          var buena = indiceCorrecto(q);
+          f.etiquetas.forEach(function (etq, j) {
+            etq.classList.toggle("es-correcta", j === buena);
+            etq.classList.toggle("es-error", j === elegido && j !== buena);
+          });
+          puntos[i] = elegido === buena ? 1 : 0;
+          f.retro.classList.add(puntos[i] ? "bien" : "mal");
+          f.retro.appendChild(el("strong", null, elegido === -1 ? "Sin contestar. " : (puntos[i] ? "Correcto. " : "No es correcta. ")));
+          if (texto(q.explicacion)) f.retro.appendChild(document.createTextNode(texto(q.explicacion)));
+        }
+        f.retro.hidden = false;
+      });
+      pintarResultado();
+      resultado.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    });
+
+    borrar.addEventListener("click", function () {
+      form.reset();
+      puntos = examen.map(function () { return null; });
+      filas.forEach(function (f) {
+        f.retro.hidden = true;
+        f.etiquetas.forEach(function (etq) { etq.classList.remove("es-correcta", "es-error"); });
+      });
+      resultado.hidden = true;
+    });
+  }
+
+  /* ── Versión para imprimir ── */
+  var controlesImp = el("div", "controles-impresion");
+  var bImprimir = boton("Imprimir o guardar en PDF");
+  bImprimir.addEventListener("click", function () {
+    try { window.print(); } catch (e) { /* algunos visores bloquean la impresión: el texto de abajo explica qué hacer */ }
+  });
+  controlesImp.appendChild(bImprimir);
+  var paginaClave = null;
+  if (esEquipo) {
+    var etqClave = el("label");
+    var check = el("input");
+    check.type = "checkbox"; check.checked = true;
+    etqClave.appendChild(check);
+    etqClave.appendChild(document.createTextNode("Incluir la hoja de respuestas (es para ti: no la entregues con el examen)"));
+    controlesImp.appendChild(etqClave);
+    check.addEventListener("change", function () { if (paginaClave) paginaClave.classList.toggle("sin-clave", !check.checked); });
+  }
+  controlesImp.appendChild(el("p", null, "Hoja tamaño carta. Si no se abre la ventana de impresión, descarga este archivo, ábrelo en tu navegador y presiona Ctrl + P (en Mac, Cmd + P)."));
+  panelImprimir.appendChild(controlesImp);
+
+  function cabeceraImpresa(titulo) {
+    var c = el("div", "cab-imp");
+    c.appendChild(el("h2", null, titulo));
+    var sub = [texto(datos.titulo), texto(datos.negocio)].filter(Boolean).join(" · ");
+    c.appendChild(el("p", null, sub));
+    return c;
+  }
+
+  if (tarjetas.length) {
+    var pTar = el("div", "pagina");
+    pTar.appendChild(cabeceraImpresa("Tarjetas de repaso"));
+    var pasos = esEquipo
+      ? ["Día 1: entrega las tarjetas y explica para qué sirven.",
+         "Días 2 a 6: cinco minutos al empezar el turno; se preguntan en parejas sin ver la respuesta.",
+         "Día 7: el examen, sin manual ni tarjetas.",
+         "Tema donde fallaron alguna pregunta: lo repasan esa semana y repiten ese tema en 2 días."]
+      : ["Hoy: repásalas todas. Contesta en voz alta antes de voltear.",
+         "Mañana: primero las que fallaste, luego las demás.",
+         "En 3 días y en 7 días: todas, revueltas.",
+         "La que falles regresa al montón del día siguiente."];
+    var olU = el("ol", "como-usar");
+    pasos.forEach(function (p) { olU.appendChild(el("li", null, p)); });
+    pTar.appendChild(olU);
+    pTar.appendChild(el("p", "instruccion", "Recorta por la línea continua y dobla por la punteada: la pregunta queda al frente y la respuesta atrás."));
+    tarjetas.forEach(function (t, i) {
+      var tira = el("div", "tira");
+      var f = el("div", "lado frente");
+      f.appendChild(el("span", "nota", (i + 1) + (texto(t.tema) ? " · " + t.tema : "")));
+      f.appendChild(el("p", "pregunta", t.pregunta));
+      var r = el("div", "lado reverso");
+      r.appendChild(el("span", "nota", "Respuesta " + (i + 1)));
+      r.appendChild(el("p", null, t.respuesta));
+      tira.appendChild(f); tira.appendChild(r);
+      pTar.appendChild(tira);
+    });
+    panelImprimir.appendChild(pTar);
+  }
+
+  if (esEquipo) {
+    var pEx = el("div", "pagina");
+    pEx.appendChild(cabeceraImpresa("Examen"));
+    var campos = el("div", "campos");
+    ["Nombre:", "Fecha:", "Calificación:"].forEach(function (c) { campos.appendChild(el("span", null, c)); });
+    pEx.appendChild(campos);
+    pEx.appendChild(el("p", "instruccion", "Contesta sin ver el manual ni las tarjetas. En opción múltiple, encierra una sola letra; en verdadero o falso, rellena un círculo."));
+    var olE = el("ol", "examen-imp");
+    examen.forEach(function (q) {
+      var li = el("li");
+      li.appendChild(el("p", "q", q.pregunta));
+      if (q.tipo === "opcion") {
+        var ops = el("div", "ops-imp");
+        (q.opciones || []).forEach(function (o, j) { ops.appendChild(el("span", null, String.fromCharCode(97 + j) + ") " + o)); });
+        li.appendChild(ops);
+      } else if (q.tipo === "vf") {
+        var vf = el("div", "vf-imp");
+        vf.appendChild(el("span", "circulo", "Verdadero"));
+        vf.appendChild(el("span", "circulo", "Falso"));
+        li.appendChild(vf);
+      } else {
+        for (var k = 0; k < 3; k++) li.appendChild(el("span", "renglon"));
+      }
+      olE.appendChild(li);
+    });
+    pEx.appendChild(olE);
+    panelImprimir.appendChild(pEx);
+
+    paginaClave = el("div", "pagina");
+    paginaClave.appendChild(cabeceraImpresa("Hoja de respuestas · solo para quien califica"));
+    var olC = el("ol", "clave-imp");
+    examen.forEach(function (q) {
+      var li = el("li");
+      var r = el("span", "r");
+      if (q.tipo === "opcion") r.textContent = String.fromCharCode(97 + q.correcta) + ") " + (q.opciones || [])[q.correcta] + ". ";
+      else if (q.tipo === "vf") r.textContent = (q.correcta ? "Verdadero" : "Falso") + ". ";
+      else r.textContent = "Respuesta modelo: " + texto(q.respuesta_modelo) + " ";
+      li.appendChild(r);
+      if (q.tipo === "abierta") {
+        var m = (Array.isArray(q.debe_mencionar) ? q.debe_mencionar : []).map(texto).filter(Boolean);
+        if (m.length) li.appendChild(document.createTextNode("Debe mencionar: " + m.join("; ") + ". "));
+      } else if (texto(q.explicacion)) {
+        li.appendChild(document.createTextNode(texto(q.explicacion)));
+      }
+      if (texto(q.tema)) li.appendChild(document.createTextNode(" [" + q.tema + "]"));
+      olC.appendChild(li);
+    });
+    paginaClave.appendChild(olC);
+    paginaClave.appendChild(el("h3", null, "Calificación por tema"));
+    var tabla = el("table", "calif");
+    var thead = el("thead");
+    var trh = el("tr");
+    ["Tema", "Preguntas", "Puntos", "%", "¿Repasar?"].forEach(function (h) { trh.appendChild(el("th", null, h)); });
+    thead.appendChild(trh);
+    tabla.appendChild(thead);
+    var tbody = el("tbody");
+    var conteo = {};
+    examen.forEach(function (q) { var t = texto(q.tema) || "General"; conteo[t] = (conteo[t] || 0) + 1; });
+    ordenTemas(Object.keys(conteo)).forEach(function (t) {
+      var tr = el("tr");
+      [t, String(conteo[t]), "", "", ""].forEach(function (c) { tr.appendChild(el("td", null, c)); });
+      tbody.appendChild(tr);
+    });
+    tabla.appendChild(tbody);
+    paginaClave.appendChild(tabla);
+    paginaClave.appendChild(el("p", "regla", "Cada pregunta vale 1 punto; en las abiertas, completa vale 1 y a medias 0.5. Si en un tema falló alguna pregunta, repásenlo esa semana con las tarjetas y repitan solo ese tema en 2 días (en temas de 5 preguntas o más, basta con llegar a " + minimo + " %). El examen es para saber qué repasar, no para regañar a nadie."));
+    if (texto(datos.aviso)) paginaClave.appendChild(el("p", "aviso", texto(datos.aviso)));
+    if (texto(datos.fuente)) paginaClave.appendChild(el("p", "regla", texto(datos.fuente)));
+    panelImprimir.appendChild(paginaClave);
+  }
+
+  activar(paneles[0].id);
+})();
+</script>
+</body>
+</html>

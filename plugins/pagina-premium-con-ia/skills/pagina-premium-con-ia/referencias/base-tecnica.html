@@ -1,0 +1,113 @@
+<!doctype html>
+<!--
+  Base técnica · skill pagina-premium-con-ia
+  Trae resuelto lo que NO es estético: celular primero, accesibilidad, entradas sobrias que no esconden
+  el contenido si falla JavaScript, y la barra de contacto. Colores, letras, acomodo y textos salen de
+  la ficha de dirección de arte: aquí NO hay ninguna decisión visual. Borra estos comentarios al terminar.
+-->
+<html lang="es-MX" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[Negocio] · [qué es] en [ciudad]</title>
+  <meta name="description" content="[Una frase: qué vendes, dónde y cómo contactarte]">
+  <meta name="theme-color" content="#000000"><!-- el color de fondo de la ficha -->
+  <!-- Letras: las dos familias de la ficha, solo los grosores que se usan, con display=swap -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=FAMILIA+TITULOS:wght@600;800&family=FAMILIA+TEXTO:wght@400;700&display=swap">
+  <script>document.documentElement.classList.replace('no-js', 'js');</script>
+  <style>
+    :root {
+      /* Tokens de la ficha. Cada valor sale de una decisión escrita, no de esta base. */
+      --fondo: ;           /* ficha: fondo */
+      --texto: ;           /* ficha: texto */
+      --acento: ;          /* ficha: botones y acciones, y nada más */
+      --acento-texto: ;    /* letra sobre el botón (contraste 4.5:1) */
+      --apoyo: ;           /* ficha: superficies de apoyo */
+      --letra-titulos: system-ui, sans-serif;  /* ficha: familia de títulos + respaldo */
+      --letra-texto: system-ui, sans-serif;    /* ficha: familia de texto + respaldo */
+      --radio: 8px;        /* una sola escala de esquinas */
+      --salida: cubic-bezier(.2, .8, .2, 1);   /* desacelera al final */
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--fondo); color: var(--texto); font: 400 1.125rem/1.55 var(--letra-texto); }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--acento); outline-offset: 3px; }
+    .saltar { position: absolute; left: -999px; }
+    .saltar:focus { left: 1rem; top: 1rem; z-index: 10; background: var(--fondo); padding: .5rem 1rem; }
+
+    /* Botones: mínimo 48 px de alto, dicen qué pasa al tocarlos. */
+    .boton { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 48px;
+             padding: .75rem 1.25rem; border-radius: var(--radio); background: var(--acento); color: var(--acento-texto);
+             font-weight: 700; text-decoration: none; transition: transform .12s var(--salida); }
+    .boton:active { transform: translateY(1px); filter: brightness(.92); }
+
+    /* Entradas al bajar: solo si hay JavaScript; sin él, todo se ve desde el principio. */
+    .js .revela { opacity: 0; transform: translateY(16px); }
+    .js .revela.visible { opacity: 1; transform: none; transition: opacity .5s var(--salida), transform .5s var(--salida); }
+
+    /* Barra de contacto fija en el celular; aparece al pasar la portada. */
+    .barra-contacto { position: fixed; inset: auto 0 0 0; display: flex; gap: .5rem; padding: .5rem .75rem calc(.5rem + env(safe-area-inset-bottom));
+                      background: var(--fondo); box-shadow: 0 -1px 0 rgba(0,0,0,.12); z-index: 5; }
+    .barra-contacto .boton { flex: 1; }
+    .js .barra-contacto { transform: translateY(110%); transition: transform .25s var(--salida); }
+    .js .barra-contacto.visible { transform: none; }
+    body { padding-bottom: 72px; }
+
+    @media (min-width: 768px) { /* tableta */ }
+    @media (min-width: 1100px) { /* computadora */ .barra-contacto { display: none; } body { padding-bottom: 0; } }
+    @media (hover: hover) and (pointer: fine) { /* efectos de pasar el mouse, solo aquí */ }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+      .js .revela, .js .barra-contacto { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <main id="contenido">
+    <section class="portada" id="portada">
+      <h1>[Título de menos de 8 palabras]</h1>
+      <p>[Qué, dónde, cuándo: una o dos frases]</p>
+      <!-- WhatsApp: lada del país + número, SOLO dígitos (México 52, EE. UU. 1); el texto va codificado (%20 = espacio) -->
+      <a class="boton" href="https://wa.me/[52XXXXXXXXXX]?text=Hola%2C%20vi%20su%20p%C3%A1gina">Escríbenos por WhatsApp</a>
+    </section>
+    <section class="revela"><!-- secciones según el orden de la ficha --></section>
+  </main>
+  <footer>
+    <p><strong>[Nombre del negocio]</strong> · [Razón social si la hay]<br>
+      [Dirección] · <a href="tel:+52XXXXXXXXXX">[Teléfono]</a> · [Horario]</p>
+    <p><a href="aviso-de-privacidad.html">Aviso de privacidad</a> · <a href="terminos.html">Términos</a><!-- solo si vende, cobra anticipos o reserva --></p>
+  </footer>
+  <nav class="barra-contacto" aria-label="Contacto rápido">
+    <a class="boton" href="https://wa.me/[52XXXXXXXXXX]">WhatsApp</a>
+    <a class="boton" href="tel:+52XXXXXXXXXX">Llamar</a>
+  </nav>
+  <!-- Datos para Google (opcional), SOLO con datos reales:
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"","address":{"@type":"PostalAddress","streetAddress":"","addressLocality":"","addressRegion":"","postalCode":"","addressCountry":"MX"},"telephone":"+52","openingHours":["Mo-Sa 08:00-20:00"],"url":""}</script> -->
+  <script>
+    (function () {
+      var revelar = document.querySelectorAll('.revela');
+      var barra = document.querySelector('.barra-contacto');
+      var portada = document.getElementById('portada');
+      if (!('IntersectionObserver' in window)) {
+        revelar.forEach(function (el) { el.classList.add('visible'); });
+        if (barra) barra.classList.add('visible');
+        return;
+      }
+      var alVer = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('visible'); alVer.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -10% 0px' });
+      revelar.forEach(function (el) { alVer.observe(el); });
+      if (barra && portada) {
+        new IntersectionObserver(function (e) { barra.classList.toggle('visible', !e[0].isIntersecting); }).observe(portada);
+      }
+    })();
+  </script>
+</body>
+</html>
