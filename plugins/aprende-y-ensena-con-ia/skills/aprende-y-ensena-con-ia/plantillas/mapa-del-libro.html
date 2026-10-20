@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa del libro</title>
+<!--
+  PLANTILLA «mapa-del-libro» · skill aprende-y-ensena-con-ia
+  Cambia SOLO el JSON del bloque de datos (la etiqueta script con id «datos», casi al final).
+  El resto del archivo se copia tal cual. Ningún texto puede llevar la secuencia «</».
+
+  {
+    "titulo": "Nombre del libro (o del curso, conferencia o tema)",   obligatorio
+    "tipo": "libro",                                                    «libro» u «otro» (curso, conferencia, tema)
+    "autor": "Autor",                                                   opcional
+    "idea_central": "La idea del libro en una frase, máx. 25 palabras", obligatorio
+    "ramas": [                                                          de 4 a 8 (lo ideal: 6)
+      { "titulo": "Idea clave, máx. 6 palabras",
+        "puntos": ["De 1 a 3 puntos, máx. 14 palabras cada uno"],
+        "en_tu_negocio": "Cómo se aplica en el negocio del usuario, máx. 22 palabras" }
+    ],
+    "preguntas": ["3 preguntas para repasar sin ver el mapa"],          de 2 a 4
+    "fuente": "De dónde sale: lo que pegó el usuario, lo que se conoce del libro o ambos",
+    "negocio": "Giro del usuario si lo dijo (sale como «Aplicado a: …»)",  opcional
+    "aviso": "Solo si el tema es de salud, legal o de dinero"           opcional
+  }
+-->
+<style>
+  :root {
+    --papel: #ffffff;
+    --mesa: #e7e7ea;
+    --tinta: #18181b;
+    --tinta-2: #3f3f46;
+    --tinta-3: #6b6b74;
+    --filete: #d4d4d8;
+    --acento: #2f55c8;
+    --acento-suave: #e6ecfb;
+    --radio: 6px;
+    --fuente: "Avenir Next", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--mesa);
+    color: var(--tinta);
+    font-family: var(--fuente);
+    font-size: 15px;
+    line-height: 1.42;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .barra {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 16px 16px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+  }
+  .barra button {
+    font: 600 15px/1 var(--fuente);
+    color: #fff;
+    background: var(--acento);
+    border: 0;
+    border-radius: var(--radio);
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .barra button:active { transform: scale(0.97); }
+  .barra button:focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+  .barra p { margin: 0; font-size: 13px; color: var(--tinta-2); max-width: 60ch; }
+  .hoja {
+    max-width: 1120px;
+    margin: 16px auto 40px;
+    background: var(--papel);
+    border-radius: var(--radio);
+    box-shadow: 0 1px 2px rgba(24, 24, 27, 0.08), 0 8px 24px rgba(24, 24, 27, 0.08);
+    padding: 28px 32px 24px;
+  }
+  .encabezado {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 24px;
+    border-bottom: 2px solid var(--tinta);
+    padding-bottom: 10px;
+    margin-bottom: 22px;
+  }
+  .encabezado h1 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+  .encabezado .autor { margin: 2px 0 0; color: var(--tinta-2); font-size: 16px; }
+  .encabezado .fuente { margin: 0; color: var(--tinta-3); font-size: 12.5px; max-width: 46ch; }
+
+  /* ── El mapa: ramas a los lados, idea central en medio, unidas por líneas ── */
+  .mapa {
+    display: grid;
+    grid-template-columns: 1fr minmax(190px, 0.72fr) 1fr;
+    column-gap: 44px;
+    align-items: center;
+  }
+  .columna { display: flex; flex-direction: column; gap: 14px; }
+  .nodo {
+    position: relative;
+    border: 1px solid var(--filete);
+    border-radius: var(--radio);
+    padding: 10px 12px 11px;
+    background: var(--papel);
+  }
+  .nodo::after,
+  .nodo::before { content: ""; position: absolute; background: var(--acento); }
+  .izq .nodo::after { right: -23px; width: 22px; top: 50%; height: 2px; margin-top: -1px; }
+  .der .nodo::after { left: -23px; width: 22px; top: 50%; height: 2px; margin-top: -1px; }
+  .izq .nodo::before { right: -24px; width: 2px; top: -8px; bottom: -8px; }
+  .der .nodo::before { left: -24px; width: 2px; top: -8px; bottom: -8px; }
+  .nodo:first-child::before { top: 50%; }
+  .nodo:last-child::before { bottom: 50%; }
+  .nodo:only-child::before { display: none; }
+  .nodo h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+    font-size: 16px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 750;
+  }
+  .num {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--acento);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+  }
+  .nodo ul { margin: 0; padding-left: 18px; }
+  .nodo li { margin: 2px 0; color: var(--tinta-2); }
+  .nodo .negocio {
+    margin: 7px 0 0;
+    padding: 5px 0 0 9px;
+    border-left: 3px solid var(--acento);
+    font-size: 14px;
+  }
+  .nodo .negocio b { color: var(--acento); }
+  .centro { position: relative; }
+  .nucleo {
+    position: relative;
+    border: 2px solid var(--acento);
+    background: var(--acento-suave);
+    border-radius: var(--radio);
+    padding: 16px 16px 18px;
+    text-align: center;
+  }
+  .nucleo::before,
+  .nucleo::after { content: ""; position: absolute; top: 50%; height: 2px; margin-top: -1px; width: 22px; background: var(--acento); }
+  .nucleo::before { left: -24px; }
+  .nucleo::after { right: -24px; }
+  .sin-izq .nucleo::before, .sin-der .nucleo::after { display: none; }
+  .nucleo .etiqueta { display: block; font-size: 12px; font-weight: 700; color: var(--acento); margin-bottom: 6px; }
+  .nucleo .titulo-libro { margin: 0 0 8px; font-size: 19px; line-height: 1.15; font-weight: 800; letter-spacing: -0.015em; }
+  .nucleo p { margin: 0; font-size: 15.5px; line-height: 1.38; }
+
+  .repaso {
+    margin-top: 22px;
+    border-top: 1px solid var(--filete);
+    padding-top: 14px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 22px;
+    align-items: start;
+  }
+  .repaso h2 { margin: 0; font-size: 16px; font-weight: 750; }
+  .repaso ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 28px; }
+  .repaso li { margin: 0 0 4px; break-inside: avoid; }
+  .pie { grid-column: 1 / -1; margin: 6px 0 0; font-size: 12.5px; color: var(--tinta-3); }
+  .pie.aviso { color: var(--tinta); font-weight: 650; }
+  .encabezado .aplicado { margin: 2px 0 0; font-size: 14px; color: var(--acento); font-weight: 650; }
+
+  .aviso-error {
+    border: 2px solid #b42318;
+    border-radius: var(--radio);
+    padding: 16px;
+    color: #7a1a12;
+  }
+
+  @media screen and (max-width: 760px) {
+    body { font-size: 15px; }
+    .hoja { margin: 12px 8px 28px; padding: 20px 16px; }
+    .encabezado h1 { font-size: 25px; }
+    .mapa { grid-template-columns: 1fr; row-gap: 14px; }
+    .centro { order: -1; }
+    .nodo::before, .nodo::after, .nucleo::before, .nucleo::after { display: none; }
+    .repaso { grid-template-columns: 1fr; }
+    .repaso ol { columns: 1; }
+  }
+
+  @page { size: letter landscape; margin: 9mm; }
+  @media print {
+    body { background: #fff; font-size: 8.7pt; line-height: 1.3; }
+    .barra { display: none; }
+    .hoja { max-width: none; margin: 0; padding: 0; box-shadow: none; border-radius: 0; }
+    .encabezado { margin-bottom: 8px; padding-bottom: 5px; }
+    .encabezado h1 { font-size: 18pt; }
+    .encabezado .autor { font-size: 10pt; }
+    .encabezado .fuente { font-size: 7.6pt; }
+    .mapa { grid-template-columns: 1fr minmax(170px, 0.56fr) 1fr; }
+    .columna { gap: 6px; }
+    .nodo { padding: 5px 8px 6px; break-inside: avoid; }
+    .izq .nodo::before, .der .nodo::before { top: -4px; bottom: -4px; }
+    .nodo:first-child::before { top: 50%; }
+    .nodo:last-child::before { bottom: 50%; }
+    .nodo h2 { font-size: 9.8pt; margin-bottom: 2px; gap: 6px; }
+    .num { width: 16px; height: 16px; font-size: 8pt; }
+    .nodo ul { padding-left: 14px; }
+    .nodo li { margin: 0; }
+    .nodo .negocio { font-size: 8.4pt; margin-top: 3px; padding-top: 2px; }
+    .nucleo { padding: 9px 9px 10px; }
+    .nucleo .etiqueta { font-size: 7.6pt; margin-bottom: 3px; }
+    .nucleo .titulo-libro { font-size: 12pt; margin-bottom: 5px; }
+    .nucleo p { font-size: 9.6pt; }
+    .repaso { margin-top: 7px; padding-top: 6px; }
+    .repaso h2 { font-size: 9.6pt; }
+    .repaso ol { columns: 3; column-gap: 20px; }
+    .repaso li { margin-bottom: 1px; }
+    .pie { font-size: 7.4pt; margin-top: 3px; }
+  }
+</style>
+</head>
+<body>
+<div class="barra">
+  <button type="button" id="imprimir">Imprimir o guardar en PDF</button>
+  <p>Sale en una hoja tamaño carta, horizontal. Si no se abre la ventana de impresión, descarga este archivo, ábrelo en tu navegador y presiona Ctrl + P (en Mac, Cmd + P).</p>
+</div>
+<main class="hoja" id="hoja"></main>
+
+<script type="application/json" id="datos">
+{
+  "titulo": "Nombre del libro",
+  "autor": "Autor del libro",
+  "idea_central": "La idea del libro en una frase.",
+  "ramas": [
+    { "titulo": "Idea clave 1", "puntos": ["Punto corto", "Otro punto corto"], "en_tu_negocio": "Cómo se aplica en tu negocio." },
+    { "titulo": "Idea clave 2", "puntos": ["Punto corto"], "en_tu_negocio": "Cómo se aplica en tu negocio." },
+    { "titulo": "Idea clave 3", "puntos": ["Punto corto"], "en_tu_negocio": "Cómo se aplica en tu negocio." },
+    { "titulo": "Idea clave 4", "puntos": ["Punto corto"], "en_tu_negocio": "Cómo se aplica en tu negocio." }
+  ],
+  "preguntas": ["Primera pregunta de repaso", "Segunda pregunta de repaso", "Tercera pregunta de repaso"],
+  "fuente": "Basado en: (de dónde sale la información)"
+}
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var hoja = document.getElementById("hoja");
+
+  function el(etiqueta, clase, texto) {
+    var nodo = document.createElement(etiqueta);
+    if (clase) nodo.className = clase;
+    if (texto !== undefined && texto !== null) nodo.textContent = String(texto);
+    return nodo;
+  }
+
+  function mostrarError(mensaje) {
+    hoja.textContent = "";
+    var caja = el("div", "aviso-error");
+    caja.appendChild(el("strong", null, "Esta página no se pudo armar."));
+    caja.appendChild(el("p", null, mensaje));
+    caja.appendChild(el("p", null, "Pídele a Claude: «revisa los datos del mapa y vuelve a armarlo»."));
+    hoja.appendChild(caja);
+  }
+
+  function texto(valor) { return typeof valor === "string" ? valor.trim() : ""; }
+
+  var datos;
+  try {
+    datos = JSON.parse(document.getElementById("datos").textContent);
+  } catch (e) {
+    mostrarError("Los datos tienen un error de formato: " + e.message);
+    return;
+  }
+  var ramas = Array.isArray(datos && datos.ramas) ? datos.ramas.filter(function (r) { return r && texto(r.titulo); }) : [];
+  if (!texto(datos && datos.titulo) || !ramas.length) {
+    mostrarError("Faltan el título o las ramas del mapa.");
+    return;
+  }
+
+  document.title = "Mapa: " + texto(datos.titulo);
+
+  var encabezado = el("header", "encabezado");
+  var bloqueTitulo = el("div");
+  bloqueTitulo.appendChild(el("h1", null, texto(datos.titulo)));
+  if (texto(datos.autor)) bloqueTitulo.appendChild(el("p", "autor", "de " + texto(datos.autor)));
+  if (texto(datos.negocio)) bloqueTitulo.appendChild(el("p", "aplicado", "Aplicado a: " + texto(datos.negocio)));
+  encabezado.appendChild(bloqueTitulo);
+  if (texto(datos.fuente)) encabezado.appendChild(el("p", "fuente", texto(datos.fuente)));
+  hoja.appendChild(encabezado);
+
+  function crearNodo(rama, numero) {
+    var nodo = el("article", "nodo");
+    var h2 = el("h2");
+    h2.appendChild(el("span", "num", numero));
+    h2.appendChild(el("span", null, texto(rama.titulo)));
+    nodo.appendChild(h2);
+    var puntos = Array.isArray(rama.puntos) ? rama.puntos.map(texto).filter(Boolean) : [];
+    if (puntos.length) {
+      var ul = el("ul");
+      puntos.forEach(function (p) { ul.appendChild(el("li", null, p)); });
+      nodo.appendChild(ul);
+    }
+    if (texto(rama.en_tu_negocio)) {
+      var negocio = el("p", "negocio");
+      negocio.appendChild(el("b", null, "En tu negocio: "));
+      negocio.appendChild(document.createTextNode(texto(rama.en_tu_negocio)));
+      nodo.appendChild(negocio);
+    }
+    return nodo;
+  }
+
+  var mapa = el("section", "mapa");
+  mapa.setAttribute("aria-label", "Mapa de ideas clave");
+  var mitad = Math.ceil(ramas.length / 2);
+  var izq = el("div", "columna izq");
+  var der = el("div", "columna der");
+  ramas.forEach(function (rama, i) { (i < mitad ? izq : der).appendChild(crearNodo(rama, i + 1)); });
+
+  var centro = el("div", "centro");
+  if (!izq.children.length) centro.classList.add("sin-izq");
+  if (!der.children.length) centro.classList.add("sin-der");
+  var nucleo = el("div", "nucleo");
+  nucleo.appendChild(el("span", "etiqueta", "La idea central"));
+  nucleo.appendChild(el("p", "titulo-libro", texto(datos.titulo)));
+  nucleo.appendChild(el("p", null, texto(datos.idea_central) || "—"));
+  centro.appendChild(nucleo);
+
+  mapa.appendChild(izq);
+  mapa.appendChild(centro);
+  mapa.appendChild(der);
+  hoja.appendChild(mapa);
+
+  var preguntas = Array.isArray(datos.preguntas) ? datos.preguntas.map(texto).filter(Boolean) : [];
+  var repaso = el("footer", "repaso");
+  if (preguntas.length) {
+    repaso.appendChild(el("h2", null, "Ponte a prueba sin ver el mapa"));
+    var ol = el("ol");
+    preguntas.forEach(function (p) { ol.appendChild(el("li", null, p)); });
+    repaso.appendChild(ol);
+  }
+  if (texto(datos.aviso)) repaso.appendChild(el("p", "pie aviso", texto(datos.aviso)));
+  var esLibro = texto(datos.tipo) !== "otro";
+  repaso.appendChild(el("p", "pie", esLibro
+    ? "Mapa hecho con IA para repasar y aplicar las ideas. No sustituye leer el libro: verifica los detalles con tu ejemplar."
+    : "Mapa hecho con IA para repasar y aplicar las ideas. Revisa que coincida con tu material."));
+  hoja.appendChild(repaso);
+
+  document.getElementById("imprimir").addEventListener("click", function () {
+    try { window.print(); } catch (e) { /* algunos visores bloquean la impresión: el texto de la barra explica qué hacer */ }
+  });
+})();
+</script>
+</body>
+</html>

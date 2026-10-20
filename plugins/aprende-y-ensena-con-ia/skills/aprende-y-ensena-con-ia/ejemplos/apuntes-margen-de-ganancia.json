@@ -1,0 +1,41 @@
+{
+  "tema": "Margen de ganancia",
+  "en_una_frase": "El margen es qué parte del precio de venta te queda como ganancia después de pagar lo que te costó el producto.",
+  "pasos_titulo": "Cómo se calcula",
+  "pasos": [
+    { "titulo": "Anota el costo", "texto": "Lo que te costó la prenda, con flete incluido." },
+    { "titulo": "Anota el precio", "texto": "Lo que paga el cliente, sin contar el IVA." },
+    { "titulo": "Saca la ganancia", "texto": "Precio menos costo." },
+    { "titulo": "Divide entre el precio", "texto": "Ganancia ÷ precio × 100 = tu margen en porcentaje." }
+  ],
+  "claves": [
+    { "icono": "dinero", "titulo": "El margen se divide entre el precio", "texto": "Contesta esta pregunta: de cada 100 pesos que cobras, ¿cuántos te quedan después de pagar la prenda?" },
+    { "icono": "grafica", "titulo": "El aumento se divide entre el costo", "texto": "Subirle 75 % al costo no es ganar 75 %. Son dos números distintos: no los mezcles." },
+    { "icono": "meta", "titulo": "Para un margen exacto, divide", "texto": "Precio = costo ÷ (1 − margen). Para ganar 40 % con una prenda de $200: 200 ÷ 0.60 = $333.33." },
+    { "icono": "alerta", "titulo": "Todavía no es tu utilidad", "texto": "Del margen salen la renta, los sueldos y la luz. Lo que sobra después es tu utilidad." }
+  ],
+  "ejemplo": {
+    "titulo": "Ejemplo: una blusa en tu tienda",
+    "texto": "Te cuesta $200 con flete y la vendes en $350, sin IVA.",
+    "cuentas": [
+      { "concepto": "Ganancia: 350 − 200", "valor": "$150" },
+      { "concepto": "Margen: 150 ÷ 350", "valor": "42.9 %" },
+      { "concepto": "Aumento sobre el costo: 150 ÷ 200", "valor": "75 %" }
+    ]
+  },
+  "cuidado": "Querer ganar 40 % y subirle 40 % al costo. Con una prenda de $200 cobrarías $280: ganas $80, que es solo 28.6 % del precio.",
+  "palabras": [
+    { "palabra": "Costo", "significa": "Lo que pagas por el producto, incluido el flete." },
+    { "palabra": "Precio de venta", "significa": "Lo que paga el cliente. Para calcular, sin IVA." },
+    { "palabra": "Margen", "significa": "La ganancia dividida entre el precio de venta." },
+    { "palabra": "Aumento (markup)", "significa": "La ganancia dividida entre el costo. Es otro número." },
+    { "palabra": "Utilidad", "significa": "Lo que te queda después de pagar también los gastos fijos." }
+  ],
+  "preguntas": [
+    { "pregunta": "Compras una playera en $150 y la vendes en $300. ¿Qué margen tienes?", "respuesta": "50 %: ganas 150, y 150 ÷ 300 = 0.5." },
+    { "pregunta": "¿Entre qué número se divide la ganancia para sacar el margen?", "respuesta": "Entre el precio de venta (sin IVA), no entre el costo." },
+    { "pregunta": "Un pantalón te cuesta $120 y quieres 40 % de margen. ¿A cuánto lo vendes?", "respuesta": "A $200: 120 ÷ 0.60 = 200. Ganas 80, y 80 ÷ 200 = 40 %." }
+  ],
+  "aviso": "Esto es orientación general; no sustituye a tu contador. Pregúntale cómo manejar el IVA y tus gastos fijos en tus precios.",
+  "fuente": "Basado en: conceptos generales de cálculo de precios. Las cifras son de ejemplo, no de un negocio real."
+}

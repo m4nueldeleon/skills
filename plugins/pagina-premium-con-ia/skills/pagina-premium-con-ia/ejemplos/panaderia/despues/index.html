@@ -1,0 +1,386 @@
+<!doctype html>
+<!-- NEGOCIO DE EJEMPLO (ficticio): nombre, dirección, teléfono, precios y reseñas son inventados.
+     Hecha siguiendo la skill pagina-premium-con-ia paso a paso. -->
+<html lang="es-MX" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>El Horno de Tere · Panadería en Santa Teresita, Guadalajara</title>
+  <meta name="description" content="Pan caliente dos veces al día en Santa Teresita, Guadalajara. Bolillo a las 7:00 y a las 17:30. Pasteles por encargo por WhatsApp.">
+  <meta name="theme-color" content="#F4F6F2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,600..800&family=Source+Sans+3:wght@400;700&display=swap">
+  <script>document.documentElement.classList.replace('no-js', 'js');</script>
+  <style>
+    :root {
+      --harina: #F4F6F2;        /* fondo: el blanco de las letras de la fachada */
+      --hollin: #1E2420;        /* texto */
+      --verde: #1F6B4A;         /* único acento: botones y acciones (la fachada) */
+      --estraza: #C49A6C;       /* superficies y marcas (la bolsa de pan) */
+      --pizarra: #26302B;       /* fondo del pizarrón de horneadas */
+      --gis: #EEF0EA;           /* letra sobre el pizarrón */
+      --tenue: #5C665F;         /* texto secundario: hollín aclarado (5.5:1 sobre harina) */
+      --titulos: 'Bricolage Grotesque', 'Arial Narrow', system-ui, sans-serif;
+      --texto: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --radio: 6px;
+      --salida: cubic-bezier(.2, .8, .2, 1);
+      --margen: 20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--harina); color: var(--hollin); font: 400 1.125rem/1.55 var(--texto); padding-bottom: 76px; }
+    a { color: inherit; }
+    h1, h2, h3 { font-family: var(--titulos); font-weight: 800; font-stretch: 82%; line-height: .98; letter-spacing: -.015em; margin: 0; }
+    h2 { font-size: 2.1rem; margin-bottom: 20px; }
+    p { margin: 0 0 1em; }
+    :focus-visible { outline: 3px solid var(--verde); outline-offset: 3px; }
+    .saltar { position: absolute; left: -999px; }
+    .saltar:focus { left: 12px; top: 12px; z-index: 10; background: var(--harina); padding: 8px 14px; }
+    .ancho { max-width: 1080px; margin: 0 auto; padding: 0 var(--margen); }
+    section { padding: 64px 0; }
+
+    /* Botones: un solo acento (verde fachada) en toda la página */
+    .boton { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 12px 22px;
+             border: 2px solid var(--verde); border-radius: var(--radio); background: var(--verde); color: #fff;
+             font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: transform .12s var(--salida), background-color .15s ease; }
+    .boton:active { transform: translateY(1px); }
+    .boton.claro { background: transparent; color: var(--verde); }
+
+    /* Encabezado */
+    .encabezado { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; padding-top: 18px; padding-bottom: 18px; }
+    .marca { font-family: var(--titulos); font-weight: 800; font-stretch: 80%; font-size: 1.35rem; text-decoration: none; letter-spacing: -.01em; white-space: nowrap; }
+    .estado { font-size: .95rem; color: var(--tenue); }
+
+    /* Portada: lo primero que se ve es la hora del pan caliente */
+    .portada { padding: 8px 0 56px; }
+    .portada h1 { font-size: clamp(3rem, 14.5vw, 6.2rem); max-width: 9ch; margin-bottom: 18px; }
+    .portada .bajada { font-size: 1.2rem; max-width: 30ch; }
+    .proxima { margin: 26px 0 22px; padding: 16px 18px; border-radius: var(--radio); background: var(--pizarra); color: var(--gis); max-width: 420px; }
+    .proxima small { display: block; font-size: .9rem; opacity: .8; }
+    .proxima strong { display: block; font-family: var(--titulos); font-stretch: 80%; font-size: 1.9rem; line-height: 1.05; margin-top: 4px; }
+    .proxima span { color: var(--estraza); font-weight: 700; }
+    .acciones { display: flex; flex-direction: column; gap: 12px; max-width: 420px; }
+
+    /* El detalle que se recuerda: el pizarrón de horneadas */
+    .pizarron { background: var(--pizarra); color: var(--gis); }
+    .pizarron h2 { color: var(--gis); }
+    .turnos { display: grid; gap: 28px; }
+    .turno h3 { font-size: 1.15rem; font-family: var(--texto); font-weight: 700; letter-spacing: 0; line-height: 1.3; opacity: .85; margin-bottom: 8px; }
+    .turno ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(238, 240, 234, .25); }
+    .horneada { position: relative; display: flex; align-items: baseline; gap: 18px; padding: 14px 0; border-bottom: 1px solid rgba(238, 240, 234, .25); }
+    .horneada time { font-family: var(--titulos); font-weight: 700; font-stretch: 78%; font-size: 2.6rem; line-height: 1; min-width: 3.4ch; font-variant-numeric: tabular-nums; }
+    .horneada .pan { font-size: 1.3rem; }
+    .horneada.siguiente time { color: var(--estraza); }
+    .horneada .marca-gis { display: none; font-size: .85rem; font-weight: 700; color: var(--estraza); margin-left: auto; }
+    .horneada.siguiente .marca-gis { display: inline; }
+    .trazo { position: absolute; left: 0; bottom: 6px; width: 6.2rem; height: 10px; overflow: visible; }
+    .trazo path { fill: none; stroke: var(--estraza); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 120; stroke-dashoffset: 120; }
+    .visible .siguiente .trazo path { stroke-dashoffset: 0; transition: stroke-dashoffset .65s var(--salida) .25s; }
+    .nota { font-size: .98rem; opacity: .85; margin-top: 24px; max-width: 46ch; }
+
+    /* Precios: lista con puntos guía, como en el mostrador */
+    .precios { list-style: none; margin: 0; padding: 0; max-width: 520px; }
+    .precios li { display: flex; align-items: baseline; gap: 10px; padding: 9px 0; font-size: 1.2rem; }
+    .precios .puntos { flex: 1; border-bottom: 2px dotted rgba(30, 36, 32, .35); transform: translateY(-5px); }
+    .precios b { font-variant-numeric: tabular-nums; }
+    .aclara { color: var(--tenue); font-size: 1rem; margin-top: 14px; }
+
+    /* Pasteles: proceso real de 4 pasos sobre papel de estraza */
+    .encargos { background: var(--estraza); }
+    .encargos .desde { display: grid; gap: 4px; margin-bottom: 28px; font-size: 1.2rem; }
+    .pasos { list-style: none; counter-reset: paso; margin: 0 0 28px; padding: 0; display: grid; gap: 18px; }
+    .pasos li { counter-increment: paso; display: grid; grid-template-columns: 2.4rem 1fr; gap: 12px; align-items: baseline; font-size: 1.15rem; }
+    .pasos li::before { content: counter(paso); font-family: var(--titulos); font-weight: 800; font-size: 2.2rem; line-height: 1; }
+    .pendiente { font-size: .95rem; background: rgba(255, 255, 255, .55); padding: 2px 6px; border-radius: var(--radio); }
+
+    /* Fotos: marcos pendientes para las fotos reales */
+    .fotos { display: grid; gap: 14px; }
+    .marco { aspect-ratio: 4 / 3; display: flex; align-items: flex-end; padding: 14px; border-radius: var(--radio);
+             border: 2px dashed rgba(30, 36, 32, .35); color: var(--tenue); font-size: .95rem; }
+
+    /* Reseñas reales de Google */
+    .resenas { display: grid; gap: 30px; }
+    .resenas blockquote { margin: 0; padding-top: 18px; border-top: 2px solid var(--hollin); }
+    .resenas p { font-size: 1.4rem; line-height: 1.35; }
+    .resenas footer { color: var(--tenue); font-size: 1rem; }
+
+    /* Ubicación y horario */
+    .lugar { display: grid; gap: 28px; }
+    .horario { border-collapse: collapse; width: 100%; max-width: 420px; font-size: 1.1rem; }
+    .horario th, .horario td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(30, 36, 32, .2); }
+    .horario td { text-align: right; font-variant-numeric: tabular-nums; }
+    .horario tr.hoy { background: rgba(196, 154, 108, .35); }
+    .lugar .acciones { margin-top: 18px; }
+
+    .pie { padding: 36px 0 28px; border-top: 1px solid rgba(30, 36, 32, .2); font-size: .98rem; color: var(--tenue); }
+    .pie strong { color: var(--hollin); }
+
+    /* Entradas al bajar: solo con JavaScript */
+    .js .revela { opacity: 0; transform: translateY(16px); }
+    .js .revela.visible { opacity: 1; transform: none; transition: opacity .5s var(--salida), transform .5s var(--salida); }
+
+    /* Barra de contacto del celular */
+    .barra-contacto { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: flex; gap: 8px;
+                      padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: var(--harina); box-shadow: 0 -1px 0 rgba(30, 36, 32, .15); }
+    .barra-contacto .boton { flex: 1; min-height: 48px; }
+    .js .barra-contacto { transform: translateY(110%); transition: transform .25s var(--salida); }
+    .js .barra-contacto.visible { transform: none; }
+
+    @media (min-width: 768px) {
+      :root { --margen: 40px; }
+      section { padding: 88px 0; }
+      h2 { font-size: 2.8rem; }
+      .acciones { flex-direction: row; flex-wrap: wrap; max-width: none; }
+      .acciones .boton { white-space: nowrap; }
+      .turnos { grid-template-columns: 1fr 1fr; gap: 48px; }
+      .fotos { grid-template-columns: repeat(3, 1fr); }
+      .resenas { grid-template-columns: 1fr 1fr; gap: 48px; }
+      .lugar { grid-template-columns: 1fr 1fr; gap: 48px; }
+      .pasos { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1100px) {
+      body { padding-bottom: 0; }
+      .barra-contacto { display: none; }
+      .portada .ancho { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: end; }
+      .pasos { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .boton:hover { background: #18573C; border-color: #18573C; }
+      .boton.claro:hover { background: rgba(31, 107, 74, .08); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      .js .revela, .js .barra-contacto { opacity: 1; transform: none; }
+      .siguiente .trazo path { stroke-dashoffset: 0; }
+    }
+  </style>
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="ancho encabezado">
+    <a class="marca" href="#contenido">El Horno de Tere</a>
+    <span class="estado" id="estado">Lun a sáb 6:30 a 21:00 · dom 7:00 a 14:00</span>
+  </header>
+
+  <main id="contenido">
+    <section class="portada" id="portada">
+      <div class="ancho">
+        <div>
+          <h1>Pan caliente dos veces al día.</h1>
+          <p class="bajada">Horneamos en la mañana y en la tarde en Santa Tere, desde 1998. Los pasteles se encargan por WhatsApp con dos días.</p>
+        </div>
+        <div>
+          <p class="proxima" aria-live="polite">
+            <small id="proxima-titulo">Bolillo caliente</small>
+            <strong id="proxima-pan">7:00 y 17:30</strong>
+            <span id="proxima-cuando">Conchas a las 7:30 y a las 18:00</span>
+          </p>
+          <div class="acciones">
+            <a class="boton" href="https://wa.me/523300000000?text=Hola%20Tere%2C%20quiero%20encargar%20un%20pastel%20para%20el%20d%C3%ADa%20">Encargar un pastel por WhatsApp</a>
+            <a class="boton claro" href="https://www.google.com/maps/search/?api=1&amp;query=Calle%20Pan%20de%20Dulce%20123%2C%20Santa%20Teresita%2C%20Guadalajara%2C%20Jalisco">Cómo llegar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pizarron revela" id="horneadas" aria-labelledby="titulo-horneadas">
+      <div class="ancho">
+        <h2 id="titulo-horneadas">Horneadas de hoy</h2>
+        <div class="turnos">
+          <div class="turno">
+            <h3>Mañana · todos los días</h3>
+            <ol>
+              <li class="horneada" data-hora="07:00" data-dias="todos"><time>7:00</time><span class="pan">Bolillo</span><span class="marca-gis">La que sigue</span>
+                <svg class="trazo" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 7 C 30 3, 60 9, 98 4"/></svg></li>
+              <li class="horneada" data-hora="07:30" data-dias="todos"><time>7:30</time><span class="pan">Conchas</span><span class="marca-gis">La que sigue</span>
+                <svg class="trazo" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 7 C 30 3, 60 9, 98 4"/></svg></li>
+            </ol>
+          </div>
+          <div class="turno">
+            <h3>Tarde · lunes a sábado</h3>
+            <ol>
+              <li class="horneada" data-hora="17:30" data-dias="lun-sab"><time>17:30</time><span class="pan">Bolillo</span><span class="marca-gis">La que sigue</span>
+                <svg class="trazo" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 7 C 30 3, 60 9, 98 4"/></svg></li>
+              <li class="horneada" data-hora="18:00" data-dias="lun-sab"><time>18:00</time><span class="pan">Conchas</span><span class="marca-gis">La que sigue</span>
+                <svg class="trazo" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 7 C 30 3, 60 9, 98 4"/></svg></li>
+            </ol>
+          </div>
+        </div>
+        <p class="nota">Los horarios pueden moverse unos minutos. Si vienes por algo en especial, pregúntanos antes por WhatsApp.</p>
+      </div>
+    </section>
+
+    <section class="revela" id="precios" aria-labelledby="titulo-precios">
+      <div class="ancho">
+        <h2 id="titulo-precios">De todos los días</h2>
+        <ul class="precios">
+          <li><span>Bolillo</span><span class="puntos"></span><b>$4</b></li>
+          <li><span>Telera</span><span class="puntos"></span><b>$5</b></li>
+          <li><span>Concha</span><span class="puntos"></span><b>$14</b></li>
+          <li><span>Cuerno</span><span class="puntos"></span><b>$15</b></li>
+          <li><span>Dona</span><span class="puntos"></span><b>$15</b></li>
+          <li><span>Oreja</span><span class="puntos"></span><b>$16</b></li>
+        </ul>
+        <p class="aclara">Precios en pesos mexicanos (MXN), por pieza.</p>
+      </div>
+    </section>
+
+    <section class="encargos revela" id="pasteles" aria-labelledby="titulo-pasteles">
+      <div class="ancho">
+        <h2 id="titulo-pasteles">Pasteles por encargo</h2>
+        <div class="desde">
+          <span>Tres leches para 20 personas, <b>desde $480</b></span>
+          <span>Chocolate, <b>desde $520</b></span>
+        </div>
+        <ol class="pasos">
+          <li>Escríbenos por WhatsApp con dos días de anticipación.</li>
+          <li>Elige sabor y tamaño.</li>
+          <li><span>Deja la mitad de anticipo. <span class="pendiente">[PENDIENTE: cómo se paga el anticipo: efectivo, transferencia…]</span></span></li>
+          <li>Pasa por tu pastel a la panadería.</li>
+        </ol>
+        <a class="boton" href="https://wa.me/523300000000?text=Hola%20Tere%2C%20quiero%20encargar%20un%20pastel%20para%20el%20d%C3%ADa%20">Encargar por WhatsApp</a>
+      </div>
+    </section>
+
+    <section class="revela" id="fotos" aria-labelledby="titulo-fotos">
+      <div class="ancho">
+        <h2 id="titulo-fotos">Así sale del horno</h2>
+        <div class="fotos">
+          <div class="marco">[PENDIENTE: foto de la charola de conchas recién salida · horizontal · con luz de día]</div>
+          <div class="marco">[PENDIENTE: foto del mostrador con el pan dulce · horizontal]</div>
+          <div class="marco">[PENDIENTE: foto de un tres leches que hayan hecho · horizontal]</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="revela" id="resenas" aria-labelledby="titulo-resenas">
+      <div class="ancho">
+        <h2 id="titulo-resenas">Lo que dicen en Google</h2>
+        <div class="resenas">
+          <blockquote>
+            <p>«Las conchas de la tarde salen todavía calientitas, yo vengo a las 6 en punto.»</p>
+            <footer>Laura M. · reseña en Google</footer>
+          </blockquote>
+          <blockquote>
+            <p>«Encargué el tres leches para el cumple de mi hijo y salió tal cual lo pedí.»</p>
+            <footer>Ricardo T. · reseña en Google</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="revela" id="ubicacion" aria-labelledby="titulo-ubicacion">
+      <div class="ancho lugar">
+        <div>
+          <h2 id="titulo-ubicacion">Aquí estamos</h2>
+          <p>Calle Pan de Dulce 123, colonia Santa Teresita, Guadalajara, Jalisco.</p>
+          <div class="acciones">
+            <a class="boton" href="https://www.google.com/maps/search/?api=1&amp;query=Calle%20Pan%20de%20Dulce%20123%2C%20Santa%20Teresita%2C%20Guadalajara%2C%20Jalisco">Cómo llegar</a>
+            <a class="boton claro" href="tel:+523300000000">Llamar: 33 0000 0000</a>
+          </div>
+        </div>
+        <table class="horario" aria-label="Horario">
+          <tbody>
+            <tr data-dias="lun-sab"><th scope="row">Lunes a sábado</th><td>6:30 a 21:00</td></tr>
+            <tr data-dias="dom"><th scope="row">Domingo</th><td>7:00 a 14:00</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="ancho">
+      <p><strong>Panadería El Horno de Tere</strong> · Calle Pan de Dulce 123, Santa Teresita, Guadalajara, Jal. ·
+        <a href="tel:+523300000000">33 0000 0000</a> · Lun a sáb 6:30 a 21:00, dom 7:00 a 14:00</p>
+      <p><a href="aviso-de-privacidad.html">Aviso de privacidad</a> · <a href="terminos-de-pedidos.html">Términos de pedidos y anticipos</a></p>
+    </div>
+  </footer>
+
+  <nav class="barra-contacto" aria-label="Contacto rápido">
+    <a class="boton" href="https://wa.me/523300000000?text=Hola%20Tere%2C%20quiero%20encargar%20un%20pastel%20para%20el%20d%C3%ADa%20">WhatsApp</a>
+    <a class="boton claro" href="tel:+523300000000">Llamar</a>
+  </nav>
+
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "Bakery", "name": "Panadería El Horno de Tere",
+   "address": {"@type": "PostalAddress", "streetAddress": "Calle Pan de Dulce 123", "addressLocality": "Guadalajara",
+               "addressRegion": "Jalisco", "addressCountry": "MX"},
+   "telephone": "+52 33 0000 0000", "openingHours": ["Mo-Sa 06:30-21:00", "Su 07:00-14:00"], "priceRange": "$"}
+  </script>
+  <script>
+    (function () {
+      var DIAS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
+      // Hora de Guadalajara, aunque quien visite esté en otro país.
+      function ahora() {
+        var partes = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Mexico_City', weekday: 'short',
+          hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date());
+        var v = {};
+        partes.forEach(function (p) { v[p.type] = p.value; });
+        return { dia: DIAS[v.weekday], minutos: Number(v.hour) * 60 + Number(v.minute) };
+      }
+      function aMinutos(hhmm) { var p = hhmm.split(':'); return Number(p[0]) * 60 + Number(p[1]); }
+      function cuanto(m) { return m < 60 ? m + ' min' : Math.floor(m / 60) + ' h ' + (m % 60 ? (m % 60) + ' min' : ''); }
+      function aplica(dias, dia) { return dias === 'todos' || (dias === 'lun-sab' && dia !== 0) || (dias === 'dom' && dia === 0); }
+
+      function actualizar() {
+        var t = ahora();
+        var filas = Array.prototype.slice.call(document.querySelectorAll('.horneada'));
+        filas.forEach(function (f) { f.classList.remove('siguiente'); });
+        var hoy = filas.filter(function (f) { return aplica(f.dataset.dias, t.dia); });
+        var reciente = hoy.filter(function (f) { var d = t.minutos - aMinutos(f.dataset.hora); return d >= 0 && d <= 15; })[0];
+        var siguiente = hoy.filter(function (f) { return aMinutos(f.dataset.hora) > t.minutos; })[0];
+        var titulo = document.getElementById('proxima-titulo');
+        var pan = document.getElementById('proxima-pan');
+        var cuando = document.getElementById('proxima-cuando');
+        if (reciente) {
+          reciente.classList.add('siguiente');
+          titulo.textContent = 'Acaba de salir del horno';
+          pan.textContent = reciente.querySelector('.pan').textContent + ' · ' + reciente.querySelector('time').textContent;
+          cuando.textContent = 'Todavía calientito';
+        } else if (siguiente) {
+          siguiente.classList.add('siguiente');
+          titulo.textContent = 'Siguiente horneada';
+          pan.textContent = siguiente.querySelector('.pan').textContent + ' · ' + siguiente.querySelector('time').textContent;
+          cuando.textContent = 'Sale en ' + cuanto(aMinutos(siguiente.dataset.hora) - t.minutos).trim();
+        } else {
+          titulo.textContent = 'Siguiente horneada';
+          pan.textContent = 'Bolillo · mañana 7:00';
+          cuando.textContent = 'Y conchas a las 7:30';
+        }
+        var abre = t.dia === 0 ? [420, 840] : [390, 1260];
+        var estado = document.getElementById('estado');
+        if (t.minutos >= abre[0] && t.minutos < abre[1]) {
+          estado.textContent = 'Abierto hoy hasta las ' + (t.dia === 0 ? '14:00' : '21:00');
+        } else {
+          var manana = (t.minutos >= abre[1]) ? ((t.dia + 1) % 7) : t.dia;
+          estado.textContent = 'Cerrado · abrimos ' + (manana === t.dia ? 'hoy' : 'mañana') + ' a las ' + (manana === 0 ? '7:00' : '6:30');
+        }
+        document.querySelectorAll('.horario tr').forEach(function (tr) { tr.classList.toggle('hoy', aplica(tr.dataset.dias, t.dia)); });
+      }
+
+      function entradas() {
+        var revelar = document.querySelectorAll('.revela');
+        var barra = document.querySelector('.barra-contacto');
+        var portada = document.getElementById('portada');
+        if (!('IntersectionObserver' in window)) {
+          revelar.forEach(function (el) { el.classList.add('visible'); });
+          barra.classList.add('visible');
+          return;
+        }
+        var alVer = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); alVer.unobserve(e.target); } });
+        }, { rootMargin: '0px 0px -10% 0px' });
+        revelar.forEach(function (el) { alVer.observe(el); });
+        new IntersectionObserver(function (es) { barra.classList.toggle('visible', !es[0].isIntersecting); }).observe(portada);
+      }
+
+      actualizar();
+      setInterval(actualizar, 60000);
+      entradas();
+    })();
+  </script>
+</body>
+</html>

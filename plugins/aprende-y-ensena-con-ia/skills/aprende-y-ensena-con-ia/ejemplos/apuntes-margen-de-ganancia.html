@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apuntes</title>
+<!--
+  PLANTILLA «apuntes» · skill aprende-y-ensena-con-ia
+  Cambia SOLO el JSON del bloque de datos (la etiqueta script con id «datos», casi al final).
+  El resto del archivo se copia tal cual. Ningún texto puede llevar la secuencia «</».
+
+  {
+    "tema": "El tema, máx. 8 palabras",                                   obligatorio
+    "en_una_frase": "El tema explicado en una frase, máx. 30 palabras",   obligatorio
+    "pasos_titulo": "Título del diagrama (por omisión: «Cómo funciona»)", opcional
+    "pasos": [ { "titulo": "máx. 4 palabras", "texto": "máx. 16 palabras" } ],      de 2 a 5
+    "claves": [ { "icono": "idea", "titulo": "máx. 6 palabras", "texto": "máx. 28 palabras" } ],  de 2 a 4
+        íconos: idea, check, alerta, reloj, dinero, persona, equipo, chat, calendario,
+                grafica, corazon, estrella, libro, escudo, carrito, telefono, flecha, meta
+    "ejemplo": { "titulo": "Ejemplo: en una tienda de ropa", "texto": "máx. 45 palabras",
+                 "cuentas": [ { "concepto": "Lo que te cuesta", "valor": "$200" } ] },  opcional (cuentas, de 0 a 5)
+    "cuidado": "El error más común, máx. 35 palabras",                    opcional
+    "palabras": [ { "palabra": "Término", "significa": "máx. 16 palabras" } ],      de 0 a 6
+    "preguntas": [ { "pregunta": "Para responder sin ver", "respuesta": "máx. 22 palabras" } ],  de 2 a 4
+    "aviso": "Solo en temas de salud, legales o de dinero",               opcional
+    "fuente": "De dónde sale: lo que pegó el usuario, lo que se conoce del tema o ambos"
+  }
+-->
+<style>
+  :root {
+    --papel: #ffffff;
+    --mesa: #e7e7ea;
+    --cuadricula: #edf0f7;
+    --tinta: #18181b;
+    --tinta-2: #3f3f46;
+    --tinta-3: #6b6b74;
+    --filete: #d4d4d8;
+    --acento: #2f55c8;
+    --acento-suave: #e6ecfb;
+    --radio: 6px;
+    --fuente: "Avenir Next", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--mesa);
+    color: var(--tinta);
+    font-family: var(--fuente);
+    font-size: 15px;
+    line-height: 1.45;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .barra {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 16px 16px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+  }
+  button {
+    font: 600 15px/1 var(--fuente);
+    color: #fff;
+    background: var(--acento);
+    border: 0;
+    border-radius: var(--radio);
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  button:active { transform: scale(0.97); }
+  button:focus-visible { outline: 3px solid var(--tinta); outline-offset: 2px; }
+  button.secundario { background: var(--papel); color: var(--acento); border: 1.5px solid var(--acento); }
+  .barra p { margin: 0; font-size: 13px; color: var(--tinta-2); max-width: 58ch; }
+  .hoja {
+    max-width: 880px;
+    margin: 16px auto 40px;
+    background-color: var(--papel);
+    background-image:
+      linear-gradient(var(--cuadricula) 1px, transparent 1px),
+      linear-gradient(90deg, var(--cuadricula) 1px, transparent 1px);
+    background-size: 22px 22px;
+    border-radius: var(--radio);
+    box-shadow: 0 1px 2px rgba(24, 24, 27, 0.08), 0 8px 24px rgba(24, 24, 27, 0.08);
+    padding: 30px 34px 24px;
+  }
+  h1 { margin: 0; font-size: 34px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 800; }
+  .frase { margin: 10px 0 0; font-size: 18px; line-height: 1.4; max-width: 62ch; }
+  .resaltado {
+    background: linear-gradient(transparent 52%, var(--acento-suave) 52%);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  section { margin-top: 24px; }
+  h2 {
+    margin: 0 0 10px;
+    font-size: 17px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2 .ico { width: 20px; height: 20px; color: var(--acento); }
+  h3 { margin: 0 0 3px; font-size: 15.5px; line-height: 1.25; font-weight: 750; }
+  p { margin: 0; }
+
+  /* Diagrama: pasos con flechas */
+  .pasos { list-style: none; margin: 0; padding: 0; display: grid; align-items: start; gap: 0; }
+  .paso { background: var(--papel); border: 1.5px solid var(--tinta); border-radius: var(--radio); padding: 10px 11px 11px; }
+  .paso .n {
+    display: inline-grid; place-items: center;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--tinta); color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 6px;
+  }
+  .paso p { color: var(--tinta-2); font-size: 14px; }
+  .flecha { align-self: center; color: var(--acento); padding: 0 4px; }
+  .flecha svg { width: 26px; height: 26px; display: block; }
+
+  /* Lo que tienes que recordar */
+  .claves { display: grid; grid-template-columns: 1fr 1fr; gap: 0 26px; }
+  .clave { display: grid; grid-template-columns: 30px 1fr; gap: 10px; border-top: 1.5px solid var(--tinta); padding: 10px 0 12px; }
+  .clave .ico { width: 28px; height: 28px; color: var(--acento); }
+  .clave p { color: var(--tinta-2); }
+
+  /* Ejemplo y cuidado */
+  .dos { display: grid; grid-template-columns: 1.25fr 1fr; gap: 18px; align-items: start; }
+  .dos > div { margin: 0; }
+  .ejemplo { background: var(--acento-suave); border: 1.5px solid var(--acento); border-radius: var(--radio); padding: 14px 15px; }
+  .ejemplo h2 { color: var(--tinta); }
+  .cuentas { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14.5px; }
+  .cuentas td { padding: 5px 0; border-top: 1px solid rgba(47, 85, 200, 0.28); vertical-align: top; }
+  .cuentas td:last-child { text-align: right; font-weight: 750; white-space: nowrap; padding-left: 12px; font-variant-numeric: tabular-nums; }
+  .cuidado { border-left: 5px solid var(--tinta); background: var(--papel); padding: 12px 14px; border-radius: 0 var(--radio) var(--radio) 0; }
+  .cuidado h2 .ico { color: var(--tinta); }
+
+  /* Palabras clave */
+  .palabras { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; background: var(--papel); padding: 4px 0; }
+  .palabras dt { font-weight: 800; }
+  .palabras dd { margin: 0; color: var(--tinta-2); }
+
+  /* Ponte a prueba */
+  .prueba ol { margin: 0; padding-left: 22px; }
+  .prueba li { margin: 0 0 10px; font-weight: 650; }
+  .renglon { display: block; height: 22px; border-bottom: 1px solid var(--tinta-3); margin-top: 4px; }
+  .solo-pantalla { margin-top: 6px; }
+  .respuestas { margin-top: 12px; border: 1.5px dashed var(--tinta-3); border-radius: var(--radio); padding: 10px 14px; background: var(--papel); }
+  .respuestas[hidden] { display: none; }
+  .solo-impresion { display: none; }
+  .respuestas h3 { font-size: 14px; }
+  .respuestas ol { margin: 4px 0 0; padding-left: 20px; }
+  .respuestas li { font-weight: 400; margin: 0 0 3px; }
+
+  .pie { margin-top: 22px; border-top: 1px solid var(--filete); padding-top: 10px; font-size: 12.5px; color: var(--tinta-3); background: var(--papel); }
+  .pie .aviso { color: var(--tinta); font-weight: 650; margin-bottom: 4px; }
+  .aviso-error { border: 2px solid #b42318; border-radius: var(--radio); padding: 16px; color: #7a1a12; background: #fff; }
+
+  @media screen and (max-width: 720px) {
+    .hoja { margin: 12px 8px 28px; padding: 22px 16px; }
+    h1 { font-size: 27px; }
+    .frase { font-size: 16.5px; }
+    .pasos { grid-template-columns: 1fr !important; }
+    .flecha { justify-self: center; transform: rotate(90deg); padding: 2px 0; }
+    .claves, .dos { grid-template-columns: 1fr; }
+    .palabras { grid-template-columns: 1fr; gap: 0 0; }
+    .palabras dd { margin-bottom: 8px; }
+  }
+
+  @page { size: letter portrait; margin: 11mm; }
+  @media print {
+    body { background: #fff; font-size: 9.2pt; line-height: 1.34; }
+    .barra, .solo-pantalla { display: none !important; }
+    .hoja { max-width: none; margin: 0; padding: 0 2mm; box-shadow: none; border-radius: 0; }
+    h1 { font-size: 20pt; }
+    .frase { font-size: 10.6pt; margin-top: 5px; }
+    section { margin-top: 9px; break-inside: avoid; }
+    h2 { font-size: 10.6pt; margin-bottom: 5px; }
+    h2 .ico { width: 15px; height: 15px; }
+    h3 { font-size: 9.6pt; margin-bottom: 1px; }
+    .paso { padding: 6px 8px 7px; }
+    .paso .n { width: 17px; height: 17px; font-size: 8.4pt; margin-bottom: 3px; }
+    .paso p, .cuentas { font-size: 8.8pt; }
+    .flecha svg { width: 20px; height: 20px; }
+    .clave { grid-template-columns: 22px 1fr; gap: 8px; padding: 5px 0 6px; }
+    .clave .ico { width: 20px; height: 20px; }
+    .ejemplo { padding: 8px 10px; }
+    .cuidado { padding: 7px 10px; }
+    .cuentas { margin-top: 5px; }
+    .cuentas td { padding: 2px 0; }
+    .palabras { grid-template-columns: max-content 1fr max-content 1fr; gap: 2px 12px; }
+    .prueba li { margin-bottom: 4px; }
+    .renglon { height: 15px; margin-top: 1px; }
+    .solo-impresion { display: block; font-size: 8.4pt; color: var(--tinta-2); margin: 2px 0 4px; }
+    .respuestas[hidden] { display: block; }
+    .respuestas { transform: rotate(180deg); margin-top: 6px; padding: 5px 10px; font-size: 8.4pt; }
+    .respuestas h3 { font-size: 8.6pt; }
+    .pie { margin-top: 8px; padding-top: 5px; font-size: 7.6pt; }
+  }
+  @media (prefers-reduced-motion: reduce) { button { transition: none; } }
+</style>
+</head>
+<body>
+<div class="barra">
+  <button type="button" id="imprimir">Imprimir o guardar en PDF</button>
+  <p>Sale en una hoja tamaño carta. Al imprimir, las respuestas salen de cabeza al pie: tápalas con otra hoja, contesta y luego gira la hoja. Si no se abre la ventana de impresión, descarga este archivo, ábrelo en tu navegador y presiona Ctrl + P (en Mac, Cmd + P).</p>
+</div>
+<main class="hoja" id="hoja"></main>
+
+<script type="application/json" id="datos">
+{
+  "tema": "Margen de ganancia",
+  "en_una_frase": "El margen es qué parte del precio de venta te queda como ganancia después de pagar lo que te costó el producto.",
+  "pasos_titulo": "Cómo se calcula",
+  "pasos": [
+    {
+      "titulo": "Anota el costo",
+      "texto": "Lo que te costó la prenda, con flete incluido."
+    },
+    {
+      "titulo": "Anota el precio",
+      "texto": "Lo que paga el cliente, sin contar el IVA."
+    },
+    {
+      "titulo": "Saca la ganancia",
+      "texto": "Precio menos costo."
+    },
+    {
+      "titulo": "Divide entre el precio",
+      "texto": "Ganancia ÷ precio × 100 = tu margen en porcentaje."
+    }
+  ],
+  "claves": [
+    {
+      "icono": "dinero",
+      "titulo": "El margen se divide entre el precio",
+      "texto": "Contesta esta pregunta: de cada 100 pesos que cobras, ¿cuántos te quedan después de pagar la prenda?"
+    },
+    {
+      "icono": "grafica",
+      "titulo": "El aumento se divide entre el costo",
+      "texto": "Subirle 75 % al costo no es ganar 75 %. Son dos números distintos: no los mezcles."
+    },
+    {
+      "icono": "meta",
+      "titulo": "Para un margen exacto, divide",
+      "texto": "Precio = costo ÷ (1 − margen). Para ganar 40 % con una prenda de $200: 200 ÷ 0.60 = $333.33."
+    },
+    {
+      "icono": "alerta",
+      "titulo": "Todavía no es tu utilidad",
+      "texto": "Del margen salen la renta, los sueldos y la luz. Lo que sobra después es tu utilidad."
+    }
+  ],
+  "ejemplo": {
+    "titulo": "Ejemplo: una blusa en tu tienda",
+    "texto": "Te cuesta $200 con flete y la vendes en $350, sin IVA.",
+    "cuentas": [
+      {
+        "concepto": "Ganancia: 350 − 200",
+        "valor": "$150"
+      },
+      {
+        "concepto": "Margen: 150 ÷ 350",
+        "valor": "42.9 %"
+      },
+      {
+        "concepto": "Aumento sobre el costo: 150 ÷ 200",
+        "valor": "75 %"
+      }
+    ]
+  },
+  "cuidado": "Querer ganar 40 % y subirle 40 % al costo. Con una prenda de $200 cobrarías $280: ganas $80, que es solo 28.6 % del precio.",
+  "palabras": [
+    {
+      "palabra": "Costo",
+      "significa": "Lo que pagas por el producto, incluido el flete."
+    },
+    {
+      "palabra": "Precio de venta",
+      "significa": "Lo que paga el cliente. Para calcular, sin IVA."
+    },
+    {
+      "palabra": "Margen",
+      "significa": "La ganancia dividida entre el precio de venta."
+    },
+    {
+      "palabra": "Aumento (markup)",
+      "significa": "La ganancia dividida entre el costo. Es otro número."
+    },
+    {
+      "palabra": "Utilidad",
+      "significa": "Lo que te queda después de pagar también los gastos fijos."
+    }
+  ],
+  "preguntas": [
+    {
+      "pregunta": "Compras una playera en $150 y la vendes en $300. ¿Qué margen tienes?",
+      "respuesta": "50 %: ganas 150, y 150 ÷ 300 = 0.5."
+    },
+    {
+      "pregunta": "¿Entre qué número se divide la ganancia para sacar el margen?",
+      "respuesta": "Entre el precio de venta (sin IVA), no entre el costo."
+    },
+    {
+      "pregunta": "Un pantalón te cuesta $120 y quieres 40 % de margen. ¿A cuánto lo vendes?",
+      "respuesta": "A $200: 120 ÷ 0.60 = 200. Ganas 80, y 80 ÷ 200 = 40 %."
+    }
+  ],
+  "aviso": "Esto es orientación general; no sustituye a tu contador. Pregúntale cómo manejar el IVA y tus gastos fijos en tus precios.",
+  "fuente": "Basado en: conceptos generales de cálculo de precios. Las cifras son de ejemplo, no de un negocio real."
+}
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var hoja = document.getElementById("hoja");
+  var SVG = "http://www.w3.org/2000/svg";
+  var ICONOS = {
+    idea: "M9 18h6M10 21h4M8.5 14.5A6 6 0 1 1 15.5 14.5c-.6.5-1 1.2-1 2V17h-5v-.5c0-.8-.4-1.5-1-2z",
+    check: "M4 12.5l5 5L20 6.5",
+    alerta: "M12 3.5L2.5 20h19L12 3.5zM12 10v4.5M12 17.4v.1",
+    reloj: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7.5V12l3 2",
+    dinero: "M3 6.5h18v11H3zM9.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0M6 9.5v.1M18 14.4v.1",
+    persona: "M8 8a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4.5 20.5c1.2-3.6 4-5.5 7.5-5.5s6.3 1.9 7.5 5.5",
+    equipo: "M5.8 8.2a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0-6.4 0M2.8 19.5c.9-3 3.2-4.6 6.2-4.6s5.3 1.6 6.2 4.6M16 5.6a3 3 0 0 1 0 5.8M17.6 14.9c1.9.5 3.1 2 3.6 4.4",
+    chat: "M4 5h16v11H9l-5 4z",
+    calendario: "M4 6h16v14H4zM4 10h16M8.5 3.5v4M15.5 3.5v4",
+    grafica: "M4 4v16h16M8 16v-4M12 16V8M16 16v-6",
+    corazon: "M12 20s-7.5-4.6-7.5-10A4.2 4.2 0 0 1 12 7.6 4.2 4.2 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z",
+    estrella: "M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.1 5.9-.8z",
+    libro: "M3 5.5c3-1 6-1 9 1v13c-3-2-6-2-9-1zM21 5.5c-3-1-6-1-9 1v13c3-2 6-2 9-1z",
+    escudo: "M12 3l8 3v5.5c0 4.6-3.3 8.3-8 9.5-4.7-1.2-8-4.9-8-9.5V6zM8.8 12l2.2 2.2 4.3-4.4",
+    carrito: "M3 4h2.5l2.3 11h10.4l2-8H6.4M9.5 19.2v.1M17 19.2v.1",
+    telefono: "M8 2.5h8a1.5 1.5 0 0 1 1.5 1.5v16a1.5 1.5 0 0 1-1.5 1.5H8A1.5 1.5 0 0 1 6.5 20V4A1.5 1.5 0 0 1 8 2.5zM11 18.5h2",
+    flecha: "M4 12h15M13.5 6.5L19 12l-5.5 5.5",
+    meta: "M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M7.5 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0-9 0M11.2 12a.8.8 0 1 0 1.6 0a.8.8 0 1 0-1.6 0"
+  };
+
+  function el(etiqueta, clase, texto) {
+    var nodo = document.createElement(etiqueta);
+    if (clase) nodo.className = clase;
+    if (texto !== undefined && texto !== null) nodo.textContent = String(texto);
+    return nodo;
+  }
+  function icono(nombre) {
+    var svg = document.createElementNS(SVG, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("class", "ico");
+    svg.setAttribute("aria-hidden", "true");
+    var trazo = document.createElementNS(SVG, "path");
+    trazo.setAttribute("d", ICONOS[nombre] || ICONOS.idea);
+    trazo.setAttribute("fill", "none");
+    trazo.setAttribute("stroke", "currentColor");
+    trazo.setAttribute("stroke-width", "1.9");
+    trazo.setAttribute("stroke-linecap", "round");
+    trazo.setAttribute("stroke-linejoin", "round");
+    svg.appendChild(trazo);
+    return svg;
+  }
+  function texto(valor) { return typeof valor === "string" ? valor.trim() : ""; }
+  function lista(valor) { return Array.isArray(valor) ? valor.filter(function (x) { return x && typeof x === "object"; }) : []; }
+  function mostrarError(mensaje) {
+    hoja.textContent = "";
+    var caja = el("div", "aviso-error");
+    caja.appendChild(el("strong", null, "Esta página no se pudo armar."));
+    caja.appendChild(el("p", null, mensaje));
+    caja.appendChild(el("p", null, "Pídele a Claude: «revisa los datos de los apuntes y vuelve a armarlos»."));
+    hoja.appendChild(caja);
+  }
+  function seccion(titulo, nombreIcono) {
+    var s = el("section");
+    var h2 = el("h2");
+    if (nombreIcono) h2.appendChild(icono(nombreIcono));
+    h2.appendChild(el("span", null, titulo));
+    s.appendChild(h2);
+    return s;
+  }
+
+  var datos;
+  try {
+    datos = JSON.parse(document.getElementById("datos").textContent);
+  } catch (e) {
+    mostrarError("Los datos tienen un error de formato: " + e.message);
+    return;
+  }
+  if (!texto(datos && datos.tema) || !texto(datos.en_una_frase)) {
+    mostrarError("Faltan el tema o la frase principal.");
+    return;
+  }
+  document.title = "Apuntes: " + texto(datos.tema);
+
+  var cabeza = el("header");
+  cabeza.appendChild(el("h1", null, texto(datos.tema)));
+  var frase = el("p", "frase");
+  frase.appendChild(el("span", "resaltado", texto(datos.en_una_frase)));
+  cabeza.appendChild(frase);
+  hoja.appendChild(cabeza);
+
+  var pasos = lista(datos.pasos).filter(function (p) { return texto(p.titulo); });
+  if (pasos.length) {
+    var sPasos = seccion(texto(datos.pasos_titulo) || "Cómo funciona");
+    var ol = el("ol", "pasos");
+    var columnas = [];
+    pasos.forEach(function (p, i) {
+      if (i > 0) {
+        var f = el("li", "flecha");
+        f.setAttribute("aria-hidden", "true");
+        f.appendChild(icono("flecha"));
+        ol.appendChild(f);
+        columnas.push("auto");
+      }
+      var li = el("li", "paso");
+      li.appendChild(el("span", "n", i + 1));
+      li.appendChild(el("h3", null, texto(p.titulo)));
+      if (texto(p.texto)) li.appendChild(el("p", null, texto(p.texto)));
+      ol.appendChild(li);
+      columnas.push("minmax(0, 1fr)");
+    });
+    ol.style.gridTemplateColumns = columnas.join(" ");
+    sPasos.appendChild(ol);
+    hoja.appendChild(sPasos);
+  }
+
+  var claves = lista(datos.claves).filter(function (c) { return texto(c.titulo); });
+  if (claves.length) {
+    var sClaves = seccion("Lo que tienes que recordar");
+    var rejilla = el("div", "claves");
+    claves.forEach(function (c) {
+      var fila = el("div", "clave");
+      fila.appendChild(icono(texto(c.icono)));
+      var cuerpo = el("div");
+      cuerpo.appendChild(el("h3", null, texto(c.titulo)));
+      if (texto(c.texto)) cuerpo.appendChild(el("p", null, texto(c.texto)));
+      fila.appendChild(cuerpo);
+      rejilla.appendChild(fila);
+    });
+    sClaves.appendChild(rejilla);
+    hoja.appendChild(sClaves);
+  }
+
+  var ejemplo = datos.ejemplo && typeof datos.ejemplo === "object" ? datos.ejemplo : null;
+  if (ejemplo || texto(datos.cuidado)) {
+    var dos = el("section", "dos");
+    if (ejemplo && (texto(ejemplo.texto) || lista(ejemplo.cuentas).length)) {
+      var caja = el("div", "ejemplo");
+      var h2e = el("h2");
+      h2e.appendChild(icono("estrella"));
+      h2e.appendChild(el("span", null, texto(ejemplo.titulo) || "Ejemplo"));
+      caja.appendChild(h2e);
+      if (texto(ejemplo.texto)) caja.appendChild(el("p", null, texto(ejemplo.texto)));
+      var cuentas = lista(ejemplo.cuentas).filter(function (c) { return texto(c.concepto); });
+      if (cuentas.length) {
+        var tabla = el("table", "cuentas");
+        var tbody = el("tbody");
+        cuentas.forEach(function (c) {
+          var tr = el("tr");
+          tr.appendChild(el("td", null, texto(c.concepto)));
+          tr.appendChild(el("td", null, texto(c.valor)));
+          tbody.appendChild(tr);
+        });
+        tabla.appendChild(tbody);
+        caja.appendChild(tabla);
+      }
+      dos.appendChild(caja);
+    }
+    if (texto(datos.cuidado)) {
+      var cuidado = el("div", "cuidado");
+      var h2c = el("h2");
+      h2c.appendChild(icono("alerta"));
+      h2c.appendChild(el("span", null, "Cuidado con esto"));
+      cuidado.appendChild(h2c);
+      cuidado.appendChild(el("p", null, texto(datos.cuidado)));
+      dos.appendChild(cuidado);
+    }
+    if (dos.children.length === 1) dos.style.gridTemplateColumns = "1fr";
+    if (dos.children.length) hoja.appendChild(dos);
+  }
+
+  var palabras = lista(datos.palabras).filter(function (p) { return texto(p.palabra); });
+  if (palabras.length) {
+    var sPal = seccion("Palabras clave", "libro");
+    var dl = el("dl", "palabras");
+    palabras.forEach(function (p) {
+      dl.appendChild(el("dt", null, texto(p.palabra)));
+      dl.appendChild(el("dd", null, texto(p.significa)));
+    });
+    sPal.appendChild(dl);
+    hoja.appendChild(sPal);
+  }
+
+  var preguntas = lista(datos.preguntas).filter(function (p) { return texto(p.pregunta); });
+  if (preguntas.length) {
+    var sPrueba = seccion("Ponte a prueba: contesta sin ver la hoja", "meta");
+    sPrueba.classList.add("prueba");
+    var olP = el("ol");
+    preguntas.forEach(function (p) {
+      var li = el("li", null, texto(p.pregunta));
+      li.appendChild(el("span", "renglon"));
+      olP.appendChild(li);
+    });
+    sPrueba.appendChild(olP);
+    sPrueba.appendChild(el("p", "solo-impresion", "Tapa la parte de abajo con otra hoja y contesta. Luego gira la hoja: las respuestas están de cabeza."));
+
+    var boton = el("button", "secundario solo-pantalla", "Ver respuestas");
+    boton.type = "button";
+    var resp = el("div", "respuestas");
+    resp.hidden = true;
+    resp.id = "respuestas";
+    boton.setAttribute("aria-controls", "respuestas");
+    boton.setAttribute("aria-expanded", "false");
+    resp.appendChild(el("h3", null, "Respuestas"));
+    var olR = el("ol");
+    preguntas.forEach(function (p) { olR.appendChild(el("li", null, texto(p.respuesta) || "—")); });
+    resp.appendChild(olR);
+    boton.addEventListener("click", function () {
+      resp.hidden = !resp.hidden;
+      boton.textContent = resp.hidden ? "Ver respuestas" : "Ocultar respuestas";
+      boton.setAttribute("aria-expanded", String(!resp.hidden));
+    });
+    sPrueba.appendChild(boton);
+    sPrueba.appendChild(resp);
+    hoja.appendChild(sPrueba);
+  }
+
+  var pie = el("footer", "pie");
+  if (texto(datos.aviso)) pie.appendChild(el("p", "aviso", texto(datos.aviso)));
+  if (texto(datos.fuente)) pie.appendChild(el("p", null, texto(datos.fuente)));
+  pie.appendChild(el("p", null, "Apuntes hechos con IA para estudiar y repasar. Revisa que coincidan con tu material antes de usarlos o compartirlos."));
+  hoja.appendChild(pie);
+
+  document.getElementById("imprimir").addEventListener("click", function () {
+    try { window.print(); } catch (e) { /* algunos visores bloquean la impresión: la barra explica qué hacer */ }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,699 @@
+<!doctype html>
+<!--
+  Video animado de tu negocio · plantilla de la skill «video-animado-de-tu-negocio»
+  Manuel de León · github.com/m4nueldeleon/skills · Licencia MIT
+  Un solo archivo, sin librerías. Para hacer tu video, cambia SOLO el bloque «VIDEO» de abajo.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Video animado</title>
+<style>
+:root{
+  --fondo:#121315;--texto:#f4f4f3;--acento:#ff4b2b;--enf:#ff4b2b;--sobre-acento:#121315;
+  --suave:#22201f;--suave2:#2c2725;--linea:#3a3a3b;--texto-suave:#b8b8b6;
+  --f-titulo:"Arial Black",Arial,sans-serif;--w-titulo:900;--f-texto:Arial,sans-serif;--w-texto:600;
+  --tracking:-0.03em;--interlineado:1;--mayus:none;--radio:24px;
+  --ui-fondo:#0b0c0e;--ui-panel:#17191d;--ui-panel2:#202329;--ui-texto:#e9eaec;--ui-tenue:#a3a7ae;--ui-borde:rgba(255,255,255,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--ui-fondo);color:var(--ui-texto);font:15px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:10px;overflow:hidden;
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+#marco{position:relative;flex:none;overflow:hidden;border-radius:12px;background:var(--fondo);box-shadow:0 0 0 1px var(--ui-borde);cursor:pointer}
+#escenario{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:var(--fondo);color:var(--texto);transform-origin:0 0}
+#fondo,#barrido{position:absolute;inset:0;pointer-events:none}
+#fondo{z-index:1}
+.forma{position:absolute;left:0;top:0;will-change:transform}
+.circulo{width:1250px;height:1250px;border-radius:50%;background:var(--suave)}
+.barra{width:1700px;height:150px;background:var(--suave2)}
+.aro{width:560px;height:560px;border-radius:50%;border:4px solid var(--linea)}
+#barrido{z-index:6;background:var(--acento);transform:translateY(1920px)}
+#firma{position:absolute;left:90px;top:250px;z-index:5;max-width:850px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  font-family:var(--f-texto);font-weight:700;font-size:34px;letter-spacing:.14em;text-transform:uppercase;color:var(--texto-suave)}
+.escena{position:absolute;inset:0;display:none;z-index:3}
+.midiendo,.midiendo *{transform:none!important;filter:none!important}
+.contenido{position:absolute;left:90px;right:140px;top:330px;bottom:440px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:44px}
+.titulo{font-family:var(--f-titulo);font-weight:var(--w-titulo);letter-spacing:var(--tracking);line-height:var(--interlineado);text-transform:var(--mayus);text-wrap:balance}
+.texto{font-family:var(--f-texto);font-weight:var(--w-texto);line-height:1.2;letter-spacing:-.005em;text-wrap:pretty}
+.enf{color:var(--enf)}
+/* acento de bajo contraste (p. ej. amarillo sobre blanco): resaltador detrás de las letras */
+.marcador .enf{text-decoration-line:underline;text-decoration-color:var(--acento);text-decoration-thickness:.4em;text-underline-offset:-.28em;text-decoration-skip-ink:none}
+.etiqueta{font-family:var(--f-texto);font-weight:700;font-size:46px;line-height:1.15;letter-spacing:.08em;text-transform:uppercase;color:var(--texto-suave)}
+.etiqueta.acento{color:var(--enf)}
+.marcador .etiqueta.acento{color:var(--texto)}
+.chico{color:var(--texto-suave);max-width:100%}
+/* palabras */
+.palabras{width:100%;line-height:0}
+.palabras .w{display:inline-block;margin-right:.2em;font-size:.56em;white-space:nowrap;line-height:var(--interlineado)}
+.palabras .w.grande{font-size:1em}
+.palabras .w:not(.grande){letter-spacing:-0.012em}
+.palabras .w:last-child,.nombre .pal:last-child{margin-right:0}
+.palabras.sin-enf .w{font-size:1em}
+/* frase */
+.frase{width:100%}
+.linea{display:block;overflow:hidden;padding:.06em 0 .14em;margin:-.06em 0 -.14em}
+.linea-in{display:inline-block;max-width:100%}
+/* lista */
+.items{list-style:none;display:flex;flex-direction:column;gap:.3em;width:100%}
+.items li{display:flex;align-items:center;gap:.36em}
+.items li span{white-space:nowrap}
+.items svg{width:.74em;height:.74em;flex:none;overflow:visible}
+.items path{fill:none;stroke:var(--enf);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 1;stroke-dashoffset:1}
+/* numero */
+.cifra{white-space:nowrap;line-height:.9;font-variant-numeric:tabular-nums;max-width:100%}
+.cifra .num{color:var(--enf)}
+.cifra .pre,.cifra .suf{font-size:.4em;letter-spacing:-.01em}
+/* contraste */
+.bloque{display:flex;flex-direction:column;gap:16px;width:100%}
+.t-antes{color:var(--texto-suave)}
+.tachar{background:linear-gradient(var(--acento),var(--acento)) no-repeat 0 58%/0% .09em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.marcador .tachar{background-image:linear-gradient(var(--texto),var(--texto))}
+/* oferta */
+.fila-oferta{display:flex;align-items:center;gap:52px;width:100%}
+.giro{transform:rotate(-6deg);flex:none}
+.sticker{width:420px;height:420px;border-radius:50%;background:var(--acento);color:var(--sobre-acento);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px;text-align:center}
+.sticker .precio{display:block;width:100%;white-space:nowrap;line-height:1}
+.sticker .bajo{font-size:42px;margin-top:12px;line-height:1.1}
+.antes{color:var(--texto-suave);white-space:nowrap}
+.nota{color:var(--texto-suave)}
+/* marca */
+.nombre{width:100%}
+.nombre .pal{display:inline-block;overflow:hidden;vertical-align:top;padding:.04em 0 .12em;margin:-.04em .22em -.12em 0}
+.nombre .pal-in{display:inline-block}
+.subraya{width:44%;height:16px;background:var(--acento);transform-origin:0 50%;transform:scaleX(0)}
+.logo{display:block;max-width:560px;max-height:320px;object-fit:contain}
+.lema{color:var(--texto-suave)}
+/* foto */
+.foto{width:100%;height:760px;border-radius:var(--radio);overflow:hidden;flex:none;background:var(--suave)}
+.foto img{width:100%;height:100%;object-fit:cover;display:block}
+/* cierre */
+.contactos{display:flex;flex-direction:column;gap:.5em;width:100%}
+.contacto{display:flex;align-items:center;gap:.42em}
+.contacto svg{width:1.05em;height:1.05em;flex:none;fill:none;stroke:var(--enf);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.marcador .contacto svg{stroke:var(--texto)}
+.contacto span{flex:1;min-width:0}
+.contacto .nw{white-space:nowrap}
+.boton{display:inline-block;background:var(--acento);color:var(--sobre-acento);border-radius:var(--radio);padding:.55em .85em;font-size:54px;line-height:1.1}
+/* interfaz (no sale en el video) */
+#linea-tiempo{flex:none;display:flex}
+#posicion{width:100%;accent-color:#d9dade;height:22px;cursor:pointer}
+#controles{flex:none;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;max-width:100%}
+#controles button{appearance:none;border:1px solid var(--ui-borde);background:var(--ui-panel);color:var(--ui-texto);font:inherit;font-weight:600;
+  padding:8px 14px;border-radius:10px;min-height:42px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background-color .15s,transform .12s}
+#controles button:active{transform:scale(.97)}
+#controles svg{width:16px;height:16px;fill:currentColor}
+@media (hover:hover) and (pointer:fine){#controles button:hover{background:var(--ui-panel2)}}
+#tiempo{font-variant-numeric:tabular-nums;color:var(--ui-tenue);min-width:96px;text-align:center}
+#avisos{display:none;flex:none;max-width:min(560px,100%);padding:10px 14px;border-radius:10px;background:#2a2410;color:#f5e6b0;box-shadow:0 0 0 1px #5c4d1c;font-size:13px;line-height:1.45}
+#avisos.hay{display:block}
+#avisos b{display:block;font-size:14px;margin-bottom:2px}
+#ayuda{display:none;position:fixed;left:16px;bottom:16px;z-index:20;max-width:320px;padding:14px 16px;border-radius:12px;background:rgba(20,21,24,.94);
+  color:var(--ui-texto);box-shadow:0 0 0 1px var(--ui-borde);font-size:14px;line-height:1.45}
+#ayuda b{display:block;margin-bottom:4px;font-size:15px}
+body.grabando,body.maximo{padding:0;background:#000}
+body.grabando #controles,body.grabando #linea-tiempo,body.grabando #avisos,body.maximo #linea-tiempo,body.maximo #avisos{display:none}
+body.grabando #marco,body.maximo #marco{border-radius:0;box-shadow:none}
+body.grabando{cursor:none}
+body.grabando.esperando{cursor:default}
+body.grabando.esperando #ayuda{display:block}
+body.exportar{display:block;padding:0;background:var(--fondo)}
+body.exportar #marco{position:absolute;left:0;top:0;border-radius:0;box-shadow:none;cursor:default}
+body.exportar #controles,body.exportar #linea-tiempo,body.exportar #ayuda,body.exportar #avisos{display:none}
+@media (max-width:520px){#controles button{padding:8px 11px;font-size:14px}#controles .opcional{display:none}}
+</style>
+</head>
+<body>
+<div id="marco"><div id="escenario" role="img" aria-label="Video animado">
+  <div id="fondo"><div class="forma circulo"></div><div class="forma barra"></div><div class="forma aro"></div></div>
+  <div id="firma"></div>
+  <div id="barrido"></div>
+</div></div>
+<div id="linea-tiempo"><input id="posicion" type="range" min="0" max="1000" step="1" value="0" aria-label="Posición del video"></div>
+<div id="controles" role="toolbar" aria-label="Controles del video">
+  <button id="b-play" type="button"></button>
+  <button id="b-inicio" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>Desde el inicio</button>
+  <span id="tiempo">0:00 / 0:00</span>
+  <button id="b-grabar" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/></svg>Modo grabar</button>
+  <button id="b-pantalla" type="button" class="opcional"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z"/></svg>Pantalla completa</button>
+</div>
+<div id="avisos" role="status"></div>
+<div id="ayuda" role="note"><b>Modo grabar</b>1. Empieza a grabar tu pantalla.<br>2. Toca el video o presiona la barra espaciadora: arranca en un segundo.<br>3. Cuando termine, detén la grabación y recorta el inicio y el final.<br>Esc para salir.</div>
+<script>
+/* =====================================================================
+   EDITA SOLO ESTE BLOQUE. Todo lo demás es el motor: no lo cambies.
+   Los campos de cada tipo de escena están en SKILL.md («Tipos de escena»).
+   *palabra*  = palabra resaltada con el color de acento.   \n = salto de línea.
+   ===================================================================== */
+const VIDEO = {
+  negocio: "Despacho Contable Ríos",    // negocio de ejemplo (ficticio)
+  estilo: "sobrio",
+  paleta: "claro",                      // blanco frío + azul: confianza, sin adornos
+  colores: null,
+  transicion: "mixta",
+  logo: null,
+  escenas: [
+    { tipo: "palabras", texto: "¿El SAT te quita el *sueño*?" },
+    { tipo: "frase", texto: "Tu contabilidad\n*en orden*", chico: "Personas físicas y pequeñas empresas" },
+    { tipo: "marca", lema: "Contadores en Mérida" },
+    { tipo: "lista", titulo: "Nos encargamos de", items: ["Declaraciones", "Facturación", "Nómina"] },
+    { tipo: "numero", a: 15, sufijo: " años", texto: "llevando contabilidades en Mérida" },
+    { tipo: "oferta", arriba: "Este mes", grande: "Primera asesoría *sin costo*", precio: "30 min", bajo: "en línea u oficina", nota: "Agenda antes del 30 de noviembre" },
+    { tipo: "cierre", titulo: "Agenda tu *cita*", contacto: [
+        { tipo: "whatsapp", texto: "999 123 4567" },
+        { tipo: "direccion", texto: "Col. García Ginerés, Mérida" },
+        { tipo: "instagram", texto: "@contableriosmerida" } ],
+      boton: "Escríbenos por WhatsApp" }
+  ]
+};
+/* ======================== FIN DEL BLOQUE EDITABLE ===================== */
+
+(() => {
+"use strict";
+const W = 1080, H = 1920;
+const PALETAS = {
+  cobalto: { fondo: "#112a6b", texto: "#f2f4f8", acento: "#ffc93c" },
+  bosque:  { fondo: "#0f3a2c", texto: "#eef3ee", acento: "#f2a93b" },
+  pizarra: { fondo: "#262c33", texto: "#f3f1ee", acento: "#e8673c" },
+  carbon:  { fondo: "#121315", texto: "#f4f4f3", acento: "#ff4b2b" },
+  claro:   { fondo: "#f4f6f9", texto: "#121826", acento: "#1f5bff" },
+  ciruela: { fondo: "#22121f", texto: "#fbeef4", acento: "#ff7aa8" },
+  menta:   { fondo: "#e9f4ef", texto: "#0f2a22", acento: "#0b8a5f" }
+};
+const ESTILOS = {
+  directo:   { titulo: ["Archivo Black", 400], texto: ["Archivo", 600], css: "family=Archivo+Black&family=Archivo:wght@500;600;700",
+               respaldo: '"Arial Black","Helvetica Neue",Arial,sans-serif', tracking: "-0.035em", interlineado: 1.0, mayus: "none" },
+  cercano:   { titulo: ["Bricolage Grotesque", 800], texto: ["Bricolage Grotesque", 600], css: "family=Bricolage+Grotesque:opsz,wght@12..96,500..800",
+               respaldo: '"Avenir Next","Segoe UI",system-ui,sans-serif', respaldoTexto: '"Avenir Next","Segoe UI",system-ui,sans-serif', tracking: "-0.035em", interlineado: 0.98, mayus: "none" },
+  confiable: { titulo: ["Manrope", 800], texto: ["Manrope", 600], css: "family=Manrope:wght@500;600;700;800",
+               respaldo: '"Helvetica Neue","Segoe UI",Arial,sans-serif', tracking: "-0.04em", interlineado: 1.02, mayus: "none" },
+  impacto:   { titulo: ["Anton", 400], texto: ["Archivo", 600], css: "family=Anton&family=Archivo:wght@500;600;700",
+               respaldo: 'Impact,"Arial Narrow Bold","Arial Black",sans-serif', tracking: "0", interlineado: 0.94, mayus: "uppercase" },
+  sobrio:    { titulo: ["Inter Tight", 800], texto: ["Inter Tight", 500], css: "family=Inter+Tight:wght@500;600;700;800",
+               respaldo: '"Helvetica Neue","Segoe UI",Arial,sans-serif', tracking: "-0.04em", interlineado: 1.0, mayus: "none" }
+};
+const RESPALDO_TEXTO = '"Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif';
+const TRANS = { ninguna: 0, corte: 0, empuje: 0.5, zoom: 0.5, barrido: 0.6 };
+const SIN_FIRMA = new Set(["marca", "cierre"]);
+const LIMITE_PALABRAS = { palabras: 9, frase: 12, marca: 9, numero: 10, foto: 9, lista: 12, contraste: 13, oferta: 15, cierre: 99 };
+const ICONOS = {
+  chat: '<path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.1z"/>',
+  telefono: '<path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  web: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  arroba: '<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>',
+  reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  correo: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+  flecha: '<path d="M5 12h14M13 6l6 6-6 6"/>'
+};
+const ICONO_DE = { whatsapp: "chat", telefono: "telefono", direccion: "pin", web: "web", instagram: "arroba", facebook: "arroba",
+  tiktok: "arroba", redes: "arroba", horario: "reloj", correo: "correo", otro: "flecha" };
+const SIN_CORTE = new Set(["whatsapp", "telefono", "instagram", "facebook", "tiktok", "redes", "correo", "web"]);
+const CHECK = '<svg viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M9 25l10 10L39 13"/></svg>';
+
+/* ---------- utilidades ---------- */
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const EASE = {
+  out: p => 1 - Math.pow(1 - p, 4),
+  inOut: p => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2),
+  back: p => { const c = 1.5; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); }
+};
+const avisos = [];
+function avisar(msg) { avisos.push(msg); console.warn("[video] " + msg); }
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function el(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function lineasRicas(texto) {
+  let enf = false;
+  return String(texto ?? "").split("\n").map(linea => {
+    let html = enf ? '<span class="enf">' : "";
+    linea.split("*").forEach((seg, j) => { if (j > 0) { enf = !enf; html += enf ? '<span class="enf">' : "</span>"; } html += esc(seg); });
+    return enf ? html + "</span>" : html;
+  });
+}
+const rico = t => lineasRicas(t).join("<br>");
+function palabrasDe(texto) {
+  const lineas = []; const estado = { enf: false };
+  String(texto ?? "").split("\n").forEach(linea => {
+    const words = []; let cur = null;
+    for (const ch of linea) {
+      if (ch === "*") { estado.enf = !estado.enf; continue; }
+      if (/\s/.test(ch)) { cur = null; continue; }
+      if (!cur) { cur = []; words.push(cur); }
+      const ult = cur[cur.length - 1];
+      if (ult && ult.enf === estado.enf) ult.t += ch; else cur.push({ t: ch, enf: estado.enf });
+    }
+    lineas.push(words);
+  });
+  return lineas;
+}
+const cuentaPalabras = s => String(s ?? "").replace(/\*/g, "").split(/\s+/).filter(Boolean).length;
+const hexValido = h => typeof h === "string" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(h.trim());
+function rgb(h) { h = h.trim().slice(1); if (h.length === 3) h = [...h].map(c => c + c).join(""); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+const aHex = c => "#" + c.map(v => Math.round(clamp(v, 0, 255)).toString(16).padStart(2, "0")).join("");
+const mezcla = (a, b, p) => { const A = rgb(a), B = rgb(b); return aHex(A.map((v, i) => lerp(v, B[i], p))); };
+function lum(h) { const c = rgb(h).map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+const contraste = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+
+/* ---------- colores y letra ---------- */
+const raiz = document.documentElement.style;
+const escenario = document.getElementById("escenario");
+let pal = PALETAS[VIDEO.paleta] || PALETAS.carbon;
+if (VIDEO.colores) {
+  const c = VIDEO.colores;
+  if (hexValido(c.fondo) && hexValido(c.texto) && hexValido(c.acento)) pal = { fondo: c.fondo.trim(), texto: c.texto.trim(), acento: c.acento.trim() };
+  else avisar("Los colores deben ir en formato #RRGGBB (fondo, texto y acento). Usé la paleta por defecto.");
+}
+if (!VIDEO.colores && VIDEO.paleta && !PALETAS[VIDEO.paleta]) avisar(`No conozco la paleta «${VIDEO.paleta}». Usé «carbon».`);
+const oscuro = lum(pal.fondo) < 0.4;
+const cTexto = contraste(pal.texto, pal.fondo);
+if (cTexto < 4.5) avisar(`El texto casi no se distingue del fondo (contraste ${cTexto.toFixed(1)}:1; mínimo 4.5:1).`);
+let mixSuave = 0.32, textoSuave = mezcla(pal.texto, pal.fondo, mixSuave);
+while (contraste(textoSuave, pal.fondo) < 4.5 && mixSuave > 0.02) { mixSuave -= 0.04; textoSuave = mezcla(pal.texto, pal.fondo, mixSuave); }
+const cAcento = contraste(pal.acento, pal.fondo);
+const marcador = cAcento < 3;
+if (marcador) escenario.classList.add("marcador");
+const sobreAcento = [pal.fondo, pal.texto, "#111111", "#ffffff"].reduce((m, c) => (contraste(c, pal.acento) > contraste(m, pal.acento) ? c : m));
+Object.entries({
+  "--fondo": pal.fondo, "--texto": pal.texto, "--acento": pal.acento, "--enf": marcador ? pal.texto : pal.acento,
+  "--sobre-acento": sobreAcento, "--texto-suave": textoSuave, "--linea": mezcla(pal.fondo, pal.texto, oscuro ? 0.2 : 0.16),
+  "--suave": mezcla(pal.fondo, pal.texto, oscuro ? 0.06 : 0.05), "--suave2": mezcla(mezcla(pal.fondo, pal.texto, oscuro ? 0.09 : 0.07), pal.acento, oscuro ? 0.1 : 0.06)
+}).forEach(([k, v]) => raiz.setProperty(k, v));
+
+const est = ESTILOS[VIDEO.estilo] || ESTILOS.directo;
+if (!ESTILOS[VIDEO.estilo]) avisar(`No conozco el estilo «${VIDEO.estilo}». Usé «directo».`);
+raiz.setProperty("--f-titulo", `"${est.titulo[0]}",${est.respaldo}`);
+raiz.setProperty("--w-titulo", String(est.titulo[1]));
+raiz.setProperty("--f-texto", `"${est.texto[0]}",${est.respaldoTexto || RESPALDO_TEXTO}`);
+raiz.setProperty("--w-texto", String(est.texto[1]));
+raiz.setProperty("--tracking", est.tracking);
+raiz.setProperty("--interlineado", String(est.interlineado));
+raiz.setProperty("--mayus", est.mayus || "none");
+const enlaceFuentes = el("link"); enlaceFuentes.rel = "stylesheet";
+enlaceFuentes.href = `https://fonts.googleapis.com/css2?${est.css}&display=swap`;
+document.head.appendChild(enlaceFuentes);
+document.title = `Video animado · ${VIDEO.negocio || "tu negocio"}`;
+escenario.setAttribute("aria-label", `Video animado de ${VIDEO.negocio || "tu negocio"}`);
+
+/* ---------- animación de entrada (función pura del tiempo) ---------- */
+function entra(e, { d = 0, dur = 0.55, x = 0, y = 0, yp = 0, s = 1, rot = 0, blur = 0, o = 0, curva = "out" } = {}) {
+  return lt => {
+    const p = clamp((lt - d) / dur), k = EASE[curva](p), q = 1 - k;
+    if (o !== 1) e.style.opacity = String(clamp(o + (1 - o) * EASE.out(p)));
+    const tr = [];
+    if (x || y) tr.push(`translate(${(x * q).toFixed(2)}px,${(y * q).toFixed(2)}px)`);
+    if (yp) tr.push(`translateY(${(yp * q).toFixed(2)}%)`);
+    if (s !== 1) tr.push(`scale(${(s + (1 - s) * k).toFixed(4)})`);
+    if (rot) tr.push(`rotate(${(rot * q).toFixed(2)}deg)`);
+    e.style.transform = tr.join(" ");
+    if (blur) e.style.filter = q > 0.002 ? `blur(${(blur * q).toFixed(2)}px)` : "none";
+  };
+}
+function anima(E, e, op) { E.pistas.push(entra(e, op)); E.listo = Math.max(E.listo, (op.d || 0) + (op.dur || 0.55)); }
+function pista(E, fin, f) { E.pistas.push(f); E.listo = Math.max(E.listo, fin); }
+const fit = (e, base) => { e.dataset.fit = String(base); e.style.fontSize = base + "px"; return e; };
+const tachado = (e, d, dur) => lt => { e.style.backgroundSize = `${(100 * EASE.inOut(clamp((lt - d) / dur))).toFixed(2)}% .09em`; };
+
+/* ---------- tipos de escena ---------- */
+const CONSTRUIR = {
+  palabras(sc, E) {
+    const b = fit(el("div", "titulo palabras"), sc.tam || 230);
+    const lineas = palabrasDe(sc.texto);
+    const hayEnf = lineas.some(l => l.some(w => w.some(p => p.enf)));
+    if (!hayEnf) { b.classList.add("sin-enf"); fit(b, sc.tam || 150); }
+    let i = 0;
+    lineas.forEach((words, li) => {
+      if (li) b.appendChild(el("br"));
+      words.forEach(partes => {
+        const grande = partes.some(p => p.enf && /[\p{L}\p{N}]/u.test(p.t));
+        const w = el("span", grande ? "w grande" : "w", partes.map(p => (p.enf ? `<span class="enf">${esc(p.t)}</span>` : esc(p.t))).join(""));
+        b.appendChild(w);
+        anima(E, w, { d: 0.08 + i * 0.1, dur: 0.5, y: 46, blur: 12, s: grande ? 0.92 : 1, curva: grande ? "back" : "out" });
+        i++;
+      });
+    });
+    E.cont.appendChild(b);
+    if (sc.chico) { const c = fit(el("p", "texto chico", rico(sc.chico)), 62); E.cont.appendChild(c); anima(E, c, { d: 0.2 + i * 0.1, dur: 0.5, y: 24 }); }
+  },
+  frase(sc, E) {
+    const b = fit(el("div", "titulo frase"), sc.tam || 196);
+    const lineas = lineasRicas(sc.texto);
+    lineas.forEach((html, i) => {
+      const l = el("span", "linea"), inn = el("span", "linea-in", html);
+      l.appendChild(inn); b.appendChild(l);
+      anima(E, inn, { d: 0.05 + i * 0.1, dur: 0.6, yp: 105, o: 1 });
+    });
+    E.cont.appendChild(b);
+    if (sc.chico) { const c = fit(el("p", "texto chico", rico(sc.chico)), 62); E.cont.appendChild(c); anima(E, c, { d: 0.32 + lineas.length * 0.1, dur: 0.5, y: 24 }); }
+  },
+  lista(sc, E) {
+    if (sc.titulo) { const t = el("p", "etiqueta", rico(sc.titulo)); E.cont.appendChild(t); anima(E, t, { d: 0, dur: 0.45, y: 20 }); }
+    const ul = fit(el("ul", "titulo items"), sc.tam || 132);
+    const items = (sc.items || []).slice(0, 5);
+    if ((sc.items || []).length > 5) avisar(`La escena ${E.i + 1} tiene más de 5 puntos: solo muestro 5.`);
+    items.forEach((it, i) => {
+      const li = el("li", "", `${CHECK}<span>${rico(it)}</span>`);
+      ul.appendChild(li);
+      anima(E, li, { d: 0.16 + i * 0.24, dur: 0.5, x: -56 });
+      const trazo = li.querySelector("path");
+      pista(E, 0.72 + i * 0.24, lt => { trazo.style.strokeDashoffset = (1 - EASE.out(clamp((lt - (0.3 + i * 0.24)) / 0.42))).toFixed(4); });
+    });
+    E.cont.appendChild(ul);
+  },
+  numero(sc, E) {
+    const de = Number(sc.de ?? 0), a = Number(sc.a);
+    if (!Number.isFinite(a)) avisar(`La escena ${E.i + 1} (número) necesita un valor «a» numérico.`);
+    const dec = sc.decimales ?? ((String(sc.a).split(".")[1] || "").length);
+    const fmt = new Intl.NumberFormat("es-MX", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    const c = fit(el("div", "titulo cifra"), sc.tam || 330);
+    c.innerHTML = `${sc.prefijo ? `<span class="pre">${esc(sc.prefijo)}</span>` : ""}<span class="num">${fmt.format(Number.isFinite(a) ? a : 0)}</span>${sc.sufijo ? `<span class="suf">${esc(sc.sufijo)}</span>` : ""}`;
+    const num = c.querySelector(".num");
+    E.cont.appendChild(c);
+    anima(E, c, { d: 0, dur: 0.5, y: 40 });
+    if (Number.isFinite(a)) pista(E, 1.15, lt => { num.textContent = fmt.format(de + (a - de) * EASE.out(clamp((lt - 0.1) / 1.0))); });
+    if (sc.texto) { const t = fit(el("p", "texto chico", rico(sc.texto)), 68); E.cont.appendChild(t); anima(E, t, { d: 0.42, dur: 0.5, y: 24 }); }
+  },
+  contraste(sc, E) {
+    const base = sc.tam || 112;
+    const b1 = el("div", "bloque"), b2 = el("div", "bloque");
+    const t1 = fit(el("p", "titulo t-antes", `<span class="tachar">${rico(sc.antes)}</span>`), base);
+    b1.append(el("p", "etiqueta", esc(sc.etiquetaAntes || "Antes")), t1);
+    const t2 = fit(el("p", "titulo", rico(sc.ahora)), Math.round(base * 1.22));
+    b2.append(el("p", "etiqueta acento", esc(sc.etiquetaAhora || "Ahora")), t2);
+    E.cont.append(b1, b2);
+    anima(E, b1, { d: 0, dur: 0.5, y: 30 });
+    pista(E, 0.85, tachado(t1.querySelector(".tachar"), 0.45, 0.4));
+    anima(E, b2, { d: 0.82, dur: 0.55, y: 50 });
+  },
+  oferta(sc, E) {
+    if (sc.arriba) { const a = el("p", "etiqueta acento", esc(sc.arriba)); E.cont.appendChild(a); anima(E, a, { d: 0, dur: 0.45, y: 20 }); }
+    if (sc.grande) { const g = fit(el("p", "titulo", rico(sc.grande)), sc.tam || 150); E.cont.appendChild(g); anima(E, g, { d: 0.08, dur: 0.55, y: 40 }); }
+    const fila = el("div", "fila-oferta");
+    if (sc.precio) {
+      const giro = el("div", "giro"), st = el("div", "sticker");
+      st.innerHTML = `<span class="titulo precio">${esc(sc.precio)}</span>${sc.bajo ? `<span class="texto bajo">${esc(sc.bajo)}</span>` : ""}`;
+      const precio = st.querySelector(".precio"); precio.dataset.solo = "140"; precio.style.fontSize = "140px";
+      giro.appendChild(st); fila.appendChild(giro);
+      anima(E, st, { d: 0.32, dur: 0.65, s: 0.86, rot: -14, curva: "back" });
+    }
+    if (sc.antes) {
+      const an = fit(el("p", "titulo antes", `<span class="tachar">${esc(sc.antes)}</span>`), 84);
+      fila.appendChild(an);
+      anima(E, an, { d: 0.5, dur: 0.45, x: 30 });
+      pista(E, 1.2, tachado(an.querySelector(".tachar"), 0.8, 0.35));
+    }
+    if (fila.children.length) E.cont.appendChild(fila);
+    if (sc.nota) { const n = fit(el("p", "texto nota", rico(sc.nota)), 52); E.cont.appendChild(n); anima(E, n, { d: 0.72, dur: 0.5, y: 20 }); }
+  },
+  marca(sc, E) {
+    let d = 0;
+    if (VIDEO.logo) { const img = el("img", "logo"); img.src = VIDEO.logo; img.alt = VIDEO.negocio || ""; E.cont.appendChild(img); anima(E, img, { d: 0, dur: 0.6, s: 0.94 }); d = 0.2; }
+    const n = fit(el("div", "titulo nombre"), sc.tam || 210);
+    const pals = String(sc.texto || VIDEO.negocio || "").split(/\s+/).filter(Boolean);
+    pals.forEach((p, i) => {
+      const caja = el("span", "pal"), inn = el("span", "pal-in", esc(p));
+      caja.appendChild(inn); n.appendChild(caja);
+      anima(E, inn, { d: d + 0.05 + i * 0.09, dur: 0.6, yp: 105, o: 1 });
+    });
+    const s = el("div", "subraya");
+    const t0 = d + 0.2 + pals.length * 0.09;
+    pista(E, t0 + 0.45, lt => { s.style.transform = `scaleX(${EASE.inOut(clamp((lt - t0) / 0.45)).toFixed(4)})`; });
+    E.cont.append(n, s);
+    if (sc.lema) { const l = fit(el("p", "texto lema", rico(sc.lema)), 66); E.cont.appendChild(l); anima(E, l, { d: t0 + 0.1, dur: 0.5, y: 20 }); }
+  },
+  foto(sc, E) {
+    const f = el("div", "foto"), img = el("img");
+    img.src = sc.src || ""; img.alt = sc.alt || ""; img.decoding = "sync";
+    img.addEventListener("error", () => avisar(`No pude cargar la foto de la escena ${E.i + 1}: ${sc.src}`));
+    f.appendChild(img); E.cont.appendChild(f);
+    anima(E, f, { d: 0, dur: 0.55, y: 40, s: 0.97 });
+    E.pistas.push(lt => { img.style.transform = `scale(${(1.1 - 0.1 * clamp(lt / Math.max(1, E.dur))).toFixed(4)})`; });
+    if (sc.texto) { const t = fit(el("p", "titulo", rico(sc.texto)), sc.tam || 100); E.cont.appendChild(t); anima(E, t, { d: 0.25, dur: 0.55, y: 30 }); }
+  },
+  cierre(sc, E) {
+    const t = fit(el("div", "titulo", rico(sc.titulo || "Escríbenos hoy")), sc.tam || 176);
+    E.cont.appendChild(t); anima(E, t, { d: 0, dur: 0.55, y: 40 });
+    const contactos = (sc.contacto || []).slice(0, 4);
+    if (contactos.length) {
+      const lista = fit(el("div", "contactos texto"), 70);
+      contactos.forEach((c, i) => {
+        const tipo = ICONO_DE[c.tipo] ? c.tipo : "otro";
+        const fila = el("div", "contacto", `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONOS[ICONO_DE[tipo]]}</svg><span class="${SIN_CORTE.has(tipo) ? "nw" : ""}">${esc(c.texto)}</span>`);
+        lista.appendChild(fila);
+        anima(E, fila, { d: 0.28 + i * 0.13, dur: 0.5, x: -40 });
+      });
+      E.cont.appendChild(lista);
+    } else avisar("El cierre no tiene contacto: agrega al menos WhatsApp, teléfono o dirección.");
+    if (sc.boton) { const b = fit(el("div", "boton texto", esc(sc.boton)), 58); E.cont.appendChild(b); anima(E, b, { d: 0.42 + contactos.length * 0.13, dur: 0.55, s: 0.94, y: 20, curva: "back" }); }
+  }
+};
+
+function durPorDefecto(sc) {
+  switch (sc.tipo) {
+    case "cierre": return 3.6;
+    case "lista": return clamp(1.0 + (sc.items || []).length * 0.42, 1.8, 3.0);
+    case "numero": return 2.0;
+    case "oferta": return 2.8;
+    case "marca": return 1.8;
+    case "contraste": return 2.4;
+    case "foto": return 2.2;
+    default: return clamp(0.9 + cuentaPalabras(sc.texto) * 0.2 + cuentaPalabras(sc.chico) * 0.12, 1.3, 2.4);
+  }
+}
+function textoDeEscena(sc) { return [sc.texto, sc.chico, sc.titulo, sc.antes, sc.ahora, sc.arriba, sc.grande, sc.nota, sc.lema, ...(sc.items || [])].filter(Boolean).join(" "); }
+
+/* ---------- construir la línea de tiempo ---------- */
+const ESC = [];
+let barridos = 0;
+const PATRON = ["empuje", "corte", "empuje", "zoom"];
+(VIDEO.escenas || []).forEach((sc, idx) => {
+  if (!CONSTRUIR[sc.tipo]) { avisar(`La escena número ${idx + 1} de VIDEO.escenas usa el tipo «${sc.tipo}», que no existe. La salté.`); return; }
+  const i = ESC.length;
+  const nodo = el("section", "escena"), cont = el("div", "contenido");
+  nodo.appendChild(cont);
+  const E = { i, sc, nodo, cont, pistas: [], listo: 0, dur: Number(sc.dur) > 0 ? Number(sc.dur) : durPorDefecto(sc) };
+  let entrada = sc.entrada;
+  if (!TRANS.hasOwnProperty(entrada)) {
+    if (i === 0) entrada = "ninguna";
+    else if (VIDEO.transicion && VIDEO.transicion !== "mixta" && TRANS.hasOwnProperty(VIDEO.transicion)) entrada = VIDEO.transicion;
+    else if ((sc.tipo === "oferta" || sc.tipo === "cierre") && barridos < 2) entrada = "barrido";
+    else if (sc.tipo === "marca") entrada = "zoom";
+    else entrada = PATRON[i % PATRON.length];
+  }
+  if (i === 0) entrada = "ninguna";
+  if (entrada === "barrido") barridos++;
+  E.entrada = entrada;
+  try { CONSTRUIR[sc.tipo](sc, E); } catch (err) { avisar(`Escena ${idx + 1} (${sc.tipo}): ${err.message}`); }
+  const tope = LIMITE_PALABRAS[sc.tipo] ?? 10, nPal = cuentaPalabras(textoDeEscena(sc));
+  if (nPal > tope) avisar(`La escena ${i + 1} (${sc.tipo}) tiene ${nPal} palabras; el máximo para que se alcance a leer es ${tope}.`);
+  escenario.insertBefore(nodo, document.getElementById("firma"));
+  ESC.push(E);
+});
+if (!ESC.length) avisar("No hay escenas: agrega al menos una en VIDEO.escenas.");
+let reloj = 0;
+ESC.forEach((E, i) => {
+  E.ini = reloj; E.fin = reloj + E.dur; reloj = E.fin;
+  const sig = ESC[i + 1];
+  E.tOut = sig ? TRANS[sig.entrada] : 0;
+  E.heroe = Math.min(E.ini + E.listo + 0.05, E.fin - E.tOut / 2 - 0.02);
+  if (E.listo > E.dur - E.tOut / 2 + 0.01) avisar(`La escena ${i + 1} no alcanza a terminar de aparecer: dale al menos ${(E.listo + E.tOut / 2 + 0.3).toFixed(1)} s.`);
+});
+const DURACION = Math.max(0.5, reloj);
+if (DURACION < 12 || DURACION > 32) avisar(`El video dura ${DURACION.toFixed(1)} s; lo recomendable es de 15 a 30 s.`);
+const firma = document.getElementById("firma");
+firma.textContent = VIDEO.firma === false ? "" : (VIDEO.negocio || "");
+
+/* ---------- ajustar el texto al espacio (nunca se sale ni se corta) ---------- */
+function ajustarEscena(E) {
+  const nodo = E.nodo, antes = nodo.style.display;
+  nodo.style.display = "block"; nodo.style.visibility = "hidden"; nodo.classList.add("midiendo");
+  // primero lo que se ajusta solo (el precio dentro del círculo), luego la escena completa
+  nodo.querySelectorAll("[data-solo]").forEach(e => {
+    let s = Number(e.dataset.solo); e.style.fontSize = s + "px";
+    while (e.scrollWidth > e.clientWidth + 1 && s > 44) { s *= 0.95; e.style.fontSize = s.toFixed(1) + "px"; }
+  });
+  const fits = [...nodo.querySelectorAll("[data-fit]")];
+  const aplicar = k => fits.forEach(e => { e.style.fontSize = (Number(e.dataset.fit) * k).toFixed(2) + "px"; });
+  const lineas = [...nodo.querySelectorAll(".linea")];
+  const cabe = () => E.cont.scrollHeight <= E.cont.clientHeight + 1 && E.cont.scrollWidth <= E.cont.clientWidth + 1 && fits.every(e => e.scrollWidth <= e.clientWidth + 1) && lineas.every(e => e.scrollWidth <= e.clientWidth + 1);
+  aplicar(1); E.k = 1;
+  if (!cabe()) {
+    let lo = 0.25, hi = 1;
+    for (let n = 0; n < 14; n++) { const m = (lo + hi) / 2; aplicar(m); if (cabe()) lo = m; else hi = m; }
+    aplicar(lo); E.k = lo;
+    if (!cabe()) avisar(`La escena ${E.i + 1} tiene demasiado texto para la pantalla: acórtalo.`);
+  }
+  nodo.classList.remove("midiendo"); nodo.style.display = antes; nodo.style.visibility = "";
+}
+const ajustarTodo = () => ESC.forEach(ajustarEscena);
+
+/* ---------- pintar un instante (determinista: mismo t = mismo cuadro) ---------- */
+const POSES = {
+  circulo: [[860, 430, 1], [200, 1560, 0.9], [980, 1480, 1.12], [140, 330, 0.82], [720, 1760, 1], [1010, 860, 0.95]],
+  barra: [[540, 1500, -14], [540, 400, 9], [300, 1180, -22], [800, 640, 16], [540, 1660, -7], [540, 290, 5]],
+  aro: [[190, 560], [880, 1290], [760, 330], [250, 1460], [900, 1080], [150, 900]]
+};
+const formas = { circulo: escenario.querySelector(".circulo"), barra: escenario.querySelector(".barra"), aro: escenario.querySelector(".aro") };
+const barrido = document.getElementById("barrido");
+const pose = (lista, j) => lista[((j % lista.length) + lista.length) % lista.length];
+const mezclaPose = (a, b, p) => a.map((v, i) => lerp(v, b[i], p));
+function estiloEntrada(tipo, p) {
+  if (tipo === "barrido") return [p >= 0.5, 1, ""];
+  const q = clamp((p - 0.4) / 0.6);
+  if (tipo === "zoom") return [true, EASE.out(q), `scale(${(0.94 + 0.06 * EASE.out(q)).toFixed(4)})`];
+  return [true, EASE.out(q), `translateY(${(110 * (1 - EASE.out(q))).toFixed(2)}px)`];
+}
+function estiloSalida(tipo, p) {
+  if (tipo === "barrido") return [p < 0.5, 1, ""];
+  const q = clamp(p / 0.6);
+  if (tipo === "zoom") return [q < 1, 1 - EASE.inOut(q), `scale(${(1 + 0.07 * EASE.inOut(q)).toFixed(4)})`];
+  return [q < 1, 1 - EASE.inOut(q), `translateY(${(-110 * EASE.inOut(q)).toFixed(2)}px)`];
+}
+function pintar(t) {
+  let pesoFirma = 0, yBarrido = H;
+  ESC.forEach((E, i) => {
+    const tIn = i ? TRANS[E.entrada] : 0, sig = ESC[i + 1];
+    const desde = i ? E.ini - tIn / 2 : -Infinity, hasta = sig ? E.fin + E.tOut / 2 : Infinity;
+    let vis = t >= desde && t < hasta, op = 1, tr = "";
+    if (vis && tIn && t < E.ini + tIn / 2) [vis, op, tr] = estiloEntrada(E.entrada, (t - desde) / tIn);
+    if (vis && E.tOut && t >= E.fin - E.tOut / 2) [vis, op, tr] = estiloSalida(sig.entrada, (t - (E.fin - E.tOut / 2)) / E.tOut);
+    if (E.entrada === "barrido" && Math.abs(t - E.ini) < tIn / 2) {
+      const p = (t - (E.ini - tIn / 2)) / tIn;
+      yBarrido = p < 0.5 ? H * (1 - EASE.inOut(p * 2)) : -H * EASE.inOut((p - 0.5) * 2);
+    }
+    E.nodo.style.display = vis ? "block" : "none";
+    if (!vis) return;
+    E.nodo.style.opacity = String(op);
+    E.nodo.style.transform = tr;
+    const lt = t - E.ini;
+    for (const f of E.pistas) f(lt);
+    if (!SIN_FIRMA.has(E.sc.tipo)) pesoFirma += op;
+  });
+  barrido.style.transform = `translateY(${yBarrido.toFixed(1)}px)`;
+  firma.style.opacity = String(clamp(pesoFirma));
+  // formas del fondo: cambian de lugar en cada escena y se mueven lento
+  let k = 0;
+  for (let i = 0; i < ESC.length; i++) if (t >= ESC[i].ini - 0.3) k = i;
+  const p = k && ESC[k] ? EASE.inOut(clamp((t - (ESC[k].ini - 0.3)) / 0.6)) : 1;
+  const [cx, cy, cs] = mezclaPose(pose(POSES.circulo, k - 1), pose(POSES.circulo, k), p);
+  const [bx, by, br] = mezclaPose(pose(POSES.barra, k - 1), pose(POSES.barra, k), p);
+  const [ax, ay] = mezclaPose(pose(POSES.aro, k - 1), pose(POSES.aro, k), p);
+  formas.circulo.style.transform = `translate(${(cx - 625 + 6 * t).toFixed(1)}px,${(cy - 625 - 5 * t).toFixed(1)}px) scale(${cs.toFixed(4)})`;
+  formas.barra.style.transform = `translate(${(bx - 850).toFixed(1)}px,${(by - 75).toFixed(1)}px) rotate(${(br + 0.35 * t).toFixed(3)}deg)`;
+  formas.aro.style.transform = `translate(${(ax - 280 - 4 * t).toFixed(1)}px,${(ay - 280 + 3 * t).toFixed(1)}px)`;
+}
+
+/* ---------- reproductor ---------- */
+const qs = new URLSearchParams(location.search);
+const EXPORTAR = qs.has("exportar");
+const marco = document.getElementById("marco"), controles = document.getElementById("controles");
+const lineaTiempo = document.getElementById("linea-tiempo"), posicion = document.getElementById("posicion");
+const bPlay = document.getElementById("b-play"), tiempo = document.getElementById("tiempo");
+const cajaAvisos = document.getElementById("avisos");
+function mostrarAvisos() {
+  if (EXPORTAR || !avisos.length) return;
+  cajaAvisos.innerHTML = `<b>Avisos para corregir (cópialos y pégaselos a Claude):</b>${avisos.map(a => "• " + esc(a)).join("<br>")}`;
+  cajaAvisos.classList.add("hay");
+}
+let tActual = 0, reproduciendo = false, base = 0, raf = 0;
+const ICO_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>';
+const ICO_PAUSA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>';
+const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+function actualizarUI() {
+  if (EXPORTAR) return;
+  bPlay.innerHTML = reproduciendo ? `${ICO_PAUSA}Pausa` : `${ICO_PLAY}${tActual >= DURACION ? "Ver de nuevo" : "Reproducir"}`;
+  tiempo.textContent = `${mmss(tActual)} / ${mmss(DURACION)}`;
+  posicion.value = String(Math.round((tActual / DURACION) * 1000));
+}
+function cuadro(ahora) {
+  if (!reproduciendo) return;
+  tActual = (ahora - base) / 1000;
+  if (tActual >= DURACION) { tActual = DURACION; reproduciendo = false; }
+  pintar(tActual); actualizarUI();
+  if (reproduciendo) raf = requestAnimationFrame(cuadro);
+}
+function play() { if (tActual >= DURACION) tActual = 0; base = performance.now() - tActual * 1000; reproduciendo = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(cuadro); actualizarUI(); }
+function pausa() { reproduciendo = false; cancelAnimationFrame(raf); actualizarUI(); }
+function seek(t) { pausa(); tActual = clamp(Number(t) || 0, 0, DURACION); pintar(tActual); actualizarUI(); }
+function alternar() { reproduciendo ? pausa() : play(); }
+
+function encajar() {
+  const lleno = document.body.classList.contains("grabando") || document.body.classList.contains("maximo") || !!document.fullscreenElement;
+  let k = 1;
+  if (!EXPORTAR) {
+    const altoUI = lleno ? 0 : controles.offsetHeight + lineaTiempo.offsetHeight + cajaAvisos.offsetHeight + (cajaAvisos.offsetHeight ? 50 : 40);
+    const aw = innerWidth - (lleno ? 0 : 20), ah = innerHeight - altoUI;
+    k = Math.max(0.05, Math.min(aw / W, ah / H));
+  }
+  marco.style.width = (W * k).toFixed(1) + "px"; marco.style.height = (H * k).toFixed(1) + "px";
+  escenario.style.transform = `scale(${k})`;
+  lineaTiempo.style.width = Math.max(240, W * k).toFixed(0) + "px";
+}
+async function pantallaCompleta(encender) {
+  const raizDoc = document.documentElement;
+  try {
+    if (encender && !document.fullscreenElement) { if (!raizDoc.requestFullscreen) throw new Error("sin pantalla completa"); await raizDoc.requestFullscreen(); }
+    else if (!encender && document.fullscreenElement) await document.exitFullscreen();
+  } catch (e) { document.body.classList.toggle("maximo", encender); }
+  if (!encender) document.body.classList.remove("maximo");
+  encajar();
+}
+function entrarGrabar() { document.body.classList.add("grabando", "esperando"); seek(0); pantallaCompleta(true); }
+function arrancarGrabacion() { document.body.classList.remove("esperando"); setTimeout(play, 1000); }
+function salirGrabar() { document.body.classList.remove("grabando", "esperando"); pausa(); pantallaCompleta(false); }
+
+if (EXPORTAR) document.body.classList.add("exportar");
+else {
+  bPlay.addEventListener("click", alternar);
+  document.getElementById("b-inicio").addEventListener("click", () => { seek(0); play(); });
+  document.getElementById("b-grabar").addEventListener("click", entrarGrabar);
+  document.getElementById("b-pantalla").addEventListener("click", () => pantallaCompleta(!(document.fullscreenElement || document.body.classList.contains("maximo"))));
+  posicion.addEventListener("input", () => seek((Number(posicion.value) / 1000) * DURACION));
+  marco.addEventListener("click", () => {
+    if (document.body.classList.contains("esperando")) arrancarGrabacion();
+    else if (!document.body.classList.contains("grabando")) alternar();
+  });
+  addEventListener("keydown", e => {
+    const enControl = e.target.closest && e.target.closest("button, input");
+    if (e.key === "Escape" && document.body.classList.contains("grabando")) { salirGrabar(); return; }
+    if (e.key === " " && !enControl) { e.preventDefault(); document.body.classList.contains("esperando") ? arrancarGrabacion() : alternar(); }
+    else if (enControl) return;
+    else if (e.key === "r" || e.key === "R") { seek(0); play(); }
+    else if (e.key === "g" || e.key === "G") entrarGrabar();
+    else if (e.key === "f" || e.key === "F") pantallaCompleta(!document.fullscreenElement);
+  });
+  document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && document.body.classList.contains("grabando")) salirGrabar(); encajar(); });
+  addEventListener("resize", encajar);
+}
+
+/* ---------- contrato para revisar y exportar a MP4 (scripts/) ---------- */
+const info = {
+  duracion: DURACION, avisos, fuentes: "cargando",
+  contraste: { texto: +cTexto.toFixed(2), acento: +cAcento.toFixed(2), resaltadoConMarcador: marcador },
+  escenas: ESC.map(E => ({ n: E.i + 1, tipo: E.sc.tipo, entrada: E.entrada, inicio: +E.ini.toFixed(3), fin: +E.fin.toFixed(3), heroe: +E.heroe.toFixed(3) }))
+};
+window.VIDEO_INFO = info;
+window.DURACION = DURACION;
+window.seek = seek;
+ajustarTodo();
+mostrarAvisos();
+encajar();
+seek(qs.has("t") ? Number(qs.get("t")) : 0);
+const espera = (ms, valor) => new Promise(r => setTimeout(() => r(valor), ms));
+window.LISTO = (async () => {
+  await Promise.race([new Promise(r => { enlaceFuentes.onload = r; enlaceFuentes.onerror = r; }), espera(4000)]);
+  const pedidas = [`${est.titulo[1]} 100px "${est.titulo[0]}"`, `${est.texto[1]} 100px "${est.texto[0]}"`, `700 100px "${est.texto[0]}"`];
+  await Promise.race([Promise.all(pedidas.map(f => document.fonts.load(f).catch(() => []))), espera(5000)]);
+  const cargada = fam => [...document.fonts].some(f => f.family.replace(/["']/g, "") === fam && f.status === "loaded");
+  info.fuentes = cargada(est.titulo[0]) && cargada(est.texto[0]) ? "ok" : "respaldo";
+  if (info.fuentes !== "ok") console.info("[video] No cargó la tipografía de Google Fonts: se ve con la letra de respaldo del sistema.");
+  ajustarTodo(); mostrarAvisos(); encajar(); pintar(tActual);
+  return true;
+})();
+if (!EXPORTAR && !qs.has("t")) window.LISTO.then(() => { if (!reproduciendo && tActual === 0) play(); });
+})();
+</script>
+</body>
+</html>
