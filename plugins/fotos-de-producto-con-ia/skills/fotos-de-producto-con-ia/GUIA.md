@@ -93,6 +93,10 @@ entrega la imagen. O pídeselo a Claude: «Ayúdame a crear mi GPT de fotos de p
 3. Elige **Fotos** (o **Galería**) y selecciona la foto de tu producto.
 4. Deja el dedo sobre la caja de texto, toca **Pegar** y envía.
 
+Si no te sale **Pegar**: escribe una letra en la caja, deja el dedo sobre ella, toca **Pegar** y borra la letra. Si
+aun así no sale, abre chatgpt.com o gemini.google.com en el navegador de tu celular, o dile a Claude «no puedo
+pegar» y te da una versión corta para escribir a mano.
+
 **En la computadora:** arrastra la foto a la ventana del chat (o usa el **+**), pega el texto con Ctrl+V (o
 Cmd+V en Mac) y presiona Enter.
 

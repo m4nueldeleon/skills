@@ -12,7 +12,8 @@ tu cuenta con tu correo.
 
 ## Qué hace
 
-Al abrirla te pregunta «¿Qué necesitas hoy?» y te da este menú:
+Si le dices de entrada qué necesitas («prepárame la ficha y el guion para mi cita del jueves»), va directo a eso.
+Si no, te pregunta «¿Qué necesitas hoy?» y te da este menú:
 
 1. **FICHA**: antes de una llamada o cita, ordena lo que se sabe del cliente, lo que falta saber y las
    preguntas que le vas a hacer.

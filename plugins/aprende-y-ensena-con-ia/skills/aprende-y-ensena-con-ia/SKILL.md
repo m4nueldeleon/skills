@@ -211,6 +211,9 @@ lo pida. Nada de «implementa una estrategia»: verbos que se pueden hacer («es
      material da un respaldo («si no está el gerente, llama a la encargada»), inclúyelo.
    - Si para contestar hace falta algo que el material no dice, o el material se contradice, no
      escojas tú: no hagas esa pregunta y anótalo en `dudas`.
+   - Revisa también qué le pasa seguido a ese puesto y el material no dice cómo resolverlo (por
+     ejemplo: se acaba un platillo, falla la terminal, no está el gerente). Anota hasta 3 en
+     `dudas`, como pregunta para el dueño, sin inventar la respuesta ni hacer preguntas sobre eso.
    - Las opciones incorrectas son errores que de verdad cometería alguien nuevo, nunca chistosas, y
      no pueden ser algo que en la vida real también sería correcto. La correcta no es siempre la más
      larga: iguala los largos. Reparte la correcta entre a, b, c y d.
@@ -221,13 +224,16 @@ lo pida. Nada de «implementa una estrategia»: verbos que se pueden hacer («es
    procedimientos de [tema] con el responsable.»
 7. Arma la página con el tipo `examen-del-equipo`. Las `dudas` solo se ven en pantalla, como
    borrador para el dueño: no se imprimen.
-8. En el chat, después de la página, máximo 8 renglones:
+8. En el chat, después de la página, máximo 10 renglones:
    - Lo que quitaste por privacidad (regla 8), si hubo.
-   - Las dudas, si hay: «Resuelve estas dudas y te lo rearmo sin el recuadro. Compártelo hasta
-     entonces.»
+   - Las dudas, si hay: «Resuelve estas dudas y te lo rearmo sin el recuadro. No se lo compartas a
+     tu equipo antes de eso.»
    - Cómo usarlo esta semana: día 1 entrega las tarjetas; días 2 a 6, cinco minutos al empezar el
      turno; día 7, el examen **impreso, sin la hoja de respuestas** y sin manual; el tema donde
      fallaron alguna pregunta se repasa y se repite en 2 días.
+   - Cómo imprimir cada parte: todo va en el mismo archivo. En la pestaña «Versión para imprimir»
+     salen primero las tarjetas, luego el examen y al final la hoja de respuestas. El día 1 imprime
+     solo las hojas de tarjetas; el día 7, quita la palomita de «Incluir la hoja de respuestas».
    - Compartir: si lo manda por enlace o archivo, sirve para practicar tarjetas y examen, pero no
      es un examen de verdad: al calificar se ven las respuestas y no se guarda ningún resultado. Y
      quien lo tenga puede ver el contenido del manual: si es confidencial, mejor impreso.
@@ -246,7 +252,7 @@ archivo en minúsculas, sin espacios ni acentos: `mapa-habitos-atomicos.html`, `
 2. Si reporta errores, corrige los datos y vuelve a correrlo; los avisos también conviene atenderlos.
 3. En la app, guarda la página donde tu entorno pone los archivos para descargar, para que el
    usuario reciba el `.html`. En Claude Code, déjala en su carpeta y dile la ruta.
-4. En el chat, máximo 3 renglones (en /examen-del-equipo, los 8 del paso 8): de dónde salió (la
+4. En el chat, máximo 3 renglones (en /examen-del-equipo, los 10 del paso 8): de dónde salió (la
    fuente), cómo abrirla e imprimirla, y el siguiente código. Para abrir e imprimir: «Descarga el
    archivo y ábrelo en tu navegador. Para imprimir: botón Imprimir de la página, o Ctrl + P (Cmd + P
    en Mac). En el celular: en iPhone, botón Compartir → Imprimir; en Android, menú ⋮ → Compartir →

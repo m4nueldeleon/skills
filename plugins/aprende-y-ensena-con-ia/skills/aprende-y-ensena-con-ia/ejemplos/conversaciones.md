@@ -190,7 +190,7 @@ Después de entregar `examen-del-equipo-restaurante.html` (hecho con el manual d
 >   o se comparte.
 > - Tu manual no deja claras dos cosas: si en grupos de 8 o más se sugiere propina (en «Cobro» dice
 >   que no y en «Grupos» que sí) y qué hacer si falla la terminal. Resuelve estas dudas y te lo
->   rearmo sin el recuadro. Compártelo hasta entonces.
+>   rearmo sin el recuadro. No se lo compartas a tu equipo antes de eso.
 > - Esta semana: día 1 entrega las tarjetas; días 2 a 6, cinco minutos al empezar el turno; día 7,
 >   el examen impreso, sin la hoja de respuestas. El tema donde fallen alguna pregunta se repasa y
 >   se repite en 2 días.

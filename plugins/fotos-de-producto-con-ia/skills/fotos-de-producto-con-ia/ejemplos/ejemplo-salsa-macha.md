@@ -12,7 +12,7 @@ mismos prompts en los dos motores que usan ChatGPT y Gemini.
 ## La conversación
 
 **Persona:**
-> Hola, vendo salsa macha en Guadalajara y quiero fotos para Instagram que no se vean hechas en mi cocina.
+> Hola, vendo salsa macha de chile, ajonjolí y cacahuate en Guadalajara y quiero fotos para Instagram que no se vean hechas en mi cocina.
 > *(adjunta `imagenes/00-foto-de-celular.jpg`)*
 
 **Claude:**

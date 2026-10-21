@@ -45,7 +45,10 @@ chat), las listas de este documento bastan: sigue los mismos pasos y revisa a ma
 5. Solo si hace falta: «¿Hay 2 o 3 páginas o lugares, aunque no sean de tu giro, cuyo estilo te guste? ¿Qué te
    gusta de cada uno?»
 
-Si en la conversación ya está todo, salta directo al Paso 2.
+Si en la conversación ya está todo, salta directo al Paso 2. Si el primer mensaje trae solo una parte (por
+ejemplo, negocio, WhatsApp y precios), no repitas lo que ya dio: haz, una por mensaje, solo las preguntas de esta
+lista que falten (casi siempre dirección y horario, reseñas, y colores o fotos) antes de escribir código. Si
+contesta «no sé» o «tú decide», decide tú o márcalo `[PENDIENTE]` y sigue.
 
 ## Paso 2 · Dirección de arte, antes de escribir código
 
@@ -73,8 +76,9 @@ No escribas una sola línea de HTML sin esta ficha. Detalle y menús de opciones
 8. **Prueba de la competencia de enfrente.** Si esta misma página le sirviera tal cual a otro negocio del mismo
    giro, todavía es plantilla: cambia lo genérico y anota qué cambiaste.
 
-Muéstrale la ficha así, corta, y pregunta una sola cosa: «¿Le seguimos así o cambias algo?». Si la persona pidió
-«hazla directo», no esperes: entrega la ficha junto con la página.
+Muéstrale la ficha así, corta, pregunta una sola cosa: «¿Le seguimos así o cambias algo?», y espera su respuesta
+antes de escribir código. «Hazme la página» no cuenta como «hazla directo». Solo si la persona dijo algo como
+«hazla ya», «no me preguntes» o «tú decide todo», no esperes: entrega la ficha junto con la página.
 
 ```
 Dirección de arte · [Negocio], [ciudad]
@@ -155,7 +159,9 @@ accesibilidad, entradas sobrias, barra de contacto). Todo lo visual sale de la f
 - **En la app de Claude** (web, escritorio o celular): crea la página como artifact HTML para que la vea al lado del
   chat. Si tienes ejecución de código, guárdala también como archivo `pagina-<negocio>.html` para descargar. Dile
   cómo bajarla: menú del artifact → Descargar. Si en la vista previa alguna letra o foto externa no carga, aclara
-  que en su navegador sí cargará.
+  que en su navegador sí cargará. Si no puedes crear el artifact, entrega solo el archivo y di cómo abrirlo: en
+  computadora, doble clic; en el celular, tocarlo en el chat, descargarlo y abrirlo con el navegador; si el
+  teléfono no lo abre, que lo vea en una computadora o en la dirección de prueba del Paso 4.
 - **En Claude Code:** crea la carpeta `pagina-<negocio>/` con `index.html` y `fotos/`. Reduce copias de las fotos
   con lo que ya haya en la computadora (en Mac: `sips -Z 1200 -s format jpeg -s formatOptions 80 original.jpg
   --out fotos/fachada.jpg`); no instales paquetes sin preguntar. Ábrela con `open index.html` (Mac),
@@ -168,8 +174,14 @@ accesibilidad, entradas sobrias, barra de contacto). Todo lo visual sale de la f
    de `python3`; el script está en la carpeta de esta skill, solo usa Python estándar y no se conecta a internet).
    Arregla lo ❌ y lo ⚠️ que dependa de ti y vuelve a correrlo. **Los `[PENDIENTE]` y los enlaces al aviso o a los
    términos no se arreglan inventando:** van a «Lo que tienes que hacer tú». Si no puedes ejecutar código, revisa
-   a mano la misma lista.
+   a mano la misma lista. Antes de llenar la tabla, compara cada frase de la página con lo que escribió la persona:
+   las condiciones («por encargo», «a domicilio», «con anticipo», «para llevar») también son datos. Si no las dijo,
+   quítalas o márcalas `[PENDIENTE]`.
 2. Revisa lo que el script no ve: mira la página a 390 px de ancho (o pídele a la persona que la vea en su celular).
+   En la app de Claude no abras capturas con el editor de archivos: llegan como texto (letras y números sin fin),
+   no las ves y se quedan en toda la conversación, que se vuelve lenta y cara. Ahí mide con código (ancho de la
+   página contra el de la pantalla, elementos que se salen, alto de los botones) y pídele a la persona que la revise
+   en su celular.
 3. Entrega la revisión en esta tabla, con ✅ listo · ⚠️ revisar · ❌ falta:
 
 | Qué revisé | Cómo está | Qué falta |
@@ -179,8 +191,12 @@ accesibilidad, entradas sobrias, barra de contacto). Todo lo visual sale de la f
 | Textos reales: sin relleno, sin datos inventados, sin `[PENDIENTE]` olvidados | | |
 | Botones de contacto: WhatsApp y teléfono funcionan, «Cómo llegar», visibles sin buscar | | |
 | Sin «look de IA»: se contaron los rasgos de la lista | | |
-| Movimiento: con propósito, respeta «reducir movimiento», se ve sin JavaScript | | |
+| Movimiento: con propósito, respeta «reducir movimiento», se ve aunque falle el programa de la página | | |
 | Accesibilidad básica: textos alternativos, un solo título principal, contraste | | |
+
+Llena «Cómo está» y «Qué falta» como lo vive la persona, sin px, KB, «JavaScript» ni proporciones de contraste:
+«se probó en celulares chicos y grandes y nada se sale», «botones del tamaño de un dedo», «pesa menos que una foto
+de WhatsApp», «se lee bien, también con poca luz». Las medidas exactas son para ti.
 
 Termina con «Lo que tienes que hacer tú» (fotos, datos pendientes, revisión legal) y ofrece el Paso 5.
 

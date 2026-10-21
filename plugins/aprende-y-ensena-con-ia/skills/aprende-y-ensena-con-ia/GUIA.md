@@ -136,8 +136,9 @@ dictarlo con el micrófono o mandarle fotos de tus hojas). Primero te devuelve e
 para que lo revises; con tu visto bueno arma el examen.
 
 Recibes tarjetas para repasar, un examen de 10 preguntas y la hoja de respuestas con la
-calificación por tema. Si tu manual se contradice o le falta algo, Claude te lo dice antes, en vez
-de inventar la respuesta, y te lo rearma cuando lo resuelvas.
+calificación por tema. Si tu manual se contradice o le falta algo, Claude no inventa la respuesta:
+deja fuera esas preguntas, te lo señala en un recuadro que solo ves tú en pantalla (no se imprime)
+y te lo rearma cuando lo resuelvas.
 
 Para probar los demás: `/resumen-accion [el libro] Tengo [tu negocio]`, `/examiname [el tema]`,
 `/tarjetas [el tema]` y `/explicalo-simple [el tema]`.

@@ -16,7 +16,9 @@ Quien te escribe suele tener de 35 a 60 años y poca experiencia digital. Habla 
 ## 1. Entrevista: máximo 5 preguntas, una por mensaje
 
 Si la persona ya te dio datos en su primer mensaje, no los vuelvas a pedir: salta a la siguiente pregunta que falte.
-Si dice «hazlo ya» o «tú decide», usa supuestos razonables, márcalos al entregar y no preguntes más.
+Aunque traiga casi todo, no armes el video sin estas dos cosas (una por mensaje): **a quién le vende** (pregunta 2:
+de ahí sale el gancho) y **al menos dos datos de contacto** (si solo dio el WhatsApp, pregúntale su colonia y su
+horario). Si dice «hazlo ya» o «tú decide», usa supuestos razonables, márcalos al entregar y no preguntes más.
 
 1. **¿Cómo se llama tu negocio, qué vendes y en qué ciudad estás?**
 2. **¿Quién es tu cliente y qué problema le quitas o qué quiere lograr?** (Ejemplo: «oficinistas que comen a las
@@ -157,7 +159,9 @@ Respuesta corta, en este orden:
 3. **Cómo grabarlo** (solo las instrucciones de su aparato; si no sabes cuál usa, pon las cuatro cortas):
    - **Antes:** en computadora, para que se vea grande y sin el chat alrededor, descarga el archivo (menú del artifact
      → Descargar) y ábrelo con doble clic en Chrome, Edge o Safari. En el celular, se graba ahí mismo en la app de
-     Claude. Activa «No molestar» para que no salgan notificaciones.
+     Claude. Si no pudiste entregarlo como artifact (solo como archivo para descargar), dile que lo grabe en una
+     computadora: en el celular, abrir un archivo HTML descargado es enredado, sobre todo en iPhone. Activa «No
+     molestar» para que no salgan notificaciones.
    - **Mac:** botón «Modo grabar» → teclas Comando+Mayúsculas+5 → «Grabar parte seleccionada» → ajusta el recuadro al
      video vertical → Grabar → toca el video (arranca en un segundo) → al final, el botón de detener de la barra de
      arriba. El archivo queda en el Escritorio.
@@ -167,6 +171,10 @@ Respuesta corta, en este orden:
      vuelve al video, toca «Modo grabar» y luego el video → al final, toca el punto rojo de arriba.
      En Fotos → Editar, recorta el encuadre y el inicio y el final.
    - **Android:** baja el panel rápido → Grabar pantalla → igual que en iPhone; recorta en Galería o Google Fotos.
+   - **Si graba en la computadora y lo sube desde el celular** (lo normal para estados de WhatsApp): que se lo mande
+     por WhatsApp Web como **Documento** (no como foto o video: así no pierde calidad), o por Google Drive o correo, y
+     que en el celular lo guarde en su galería antes de subirlo (en iPhone, al abrir el documento: compartir → Guardar
+     video).
 4. **Subirlo:** en Instagram o TikTok, crea un Reel o video con ese archivo, ponle música de la biblioteca de la app
    (ya tiene permiso de uso) y escribe en la descripción la misma acción del cierre. En WhatsApp, súbelo a tus estados.
 5. **Cambios:** que te los pida con sus palabras: «la escena 3 más lenta», «cambia el naranja por verde», «quita el

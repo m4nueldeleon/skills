@@ -46,9 +46,9 @@ No todas se preguntan: casi siempre la persona ya contestó tres o cuatro en su 
   1. El dato sin el cual el resultado sale mal: cuánto debe y desde cuándo; qué promoción y hasta qué fecha; qué producto y a qué precio.
   2. A quién le habla y qué relación tienen: cliente de años o nuevo; paciente que ya vino o que nunca ha venido.
   3. Qué quiere que pase después y cómo se hace: que pague (¿por transferencia, en el local?), que agende (¿por WhatsApp, por teléfono, en un link?), que compre (¿dónde?).
-  4. El tono, con tú o usted dentro de la misma pregunta: amable, firme, divertido.
-- **Una pregunta por mensaje, de un solo tema.** No agregues «y otra cosa rápida…» al final. Si no llegaste a preguntar el tono, usa «de usted» para clientes y pacientes (lo más seguro en México y Estados Unidos) y anótalo como supuesto.
-- Cada pregunta es corta y trae un ejemplo, o 2 o 3 opciones con letra para contestar con una letra (a, b, c). Siempre cierra con la salida: «O dime "tú decide"».
+  4. El tono, en su propia pregunta y con el tú o usted como parte de las opciones: amable, firme, divertido.
+- **Una pregunta por mensaje, de un solo tema.** No agregues «y otra cosa rápida…» al final ni juntes dos temas con «y»: «¿Cómo te paga y con qué tono le hablo?» son dos preguntas. Si ya hiciste las preguntas que anunciaste y falta el tono, no lo metas en otra: usa «de usted» para clientes y pacientes (lo más seguro en México y Estados Unidos) y anótalo como supuesto. Si el tono de verdad importa, anuncia una pregunta más desde el primer mensaje (máximo 4).
+- Cada pregunta es corta y trae un ejemplo, o 2 o 3 opciones con letra para contestar con una letra (a, b, c). Si dos opciones pueden ser ciertas a la vez, dilo: «Si son dos, dime las dos». Siempre cierra con la salida: «O dime "tú decide"».
 - Si contesta «no sé» o «tú decide», elige lo más razonable para su giro y anótalo como supuesto.
 - Si te da un dato privado (nombre completo de su cliente, teléfono, número de cuenta), avísale que en el prompt irá entre [corchetes] y que lo cambia él al final. Nunca pidas contraseñas, datos de tarjetas ni expedientes médicos.
 - Si el pedido ya trae casi todo, haz solo la pregunta que falte. Si de verdad no falta nada, dilo en una línea y pasa al paso 3.
@@ -72,7 +72,7 @@ Antes de mostrarlo, revisa en silencio:
 
 1. ¿Están los nueve bloques, en orden?
 2. ¿Todo dato viene de la persona? (Nada inventado ni sacado de los ejemplos de esta skill: ni ciudad, ni nombres, ni montos.)
-3. ¿El tú o usted lo dijo la persona? Si no, va «de usted» y está en «Lo que supuse».
+3. ¿El tono es el que eligió la persona, sin rasgos de otra opción? ¿El tú o usted lo dijo la persona? Si no, va «de usted» y está en «Lo que supuse».
 4. Si pide una acción, ¿dice cómo se hace o deja el [corchete]?
 5. ¿EL EJEMPLO es una sola frase sin cifras, o el texto que dio la persona?
 6. Si es un mensaje o un texto de venta, ¿pide dos versiones?
@@ -92,7 +92,7 @@ Responde con esta estructura, en este orden:
    - «Para otra IA: cópialo completo y pégalo en un chat nuevo de ChatGPT, Gemini o Claude. Antes de enviarlo, cambia lo que está entre [corchetes].»
 5. **Por qué este prompt funciona:** una sola frase, al final.
 
-La frase de «por qué funciona» es específica de este caso: dice qué dato o instrucción cambia el resultado y qué habría salido sin él. Ejemplo: «Porque le dice a la IA que es un cliente de cuatro años y que la meta es una fecha de pago, no un regaño; sin eso te habría dado un aviso de cobranza genérico y frío.» Es la única lección: sin sermones ni listas de consejos.
+La frase de «por qué funciona» es específica de este caso: dice qué dato o instrucción cambia el resultado y qué habría salido sin él, con tus palabras (no copies la de este ejemplo ni la de `ejemplos/`). Ejemplo, de otro caso: «Porque le dice a la IA de qué se quejó el cliente en la reseña y que la meta es que vuelva; sin eso te habría dado una disculpa de cajón que no contesta lo que reclamó.» Es la única lección: sin sermones ni listas de consejos.
 
 ### 5. Úsalo o entrégalo
 
@@ -143,6 +143,6 @@ Haz máximo 3 preguntas (qué se ve, dónde se va a publicar y si lleva texto su
 >
 > **Persona:** tengo un taller, le cambié los frenos a un cliente, son 4,800 y ya van 3 semanas
 >
-> **Tú:** **2 de 3:** ¿Qué tipo de cliente es? a) cliente de años, lo quiero conservar · b) cliente nuevo o de una sola vez · c) ya le cobré antes y no contesta. O dime «tú decide».
+> **Tú:** **2 de 3:** ¿Qué tipo de cliente es? a) cliente de años, lo quiero conservar · b) cliente nuevo o de una sola vez · c) ya le cobré antes y no contesta. Si son dos, dime las dos («a y c»). O dime «tú decide».
 
 La conversación completa, con el prompt, la explicación y el resultado, está en `ejemplos/01-cobranza-taller.md`.

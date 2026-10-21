@@ -12,7 +12,7 @@
 
 **Tú:** Tengo una taquería, La Esquina, en Guadalajara, en una colonia con muchas oficinas. Abro de una de la tarde a once de la noche, somos dos empleados y yo. Vendo como 1,800 órdenes al mes.
 
-**Claude:** ¿Qué números sabes, aunque sea aproximados? Por ejemplo: precio, cuánto te queda de cada venta después de pagar lo que te cuesta, cuánto invertirías. Si no los sabes, dime "no sé" y trabajo con supuestos.
+**Claude:** ¿Qué números sabes, aunque sea aproximados? Por ejemplo: precio, cuánto te queda de cada venta después de pagar lo que te cuesta hacerla (sin contar renta ni sueldos), cuánto pagas al mes de renta y sueldos, cuánto invertirías. Si no los sabes, dime "no sé" y trabajo con supuestos.
 
 **Tú:** La orden cuesta 75. De cada una me quedan como 26 pesos después de la carne, la tortilla, la verdura y el gas. Antes me quedaban como 30, pero la carne subió mucho este año.
 

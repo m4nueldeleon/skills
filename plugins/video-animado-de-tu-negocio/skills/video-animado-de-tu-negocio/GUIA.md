@@ -2,7 +2,7 @@
 
 Manuel de León · Recursos de IA para negocios · 20 de octubre de 2026
 
-Contestas cinco preguntas sobre tu negocio y Claude te arma un video promocional vertical, listo para grabar y subir.
+Contestas hasta cinco preguntas sobre tu negocio y Claude te arma un video promocional vertical, listo para grabar y subir.
 
 ## Qué hace
 
@@ -113,7 +113,8 @@ Contacto: WhatsApp [número] y [colonia].
 
 En computadora, para que se vea grande y sin el chat alrededor, descarga el archivo (en el menú del video,
 **Descargar**) y ábrelo con doble clic: se abre en tu navegador. En el celular, grábalo ahí mismo, en la app de
-Claude. En los dos casos activa **No molestar** para que no salgan notificaciones en la grabación.
+Claude; si Claude te lo dio solo como archivo para descargar, mejor grábalo en una computadora. En los dos casos
+activa **No molestar** para que no salgan notificaciones en la grabación.
 
 - **Mac:** toca **Modo grabar** → presiona Comando+Mayúsculas+5 → **Grabar parte seleccionada** → ajusta el
   recuadro al video → **Grabar** → toca el video (arranca en un segundo) → al terminar, toca el botón de detener en
@@ -125,6 +126,9 @@ Claude. En los dos casos activa **No molestar** para que no salgan notificacione
   control) → vuelve al video, toca **Modo grabar** y luego el video → al terminar, toca el punto rojo de arriba. En
   Fotos → Editar, recorta los bordes y quita el inicio y el final.
 - **Android:** baja el panel rápido → **Grabar pantalla** → lo mismo que en iPhone. Recorta en Galería o Google Fotos.
+- **¿Lo grabaste en la computadora y lo vas a subir desde tu celular?** Mándatelo por WhatsApp Web como
+  **Documento** (no como foto o video: así no pierde calidad), o por Google Drive o correo. En el celular, ábrelo y
+  guárdalo en tu galería antes de subirlo; en iPhone, toca compartir → **Guardar video**.
 
 ## Súbelo
 

@@ -296,7 +296,9 @@ class Pagina:
         return salida
 
     def campos_formulario(self) -> List[str]:
-        return [c["aria-label"] or c["placeholder"] or c["name"] or c["id"] or c["tipo"] for c in self.parser.campos]
+        """Campos que piden un dato escrito; las casillas y opciones (checkbox, radio) no piden datos por sí solas."""
+        return [c["aria-label"] or c["placeholder"] or c["name"] or c["id"] or c["tipo"] for c in self.parser.campos
+                if c["tipo"].lower() not in ("checkbox", "radio")]
 
     def campos_sin_etiqueta(self) -> int:
         return sum(1 for c in self.parser.campos

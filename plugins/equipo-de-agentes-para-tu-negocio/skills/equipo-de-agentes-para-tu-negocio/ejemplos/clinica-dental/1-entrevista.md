@@ -10,7 +10,8 @@ quita es contestar WhatsApp, confirmar citas y cobrar las mensualidades de ortod
 
 **Claude (paso 1):** Te voy a armar un equipo de 5 agentes de IA, uno por departamento: ventas, marketing, atención a
 clientes, operaciones y administración. Cada uno va a conocer tu clínica y va a trabajar en borrador: nada sale sin
-que tú lo apruebes. Son 7 preguntas, una a la vez. Si alguna no la sabes, escribe «no sé» y sigo.
+que tú lo apruebes. Son hasta 7 preguntas, una a la vez (me salto lo que ya me dijiste). Si alguna no la sabes,
+escribe «no sé» y sigo.
 
 Ya me dijiste dónde estás y lo que más tiempo te quita, así que me salto esa parte. Primera pregunta: **¿qué
 tratamientos das y a qué tipo de pacientes?** Por ejemplo: «Limpiezas y ortodoncia; familias de la zona».
@@ -26,8 +27,8 @@ la tarde. Mónica en recepción: WhatsApp, agenda y caja. Karla es mi asistente:
 las hace mi contador.
 
 **Claude (pregunta 3):** **¿Qué usan hoy para trabajar? Dime las letras.** a) WhatsApp Business b) Instagram o
-Facebook c) Excel o Google Sheets d) Google Calendar o agenda de papel e) sistema de facturación f) punto de venta o
-inventario g) correo h) otra.
+Facebook c) Excel o Google Sheets d) Google Calendar e) agenda de papel f) sistema de facturación g) punto de venta
+o inventario h) correo i) otra.
 
 **Dueña:** a, b, c y d. Excel para los pagos de ortodoncia. Instagram lo tenemos abandonado desde agosto.
 
