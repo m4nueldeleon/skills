@@ -40,14 +40,14 @@ cómo se toma la captura; en el celular va siempre abajo). Lo que se vio y se co
 
 | Qué revisé | Cómo está | Qué falta |
 |---|---|---|
-| Velocidad: peso, fotos reducidas, sin librerías de más, letras ≤ 2 familias | ✅ 22 KB de código, sin librerías, 2 familias de letra | Cuando pongas las fotos, que pesen menos de 400 KB cada una |
-| Celular primero: se lee sin hacer zoom, nada se sale de lado, botones grandes | ✅ Diseñada a 390 px; botones de 48 a 52 px de alto | — |
+| Velocidad: peso, fotos reducidas, sin librerías de más, letras ≤ 2 familias | ✅ Pesa muy poco (menos que una foto de WhatsApp), sin programas extra, 2 tipos de letra | Cuando me mandes las fotos, las reduzco para que no la hagan lenta |
+| Celular primero: se lee sin hacer zoom, nada se sale de lado, botones grandes | ✅ Probada en el tamaño de un celular; nada se sale de lado y los botones son del tamaño de un dedo | — |
 | Textos reales: sin relleno, sin datos inventados, sin `[PENDIENTE]` olvidados | ❌ 4 pendientes | 3 fotos y cómo se paga el anticipo |
 | Pie de página: quién vende y enlaces legales | ❌ Los enlaces están, los documentos no | Aviso de privacidad y términos de pedidos, de tu abogado |
 | Botones de contacto: WhatsApp y teléfono funcionan, «Cómo llegar», visibles sin buscar | ✅ WhatsApp con mensaje listo, Llamar, Cómo llegar y barra fija abajo | Probarlos en tu celular (5 pruebas abajo) |
 | Sin «look de IA»: se contaron los rasgos de la lista | ✅ Cero degradados, cero tarjetas, cero emojis, una sola escala de esquinas, sin etiquetitas en mayúsculas | — |
-| Movimiento: con propósito, respeta «reducir movimiento», se ve sin JavaScript | ✅ Tres movimientos: entradas al bajar, trazo bajo la siguiente horneada y barra de contacto. Sin JavaScript todo se ve | — |
-| Accesibilidad básica: textos alternativos, un solo título principal, contraste | ✅ Un título principal; contraste de 5.5:1 a 14.5:1 | Revisarla a pleno sol |
+| Movimiento: con propósito, respeta «reducir movimiento», se ve aunque falle el programa de la página | ✅ Tres movimientos: entradas al bajar, trazo bajo la siguiente horneada y barra de contacto. Si el programa de la página no carga, todo se ve igual | — |
+| Accesibilidad básica: textos alternativos, un solo título principal, contraste | ✅ Un título principal; letra oscura sobre fondo claro, con buen contraste | Revisarla a pleno sol |
 
 **Lo que tienes que hacer tú:**
 1. Tomar 3 fotos con tu celular, horizontales y con luz de día: la charola de conchas recién salida, el mostrador

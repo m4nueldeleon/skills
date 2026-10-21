@@ -81,7 +81,8 @@ Cambia lo que está entre [corchetes] por lo tuyo.
 ```text
 Convoca al consejo: tengo [una taquería] en [Guadalajara]. Estoy pensando en subir
 [la orden de tacos de 75 a 85 pesos]. Vendo como [1,800 órdenes al mes] y de cada
-venta me quedan como [26 pesos] después de pagar lo que me cuesta. La competencia
+venta me quedan como [26 pesos] después de pagar lo que me cuesta hacerla, sin
+contar renta ni sueldos. De renta y sueldos pago [cuánto al mes]. La competencia
 cobra [70]. La otra opción es [dejar el precio igual].
 ```
 
@@ -120,7 +121,7 @@ Esto me dio la IA y no me convence: [pega aquí el texto].
 - Puede hacerte hasta tres preguntas antes de empezar, una por una. Si tu primer mensaje ya trae lo
   necesario, empieza de una vez.
 - Te va a contradecir. Es a propósito. Si todo te suena demasiado cómodo, escribe «más duro».
-- Una respuesta del consejo se lee en dos o tres minutos.
+- Una respuesta del consejo se lee en unos tres o cuatro minutos.
 - **¿Por qué la arena hace de 3 a 5 versiones y no 100?** Cada versión gasta parte del uso de tu cuenta de
   Claude, y los planes tienen un límite cada cierto número de horas y por semana. Cien versiones te acaban
   ese uso y tardan mucho. Además, después de 4 o 5 versiones bien distintas, las nuevas se parecen entre sí.

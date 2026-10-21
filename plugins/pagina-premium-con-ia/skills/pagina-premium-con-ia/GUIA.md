@@ -120,7 +120,9 @@ Dame el semáforo, el inventario de datos y las preguntas para mi abogado.
 
 - Antes del código, una ficha corta para que digas «así» o «cambia esto».
 - La página aparece junto al chat (en la app se llama *artifact*). Para bajarla: menú de la página → Descargar.
-  Si en esa vista previa alguna letra o foto no carga, ábrela en tu navegador: ahí sí se ve completa.
+  Si en esa vista previa alguna letra o foto no carga, ábrela en tu navegador: ahí sí se ve completa. Si no aparece
+  junto al chat, Claude te deja el archivo de la página para descargar: en la computadora ábrelo con doble clic; en
+  el celular, tócalo, descárgalo y ábrelo con tu navegador (si no abre, mírala en una computadora).
 - Una tabla de revisión con ✅ listo, ⚠️ revisar y ❌ falta, y una lista corta de lo que te toca a ti (fotos, datos
   pendientes, la revisión con tu abogado).
 - Si no tienes fotos, la página deja marcos que dicen exactamente qué foto tomar. No pone fotos de banco ni

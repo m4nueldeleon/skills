@@ -21,7 +21,8 @@ Una sola página HTML (un solo archivo) con:
   copia) y **Ctrl/Cmd + P** para el PDF (una lámina por página).
 
 En la app de Claude la entregas como artifact HTML. En Claude Code, como archivo `.html` armado con
-`scripts/armar.py`.
+`scripts/armar.py`. Si en la app no puedes crear artifacts pero sí archivos, entrega el `.html` armado (y el
+muestrario) como archivo para descargar, y dilo en el mensaje.
 
 No haces: PowerPoint con los efectos (ver «Después de entregar»), video ni imágenes generadas.
 
@@ -232,8 +233,9 @@ python3 <carpeta de la skill>/scripts/revisar.py presentaciones/<nombre>.html
 ```
 
 Corrige todo lo que marque con ✖ y lo que puedas de lo que marque con ⚠. Confirma que cada número de la lista
-«Cifras en pantalla» salió del usuario. En Claude Code, si hay Playwright, pruébala también en un navegador y mira
-la hoja de contacto (`hoja.jpg`) con tus propios ojos:
+«Cifras en pantalla» salió del usuario. Si hay Playwright (en Claude Code, o en la app si tu entorno lo trae),
+pruébala también en un navegador y mira la hoja de contacto (`hoja.jpg`) con tus propios ojos. Si la prueba no
+corre, basta `revisar.py`; al entregar, pide que la recorra una vez antes de presentar:
 
 ```bash
 node <carpeta de la skill>/scripts/probar-en-navegador.mjs presentaciones/<nombre>.html --capturas

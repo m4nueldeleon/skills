@@ -356,7 +356,7 @@
   var dudas = (Array.isArray(datos.dudas) ? datos.dudas : []).map(texto).filter(Boolean);
   if (dudas.length) {
     var rev = el("div", "revisar");
-    rev.appendChild(el("strong", null, "Borrador para ti: tu equipo no debe ver este recuadro. Tu material no deja claro lo siguiente. Resuélvelo, pide que lo vuelvan a armar sin estas dudas y compártelo hasta entonces."));
+    rev.appendChild(el("strong", null, "Borrador para ti: tu equipo no debe ver este recuadro. Tu material no deja claro lo siguiente. Resuélvelo y pide que lo vuelvan a armar sin estas dudas. No lo compartas con tu equipo antes de eso."));
     var ulD = el("ul");
     dudas.forEach(function (d) { ulD.appendChild(el("li", null, d)); });
     rev.appendChild(ulD);

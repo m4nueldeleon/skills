@@ -8,6 +8,7 @@
 //   node probar-en-navegador.mjs presentacion.html --pdf           # además exporta el PDF (una lámina por página)
 //   node probar-en-navegador.mjs presentacion.html --webkit        # además la abre en WebKit (el motor de Safari)
 //   --salida <carpeta>   dónde dejar capturas, PDF y verificacion.json (por omisión, junto al archivo)
+//   --sin-red            prueba con la tipografía de respaldo (se activa solo si no hay internet)
 //
 // Sale con código 0 si no hay errores, 1 si hay errores y 2 si falta Playwright o el archivo.
 import fs from 'node:fs';
@@ -31,6 +32,15 @@ const url = pathToFileURL(ruta).href;
 const errores = [];
 const avisos = [];
 const bien = [];
+let enLinea = true;
+
+// Sin internet, la tipografía en línea puede quedarse colgada y la página nunca termina de cargar.
+// Si no responde en 3 segundos (o con --sin-red), se prueba con la tipografía de respaldo.
+async function hayInternet() {
+  if (opcion('--sin-red')) return false;
+  try { await fetch('https://fonts.googleapis.com/css2?family=Manrope', { signal: AbortSignal.timeout(3000) }); return true; }
+  catch { return false; }
+}
 
 async function cargarPlaywright() {
   try { return await import('playwright'); } catch { /* sigue: puede estar instalado global */ }
@@ -54,6 +64,7 @@ function vigilar(pagina, etiqueta) {
 
 async function abrir(navegador, ancho, alto, etiqueta, destino = url) {
   const contexto = await navegador.newContext({ viewport: { width: ancho, height: alto }, acceptDownloads: true });
+  if (!enLinea) await contexto.route(/fonts\.(googleapis|gstatic)\.com/, r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
   const pagina = await contexto.newPage();
   vigilar(pagina, etiqueta);
   await pagina.goto(destino, { waitUntil: 'load' });
@@ -215,6 +226,8 @@ async function telefono(navegador) {
 
 async function principal() {
   const pw = await cargarPlaywright();
+  enLinea = await hayInternet();
+  if (!enLinea) avisos.push('Sin internet: la probé con la tipografía de respaldo. Con internet se verá con la letra del estilo.');
   const navegador = await pw.chromium.launch();
   const { contexto, pagina } = await abrir(navegador, 1920, 1080, 'Chromium');
   const total = await pagina.evaluate(() => window.__presentacion.total);

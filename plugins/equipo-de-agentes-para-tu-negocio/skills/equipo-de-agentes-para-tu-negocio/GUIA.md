@@ -92,8 +92,8 @@ y pruébalo con esta tarea real: [por ejemplo, contestar estos 3 WhatsApp que me
 
 ## Qué esperar
 
-- **La entrevista son 7 preguntas, una a la vez.** Puedes contestar corto o dictar por voz. Si no sabes algo, escribe
-  «no sé» y sigue.
+- **La entrevista son hasta 7 preguntas, una a la vez** (se salta lo que ya le dijiste). Puedes contestar corto o
+  dictar por voz. Si no sabes algo, escribe «no sé» y sigue.
 - **Calcula entre 20 y 40 minutos** para armar el equipo la primera vez, contando la creación de los proyectos.
 - **En Claude Code, la prueba con una tarea real tarda unos minutos** y usa tu plan de Claude como cualquier
   conversación.

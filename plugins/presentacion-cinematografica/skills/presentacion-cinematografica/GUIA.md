@@ -95,7 +95,8 @@ video: «…más» → «Mostrar transcripción»).
 1. Si no dijiste para quién es o qué quieres que hagan, Claude te pregunta, una cosa a la vez.
 2. Te manda el guion: una línea por lámina, tres estilos para elegir y los datos que le faltan. Contestas «sí» o
    lo que cambias («quita la 4», «estilo 2»).
-3. Te entrega la presentación. En la app aparece junto a la conversación y la puedes recorrer ahí mismo.
+3. Te entrega la presentación. En la app aparece junto a la conversación y la puedes recorrer ahí mismo; si no
+   aparece ahí, te la deja como archivo para descargar.
 
 Todo toma unos minutos, no segundos: la historia se confirma contigo antes de diseñar.
 
