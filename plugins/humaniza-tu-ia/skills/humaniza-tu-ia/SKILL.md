@@ -20,6 +20,7 @@ Al editar, conserva la intención, los hechos y la oferta del autor. Usa sus eje
 - No cambies el sentido para que el mensaje “venda más”.
 - No reproduzcas estilos de terceros como si fueran del usuario.
 - No añadas jerga, emojis ni humor si los ejemplos no los justifican.
+- En español, la raya (—) va pegada al inciso («Los clientes —dijo— ya llegaron») y los títulos llevan mayúscula solo al inicio y en nombres propios. La raya suelta al modo inglés y Las Mayúsculas En Cada Palabra son faltas de ortografía que delatan un texto calcado.
 - No prometas invisibilidad ante detectores de IA.
 
 ## Entrega
