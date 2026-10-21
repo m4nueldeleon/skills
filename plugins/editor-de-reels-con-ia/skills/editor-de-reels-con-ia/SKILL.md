@@ -10,11 +10,15 @@ Ayuda a una persona sin experiencia técnica a convertir su grabación en un MP4
 ## Flujo de edición
 
 1. Localiza el archivo proporcionado, inspecciona video y audio, y comprueba Node.js, FFmpeg, ffprobe y las dependencias del paquete. El usuario debe trabajar en un asistente con ejecución local; descargar el ZIP en el teléfono no ejecuta el editor.
+   - Si el video viene de un iPhone, pide que lo pase desde la app Archivos o por cable: elegido desde Fotos, el teléfono puede entregar una copia de menor resolución.
+   - Si `ffprobe` muestra que el audio no empieza en 0 (`start_time`), avísalo y revisa con cuidado que la voz vaya con los labios en el MP4 final.
 2. Obtén una transcripción con tiempos del original. Si tienes una herramienta de transcripción, úsala y adapta su resultado al formato de [examples/transcripcion.json](examples/transcripcion.json). Como alternativa, configura Whisper local siguiendo el README. Prioriza tiempos por palabra para subtítulos cortos. Revisa los nombres y cifras en el audio; no presentes una transcripción automática como verificada.
 3. Propón hasta tres posibles inicios basados en frases que sí se dicen. Para cada uno registra la cita exacta, sus tiempos y el motivo: problema concreto, contraste, resultado demostrable o pregunta que el propio video responde. Elige el que sirva al objetivo del usuario. No inventes números ni prometas que será viral.
 4. Si conviene reordenar o excluir repeticiones, crea un plan usando tiempos del original. El formato está en [examples/plan.json](examples/plan.json). El primer fragmento será el inicio. Evita volver a incluir el mismo gancho por accidente. Revisa con audio las tomas repetidas: la transcripción puede ocultarlas.
 5. Ejecuta `scripts/editar.mjs` con transcripción y salida nueva. Por omisión usa vertical, fondo desenfocado y calidad estándar. Añade `--motion` si un acercamiento suave ayuda al contenido. Usa `--noise-reduction` solo para ruido constante; no prometas restaurar una grabación saturada.
 6. Inspecciona el MP4 final y una muestra de sus subtítulos. Escucha los cortes y confirma rostro, encuadre, texto, duración y audio. Si tienes transcripción disponible, vuelve a transcribir los fragmentos donde eliminaste repeticiones. Entrega MP4, SRT e informe con cualquier limitación pendiente.
+   - Una pausa de más de medio segundo entre frases se siente como que el video se cae. Si la oyes, exporta de nuevo con `--pause 0.4` y confirma que no se coma palabras suaves.
+   - Que ninguna frase se oiga dos veces: si subiste una frase al inicio, quítala de su lugar original en el plan.
 
 ## Invariantes del motor
 
@@ -26,7 +30,7 @@ Ayuda a una persona sin experiencia técnica a convertir su grabación en un MP4
 
 ## Imágenes y acabado opcional
 
-Para imágenes de apoyo, parte de una imagen del usuario o genera una con la herramienta disponible y sus propios créditos. Usa una escena que explique lo que está diciendo y registra en qué segundo debe aparecer. El script `scripts/broll.mjs` inserta PNG/JPEG/WebP sobre el crudo, conserva el audio y no cambia su duración. Edita después para colocar subtítulos encima.
+Para imágenes de apoyo, parte de una imagen del usuario o genera una con la herramienta disponible y sus propios créditos. Usa una escena que explique lo que está diciendo y registra en qué segundo debe aparecer. Cada imagen va de 2 a 4 segundos, mientras la voz la explica: menos de un segundo se ve como un destello. El script `scripts/broll.mjs` inserta PNG/JPEG/WebP sobre el crudo, conserva el audio y no cambia su duración. Edita después para colocar subtítulos encima.
 
 El desenfoque disponible es del fondo al adaptar el formato. El zoom es un acercamiento suave; no hay seguimiento automático del rostro, enfoque óptico, eliminación semántica de muletillas ni generación de imágenes incorporada en los scripts. Si el usuario pide esas funciones, explica qué herramienta o trabajo adicional haría falta y usa solo los accesos que tenga disponibles.
 
