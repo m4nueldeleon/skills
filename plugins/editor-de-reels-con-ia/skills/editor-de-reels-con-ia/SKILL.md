@@ -1,6 +1,6 @@
 ---
 name: editor-de-reels-con-ia
-description: Edita grabaciones propias para Reels con FFmpeg, elige un inicio con evidencia de la transcripción y exporta subtítulos sincronizados, audio normalizado y formato vertical u horizontal.
+description: Edita en la computadora una grabación propia y la deja lista como Reel. Recorta pausas, ordena las tomas, elige el inicio con una frase que sí se dijo, empareja el volumen, pone subtítulos sincronizados y exporta un MP4 vertical u horizontal con su SRT, sin tocar el original. Necesita Claude Code (u otro asistente que ejecute programas) con Node.js y FFmpeg. Úsala cuando digan «usa la skill editor-de-reels-con-ia», «ayúdame a editar mi video», «recorta las pausas», «ponle subtítulos a mi video» o «hazme un reel con esta grabación». NO usar para videos animados sin grabación (→ video-animado-de-tu-negocio) ni para publicar el video.
 ---
 
 # Editor de Reels con IA · Manuel de León

@@ -1,6 +1,6 @@
 ---
 name: prompts-para-tu-negocio
-description: Biblioteca de 36 prompts para dueños de negocio pequeño en cuatro áreas (atraer clientes, vender, atender y operar), incluido «tu oferta en una frase» para saber si un negocio vende una solución, conveniencia o una experiencia. Úsala cuando alguien pida los 36 prompts o ayuda con contenido, anuncios, ofertas, precios, objeciones, seguimiento, WhatsApp, reseñas, quejas, procesos, equipo o finanzas básicas de su negocio; primero pregunta qué vende, a quién y dónde, y luego adapta y ejecuta el prompt que elija.
+description: Biblioteca de 36 prompts para dueños de negocio pequeño en cuatro áreas (atraer clientes, vender, atender y operar), incluido «tu oferta en una frase» para saber si un negocio vende una solución, conveniencia o una experiencia. Úsala cuando alguien pida los 36 prompts o ayuda con contenido, anuncios, ofertas, precios, objeciones, seguimiento, WhatsApp, reseñas, quejas, procesos, equipo o finanzas básicas de su negocio; primero pregunta qué vende, a quién y dónde, y luego adapta y ejecuta el prompt que elija. NO usar para armar un prompt a la medida desde cero (→ prompt-maestro).
 ---
 
 # Prompts para tu negocio

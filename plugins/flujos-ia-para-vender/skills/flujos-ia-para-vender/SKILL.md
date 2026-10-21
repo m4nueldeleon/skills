@@ -1,6 +1,6 @@
 ---
 name: flujos-ia-para-vender
-description: Prepara ventas con plantillas para llenar, pensadas para vendedores y dueños de negocio pequeño (ficha del prospecto antes de una llamada, guion de llamada o cita, mensajes de seguimiento por WhatsApp para el día 1, 3 y 7, propuesta de una página, comparativo de competencia y precios, y revisión de frases que frenan la venta). Úsala cuando alguien vaya a llamar, visitar, cotizar o dar seguimiento a un cliente, quiera comparar sus precios con la competencia, o pegue un mensaje de venta para mejorarlo.
+description: Prepara ventas con plantillas para llenar, pensadas para vendedores y dueños de negocio pequeño (ficha del prospecto antes de una llamada, guion de llamada o cita, mensajes de seguimiento por WhatsApp para el día 1, 3 y 7, propuesta de una página, comparativo de competencia y precios, y revisión de frases que frenan la venta). Úsala cuando alguien vaya a llamar, visitar, cotizar o dar seguimiento a un cliente, quiera comparar sus precios con la competencia, o pegue un mensaje de venta para mejorarlo. NO usar para contratos, cotizaciones fiscales ni para mandar los mensajes por la persona.
 ---
 
 # Flujos de IA para vender

@@ -1,6 +1,6 @@
 ---
 name: prompt-maestro
-description: Convierte lo que la persona quiere, dicho en sus palabras («quiero un mensaje para cobrarle a un cliente que no ha pagado»), en un prompt completo para la IA. Hace de 2 a 4 preguntas cortas, arma el prompt (negocio, a quién va, tarea, tono, formato, ejemplo y qué evitar), lo explica en lenguaje simple y lo usa ahí mismo o lo entrega listo para pegar en Claude, ChatGPT o Gemini. Úsala cuando pidan «prompt maestro», «arma o mejora mi prompt», «cómo le pido esto a la IA» o el prompt para una imagen.
+description: Convierte lo que la persona quiere, dicho en sus palabras («quiero un mensaje para cobrarle a un cliente que no ha pagado»), en un prompt completo para la IA. Hace de 2 a 4 preguntas cortas, arma el prompt (negocio, a quién va, tarea, tono, formato, ejemplo y qué evitar), lo explica en lenguaje simple y lo usa ahí mismo o lo entrega listo para pegar en Claude, ChatGPT o Gemini. Úsala cuando pidan «prompt maestro», «arma o mejora mi prompt», «cómo le pido esto a la IA» o el prompt para una imagen. NO usar para la biblioteca de 36 prompts (→ prompts-para-tu-negocio).
 ---
 
 # Prompt maestro

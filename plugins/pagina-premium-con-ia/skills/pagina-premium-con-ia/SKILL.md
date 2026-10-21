@@ -1,6 +1,6 @@
 ---
 name: pagina-premium-con-ia
-description: Hace o rehace la página web de un negocio pequeño para que se vea hecha a propósito y no «de IA». Primero decide la dirección de arte (referencias reales, paleta, tipografía, composición y animaciones sobrias); luego la entrega como artifact o archivo HTML, la revisa (celular, velocidad, textos reales, botones de contacto) y, antes de publicar, da una revisión básica de privacidad, términos, cookies y derechos de imágenes para México y EE. UU. que es orientación, no asesoría legal. Úsala cuando alguien pida crear, rediseñar, revisar o preparar para publicar la página o landing de su negocio.
+description: Hace o rehace la página web de un negocio pequeño para que se vea hecha a propósito y no «de IA». Primero decide la dirección de arte (referencias reales, paleta, tipografía, composición y animaciones sobrias); luego la entrega como artifact o archivo HTML, la revisa (celular, velocidad, textos reales, botones de contacto) y, antes de publicar, da una revisión básica de privacidad, términos, cookies y derechos de imágenes para México y EE. UU. que es orientación, no asesoría legal. Úsala cuando alguien pida crear, rediseñar, revisar o preparar para publicar la página o landing de su negocio. NO usar para presentaciones (→ presentacion-cinematografica) ni tiendas con carrito.
 ---
 
 # Página premium con IA · Manuel de León

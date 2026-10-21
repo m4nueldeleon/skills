@@ -1,6 +1,6 @@
 ---
 name: lbo-respuestas-precisas
-description: Produce respuestas de negocio proporcionadas al encargo, definiendo resultado, evidencia, límites y formato antes de ampliar explicaciones.
+description: Ocho reglas para que la IA entregue respuestas de negocio claras y del tamaño justo. Primero fija resultado, contexto, material, límites, formato y cómo saber que quedó bien; entrega el resultado antes que la explicación, pregunta solo lo que cambia la decisión y no inventa fuentes, resultados de herramientas ni trabajo terminado. Úsala cuando digan «usa LBO», «usa LBO para resolver este encargo», «respuestas claras» o pidan respuestas más cortas y precisas. NO usar cuando la persona pidió una explicación detallada ni para saltarse revisiones que hacen falta.
 ---
 
 # LBO: claridad de encargo y respuesta

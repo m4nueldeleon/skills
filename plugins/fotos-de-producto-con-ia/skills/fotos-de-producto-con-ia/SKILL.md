@@ -1,6 +1,6 @@
 ---
 name: fotos-de-producto-con-ia
-description: Convierte la foto de celular de un producto en el prompt exacto para ChatGPT o Gemini con 15 códigos propios (/estudio, /poster-limpio, /oferta, /temporada, /vistas, /despiece y más) que cuidan que el producto salga fiel. Úsala cuando alguien quiera fotos de producto, pósters, flyers u ofertas hechas con IA, escriba uno de esos códigos o quiera armar su propio GPT o Gem de fotos de producto.
+description: Convierte la foto de celular de un producto en el prompt exacto para ChatGPT o Gemini con 15 códigos propios (/estudio, /poster-limpio, /oferta, /temporada, /vistas, /despiece y más) que cuidan que el producto salga fiel. Úsala cuando alguien quiera fotos de producto, pósters, flyers u ofertas hechas con IA, escriba uno de esos códigos o quiera armar su propio GPT o Gem de fotos de producto. NO usar para logotipos ni para retocar fotos de personas.
 ---
 
 # Fotos de producto con IA

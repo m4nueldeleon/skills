@@ -1,6 +1,6 @@
 ---
 name: contenido-en-piloto-automatico
-description: Guarda y clasifica tus ideas de contenido (texto, links, capturas o notas de voz) en un banco de ideas que tú conservas y cada semana arma tu calendario de publicaciones con día, formato, gancho, guion corto, caption y llamada a la acción, mezclando contenido para atraer, nutrir y vender. Úsala cuando la persona escriba IDEA, BANCO, CALENDARIO o RESULTADOS, pegue ideas sueltas para redes o pregunte qué publicar esta semana.
+description: Guarda y clasifica tus ideas de contenido (texto, links, capturas o notas de voz) en un banco de ideas que tú conservas y cada semana arma tu calendario de publicaciones con día, formato, gancho, guion corto, caption y llamada a la acción, mezclando contenido para atraer, nutrir y vender. Úsala cuando la persona escriba IDEA, BANCO, CALENDARIO o RESULTADOS, pegue ideas sueltas para redes o pregunte qué publicar esta semana. NO usar para publicar o programar en redes ni para diseñar la pieza (→ fotos-de-producto-con-ia, video-animado-de-tu-negocio).
 ---
 
 # Contenido en piloto automático

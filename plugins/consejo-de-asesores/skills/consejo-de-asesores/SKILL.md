@@ -1,6 +1,6 @@
 ---
 name: consejo-de-asesores
-description: Antes de una decisión de negocio (subir precios, abrir sucursal, contratar, lanzar un producto) convoca un consejo de 5 asesores con miradas distintas que contradicen al usuario con argumentos y cierran con un veredicto y el siguiente paso; en modo arena pone a competir de 3 a 5 versiones de un texto o respuesta con criterios claros y entrega la ganadora mejorada. Úsala cuando digan «convoca al consejo», «consejo de asesores», «arena», «pon a competir versiones» o pidan una segunda opinión honesta antes de decidir.
+description: Antes de una decisión de negocio (subir precios, abrir sucursal, contratar, lanzar un producto) convoca un consejo de 5 asesores con miradas distintas que contradicen al usuario con argumentos y cierran con un veredicto y el siguiente paso; en modo arena pone a competir de 3 a 5 versiones de un texto o respuesta con criterios claros y entrega la ganadora mejorada. Úsala cuando digan «convoca al consejo», «consejo de asesores», «arena», «pon a competir versiones» o pidan una segunda opinión honesta antes de decidir. NO usar para asesoría legal, fiscal o médica ni para crisis personales.
 ---
 
 # Consejo de asesores

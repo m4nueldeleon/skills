@@ -1,6 +1,6 @@
 ---
 name: presentacion-cinematografica
-description: Arma presentaciones de nivel escenario a partir de una idea, un texto, unas notas, un PDF o un Word. Primero propone la historia (gancho, problema, solución, prueba y llamado a la acción) y la confirma contigo; luego entrega una página HTML de pantalla completa con una idea por lámina, textos grandes, revelado con cada clic, notas para el presentador y salida a PDF. Úsala cuando pidan una presentación, diapositivas, láminas, un deck o «pásalo a presentación».
+description: Arma presentaciones de nivel escenario a partir de una idea, un texto, unas notas, un PDF o un Word. Primero propone la historia (gancho, problema, solución, prueba y llamado a la acción) y la confirma contigo; luego entrega una página HTML de pantalla completa con una idea por lámina, textos grandes, revelado con cada clic, notas para el presentador y salida a PDF. Úsala cuando pidan una presentación, diapositivas, láminas, un deck o «pásalo a presentación». NO usar para páginas web (→ pagina-premium-con-ia) ni videos (→ video-animado-de-tu-negocio).
 ---
 
 # Presentación cinematográfica

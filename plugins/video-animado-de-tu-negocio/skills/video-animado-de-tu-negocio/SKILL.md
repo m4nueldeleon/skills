@@ -1,6 +1,6 @@
 ---
 name: video-animado-de-tu-negocio
-description: Crea un video promocional animado de 15 a 30 segundos para un negocio (vertical 9:16, para Reels, TikTok o estados de WhatsApp) como una página HTML animada que se reproduce en Claude, con textos grandes, transiciones y cierre con el contacto, y explica cómo grabarlo para tener el MP4. Úsala cuando alguien pida un video, anuncio animado, reel o promo de su negocio hecho con Claude.
+description: Crea un video promocional animado de 15 a 30 segundos para un negocio (vertical 9:16, para Reels, TikTok o estados de WhatsApp) como una página HTML animada que se reproduce en Claude, con textos grandes, transiciones y cierre con el contacto, y explica cómo grabarlo para tener el MP4. Úsala cuando alguien pida un video, anuncio animado, reel o promo de su negocio hecho con Claude. NO usar para editar una grabación propia (→ editor-de-reels-con-ia).
 ---
 
 # Video animado de tu negocio · Manuel de León

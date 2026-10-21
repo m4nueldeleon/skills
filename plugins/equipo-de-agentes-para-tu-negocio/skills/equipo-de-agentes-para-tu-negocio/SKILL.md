@@ -1,6 +1,6 @@
 ---
 name: equipo-de-agentes-para-tu-negocio
-description: Entrevista al dueño de un negocio (qué vende, su equipo, sus herramientas y qué le quita más tiempo) y le arma un equipo de agentes de IA por departamento (ventas, marketing, atención a clientes, operaciones y administración), cada uno con misión, instrucciones personalizadas, datos que necesita y tareas de ejemplo. En la app de Claude los entrega como Proyectos listos para pegar; en Claude Code los crea como subagentes nativos con un coordinador y los prueba con una tarea real. Úsala cuando pidan «arma mi equipo de agentes», «agentes para mi negocio», «departamentos con IA» o «subagentes para mi empresa».
+description: Entrevista al dueño de un negocio (qué vende, su equipo, sus herramientas y qué le quita más tiempo) y le arma un equipo de agentes de IA por departamento (ventas, marketing, atención a clientes, operaciones y administración), cada uno con misión, instrucciones personalizadas, datos que necesita y tareas de ejemplo. En la app de Claude los entrega como Proyectos listos para pegar; en Claude Code los crea como subagentes nativos con un coordinador y los prueba con una tarea real. Úsala cuando pidan «arma mi equipo de agentes», «agentes para mi negocio», «departamentos con IA» o «subagentes para mi empresa». NO usar para un solo prompt (→ prompt-maestro).
 ---
 
 # Equipo de agentes para tu negocio

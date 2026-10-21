@@ -1,6 +1,6 @@
 ---
 name: analizar-anuncios
-description: Analiza anuncios públicos proporcionados por el usuario y desarrolla conceptos propios distinguiendo evidencia, hipótesis y resultados desconocidos.
+description: Analiza anuncios públicos que la persona comparte (enlaces de la Biblioteca de anuncios de Meta, texto, capturas o videos) separando lo que se ve de lo que es hipótesis, y crea tres conceptos propios para su oferta con guion de 30 segundos, toma, texto en pantalla, una sola llamada a la acción y una prueba para medirlos. Úsala cuando digan «usa la skill analizar-anuncios», «analiza estos anuncios», «qué anuncios tiene mi competencia» o «crea mi propia versión de este anuncio». NO usar para copiar anuncios ajenos, entrar a datos privados ni publicar o pautar campañas.
 ---
 
 # Analizar anuncios

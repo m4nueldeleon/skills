@@ -1,6 +1,6 @@
 ---
 name: aprende-y-ensena-con-ia
-description: Códigos de estudio en español para aprender y enseñar con Claude. /mapa-del-libro pone las ideas clave de un libro en un mapa visual imprimible; /apuntes, un tema en apuntes visuales de una página; /resumen-accion dice qué hacer el lunes con lo aprendido; /examiname hace 10 preguntas una por una; /tarjetas arma tarjetas de repaso; /explicalo-simple revisa tu explicación y te dice qué faltó; /examen-del-equipo convierte el manual o proceso de un negocio en tarjetas y un examen corto con respuestas. Úsala cuando el usuario escriba uno de estos códigos (con o sin barra) o /codigos, o cuando pida resumir o aprender un libro, hacer apuntes o tarjetas, que lo examinen, o un examen de capacitación para su equipo.
+description: Códigos de estudio en español para aprender y enseñar con Claude. /mapa-del-libro (las ideas clave de un libro en un mapa visual imprimible), /apuntes (un tema en una página), /resumen-accion (qué hacer el lunes con lo aprendido), /examiname (10 preguntas una por una), /tarjetas (tarjetas de repaso), /explicalo-simple (revisa tu explicación) y /examen-del-equipo (el manual de un negocio en tarjetas y un examen con respuestas). Úsala cuando escriban uno de estos códigos (con o sin barra) o /codigos, o pidan resumir o aprender un libro, apuntes, tarjetas, que los examinen o un examen para su equipo. NO usar para presentaciones (→ presentacion-cinematografica).
 ---
 
 # Aprende y enseña con IA

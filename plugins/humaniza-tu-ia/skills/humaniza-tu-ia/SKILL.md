@@ -1,6 +1,6 @@
 ---
 name: humaniza-tu-ia
-description: Edita textos de negocio usando ejemplos reales de la voz del autor, quitando relleno y preservando hechos y condiciones.
+description: Edita textos de negocio (WhatsApp, Instagram, correo o página) para que suenen a quien los firma. Toma tres ejemplos reales de su voz, quita relleno y frases de folleto, y conserva hechos, cifras verificadas y condiciones de la oferta; al final dice qué cambió y qué afirmaciones necesitan prueba. Úsala cuando digan «quiero que edites un texto usando mi voz», «haz que mi IA escriba como yo», «haz que suene a mí» o «quítale el relleno a este texto». NO usar para escribir sin ejemplos de voz, esconder que se usó IA ni prometer que un texto pasa un detector.
 ---
 
 # Humaniza tu IA
