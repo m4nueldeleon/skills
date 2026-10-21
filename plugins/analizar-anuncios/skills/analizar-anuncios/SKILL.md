@@ -14,9 +14,15 @@ Marca datos ausentes como no disponibles. No conviertas duración de actividad, 
 
 ## Análisis
 Explica qué observa el espectador, qué objeción intenta resolver el mensaje y qué partes son hipótesis. Transcribe solo material suministrado o autorizado, respetando límites de uso de terceros. No eludas accesos ni controles de plataformas.
+Si el usuario te da la página a la que lleva el anuncio, revísala con él: Meta revisa anuncio y página juntos, y la promesa, el precio y la siguiente acción deben coincidir con las mismas palabras.
 
 ## Creación
 Propón tres conceptos originales adaptados a la oferta del usuario. Para cada uno: ángulo, gancho, guion, visual, prueba real, CTA y métrica de evaluación. No copies activos, identidad o testimonios de la competencia. No inventes resultados ni escasez.
+
+- **Tres conceptos de verdad distintos.** Si a partir del segundo 10 repiten el mecanismo, la prueba y el cierre, son variaciones de un mismo concepto: cambia la idea, no solo la primera frase.
+- **Filtra sin afirmar nada de quien ve.** Nombra el oficio o di para quién es («Dueños de taller:»). Nunca «¿Estás endeudado?» o «¿Tu negocio no vende?»: la política de atributos personales de Meta lo rechaza.
+- **«No es para todos» solo si es cierto:** úsalo únicamente si el negocio de verdad descarta a quien no encaja.
+- **Lo que el anuncio muestra tiene que existir.** Horarios, lugares, cifras y demostraciones se confirman con el usuario antes de escribirlos; si no hay prueba, el concepto cambia.
 
 ## Entrega
 Tabla verificable, hipótesis que conviene probar y tres propuestas. Añade un experimento con variable, periodo y criterio de decisión definidos por el negocio. No envíes campañas ni publiques desde esta skill sin autorización específica.
