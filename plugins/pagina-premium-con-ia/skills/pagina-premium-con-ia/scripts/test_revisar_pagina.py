@@ -116,6 +116,18 @@ class PruebasRevision(unittest.TestCase):
         html = BUENA.replace("@media (prefers-reduced-motion: reduce){*{transition:none}}", "/* prefers-reduced-motion */")
         self.assertIn("prefers-reduced-motion", _mensajes(_revisar_texto(html), "falta"))
 
+    def test_casillas_no_cuentan_como_datos(self):
+        casillas = ('<label><input type="checkbox" name="rosca"> Quiero encargar una rosca</label>'
+                    '<label><input type="radio" name="tamano" value="chica"> Chica</label>')
+        solo_casillas = _revisar_texto(BUENA.replace("</body>", casillas + "</body>"))
+        self.assertNotIn("pide estos datos", _mensajes(solo_casillas))
+        con_nombre = _revisar_texto(BUENA.replace("</body>", casillas + '<input placeholder="Tu nombre"></body>'))
+        self.assertIn("pide estos datos: Tu nombre.", _mensajes(con_nombre, "nota"))
+
+    def test_casillas_siguen_revisando_etiqueta(self):
+        r = _revisar_texto(BUENA.replace("</body>", '<input type="checkbox" name="rosca"></body>'))
+        self.assertIn("sin etiqueta", _mensajes(r, "aviso"))
+
     def test_markdown_y_main(self):
         r = _revisar_texto(BUENA)
         self.assertIn("# Revisión automática", a_markdown(r, "index.html"))

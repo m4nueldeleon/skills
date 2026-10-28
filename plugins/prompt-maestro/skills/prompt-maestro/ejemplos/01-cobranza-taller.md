@@ -16,17 +16,17 @@ Esta es la conversación completa, tal como la conduce la skill, con el resultad
 a) Cliente de años, lo quiero conservar
 b) Cliente nuevo o de una sola vez
 c) Ya le cobré antes y no contesta
-O dime «tú decide».
+Si son dos, dime las dos. O dime «tú decide».
 
-**Persona:** la a. es don Beto, tiene como 4 años viniendo, siempre habia pagado. la semana pasada le mande un whats y me dejo en visto
+**Persona:** la a y la c. es don Beto, tiene como 4 años viniendo, siempre habia pagado. la semana pasada le mande un whats y me dejo en visto
 
 **Claude:** **3 de 3:** ¿Cómo te puede pagar?
 a) Por transferencia
 b) Pasando al taller
 c) Cualquiera de las dos
-Y si no puede pagar todo junto, ¿aceptarías en partes? O dime «tú decide».
+O dime «tú decide».
 
-**Persona:** cualquiera de las dos. y si, en partes si se puede
+**Persona:** cualquiera de las dos. y si no puede todo junto, en partes si se puede
 
 **Claude:**
 

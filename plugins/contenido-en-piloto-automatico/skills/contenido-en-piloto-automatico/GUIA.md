@@ -53,8 +53,10 @@ de Gemini. Funciona igual, porque solo son instrucciones.
    Quiero empezar mi banco de ideas de contenido.
    ```
 
-2. Claude te hace 4 preguntas, una por una: qué vendes y a quién, qué quieres vender estas semanas, en qué redes
-   publicas y cuántas veces por semana, y qué temas te sirven. Si no sabes cuántas veces publicar, empieza con 3.
+2. Claude te hace hasta 4 preguntas, una por una: qué vendes y a quién, qué quieres vender estas semanas, en qué
+   redes publicas y cuántas veces por semana, y qué temas te sirven (y si a tus clientes les hablas de tú o de
+   usted). Si en tu primer mensaje ya le contaste algo, se salta esa pregunta. Si no sabes cuántas veces publicar,
+   empieza con 3.
 3. Al final te entrega tu **ficha**: un bloque de texto que empieza con `=== MI BANCO DE IDEAS ===`. Toca el botón de
    copiar.
 4. Abre las notas de tu celular (o un documento de Word o de Google), crea una nota llamada **Banco de ideas** y
@@ -66,7 +68,7 @@ de Gemini. Funciona igual, porque solo son instrucciones.
 
 | Escribe | Qué te devuelve |
 |---|---|
-| **IDEA** y lo que sea | Tus ideas ordenadas, listas para pegar en tu banco |
+| **IDEA** (o IDEAS) y lo que sea | Tus ideas ordenadas, listas para pegar en tu banco |
 | **BANCO** | Tu banco ordenado: qué conviene grabar primero |
 | **CALENDARIO** | La semana completa, con guiones y textos |
 | **RESULTADOS** | Lo que funcionó y qué cambiar la semana que viene |

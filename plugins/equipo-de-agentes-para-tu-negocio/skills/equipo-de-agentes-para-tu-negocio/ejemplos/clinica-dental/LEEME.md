@@ -6,7 +6,7 @@ precios, horarios y mensajes son ficticios.
 
 | Carpeta o archivo | Qué es | Paso de la skill |
 |---|---|---|
-| `1-entrevista.md` | La entrevista de 7 preguntas y la propuesta del equipo | Pasos 1 a 3 |
+| `1-entrevista.md` | La entrevista (hasta 7 preguntas) y la propuesta del equipo | Pasos 1 a 3 |
 | `2-app/FICHA-DEL-NEGOCIO.md` | La ficha que se sube a cada Proyecto | Paso 5A |
 | `2-app/EQUIPO-EN-LA-APP.md` | Las instrucciones de los 5 Proyectos, el paso a paso y la opción de un solo proyecto | Paso 5A |
 | `2-app/PRUEBA-APP.md` | La prueba del proyecto de atención a pacientes | Paso 5A |

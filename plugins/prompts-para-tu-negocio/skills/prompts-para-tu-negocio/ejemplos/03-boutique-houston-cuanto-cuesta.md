@@ -97,7 +97,7 @@ Si algo está mal, corrígeme. Estos son tus 36 prompts:
 Escríbeme el número, o cuéntame qué te urge y yo escojo.
 
 **Persona:**
-el 13. me escriben precio y ya no contestan
+el 13. me escriben precio y ya no contestan. yo les aparto la prenda un dia para que vengan a medirsela
 
 **Claude:**
 Va el 13. Antes, dos preguntas.
@@ -183,11 +183,10 @@ Hola, ¿cómo estás? Soy [TU NOMBRE], de [NOMBRE DE LA TIENDA]. Gracias por esc
 Hi, how are you? This is [YOUR NAME] from [STORE NAME]. Thanks for reaching out. Quick rundown: blouses run 25 to 45 dollars, dresses 45 to 90, and sets 60 to 110, in sizes small to 3X. Tell me which style you liked and your size, and I'll let you know right away if I have it. I can also hold it for you so you can come try it on. We're at [PLAZA NAME]. Have a great day!
 ```
 
-**Supuse:** que les hablas a tus clientas de forma cercana, que puedes apartar prendas y que tus clientas pueden ir a
-la plaza a probárselas.
+**Supuse:** que les hablas a tus clientas de forma cercana.
 
-**Revisa antes de usarlo:** llena los corchetes (precio exacto, tallas, dirección y horario) y, si no apartas
-prendas, quita esa parte. Nada de «última oportunidad» si no es verdad.
+**Revisa antes de usarlo:** llena los corchetes (precio exacto, tallas, dirección y horario). Nada de «última
+oportunidad» si no es verdad.
 
 **Siguiente paso:** el **17 · Seguimiento de 5 toques**, para las que aun así dejan de contestar. O el **19 ·
 Respuestas rápidas para WhatsApp Business**, para guardar estos mensajes y mandarlos con un atajo como /precio.
@@ -206,6 +205,7 @@ Mis clientes: señoras hispanas de 30 a 60 años, mexicanas y centroamericanas
 Dónde estoy: una plaza del lado este de Houston, Texas, Estados Unidos
 Mi precio: blusas de 25 a 45 dólares, vestidos de 45 a 90, conjuntos de 60 a 110
 Cómo les hablo a mis clientes: cercano
+Aparto la prenda un día para que vengan a medírsela.
 
 Mucha gente me escribe solo «¿precio?» o «info» y cuando le mando el número
 desaparece. Escríbeme:

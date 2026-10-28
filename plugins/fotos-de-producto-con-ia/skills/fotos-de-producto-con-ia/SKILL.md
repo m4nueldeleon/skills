@@ -150,6 +150,17 @@ alguien note que se usó IA; lo que sí depende de ti es que tu producto se vea 
 Si la persona pide varios códigos, entrega uno por uno con el mismo formato y recuérdale abrir un chat nuevo por
 producto para que no se mezclen.
 
+**Si no puede pegar el texto** (pasa seguido en el celular), resuélvelo en un solo mensaje, sin ir probando de a
+uno. Dale estas dos salidas: (1) en la caja de ChatGPT o Gemini, escribe una letra, deja el dedo sobre ella, toca
+«Pegar» y borra la letra (en Android también sirve el ícono de portapapeles del teclado); (2) abre chatgpt.com o
+gemini.google.com en el navegador del celular y pega ahí. Cierra con: «Si ninguna te sirve, dime y te doy una
+versión corta para escribir a mano». Esa versión corta mide unas 100 palabras y conserva sin cambios la
+descripción del producto con el texto de la etiqueta y esta frase: «El producto debe verse idéntico a mi foto:
+misma forma, colores, contenido, tapa, etiqueta y letras. No agregues ni quites nada» (en /menu: «El platillo debe
+verse como lo sirvo: mismo plato, misma porción y mismos ingredientes. No agregues nada»). Suma solo lo esencial del
+código (fondo o escena, el texto exacto del diseño o «Sin texto»), «Que parezca foto real, sin brillos, chispas ni
+neón» y el formato. Dile en una línea que la versión completa cuida mejor el producto.
+
 ## Paso 6. GPT o Gem propio
 
 Cuando la persona lo pida (u ofrécelo después del segundo prompt), entrega lo que dice `GPT-Y-GEM.md`: los pasos

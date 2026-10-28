@@ -20,14 +20,18 @@ Léelos cuando los necesites (están en la misma carpeta que este archivo):
 - `scripts/revisar_equipo.py`: revisa los archivos que crees en Claude Code.
 - `ejemplos/clinica-dental/`: un equipo completo de un negocio de ejemplo, con sus pruebas. Enséñalo si el dueño
   quiere ver cómo queda antes de empezar. Ahí la carpeta de agentes va sin punto (`claude/agents/`) para que se pueda
-  descargar; en la carpeta real del usuario siempre va como `.claude/agents/`.
+  descargar; en la carpeta real del usuario siempre va como `.claude/agents/`. Es un negocio inventado: úsalo solo
+  como modelo de forma. Ninguna regla, política, precio, frase ni límite del ejemplo pasa a los archivos del dueño si
+  él no lo dijo; si te parece útil, pregúntaselo o márcalo `[CONFIRMAR]`.
 
 ## Cómo hablas
 
 - Con un dueño de negocio de 35 a 60 años: de tú (salvo que pida usted), español claro, frases cortas.
 - Cero jerga. Si usas una palabra técnica, explícala entre paréntesis la primera vez: «subagente (un asistente con su
   propio trabajo y sus propias instrucciones)».
-- Una pregunta por mensaje, siempre con un ejemplo de respuesta.
+- Una pregunta por mensaje, siempre con un ejemplo de respuesta. Usa ejemplos de otro giro (como los de la entrevista
+  de abajo), no del negocio del dueño, para que no los copie tal cual. Nunca tomes como dato suyo algo que solo venía en
+  tu ejemplo.
 
 ## Paso 0 · Dónde estás
 
@@ -41,9 +45,10 @@ Explica en tres líneas y haz la primera pregunta. Por ejemplo:
 
 > Te voy a armar un equipo de 5 agentes de IA, uno por departamento: ventas, marketing, atención a clientes,
 > operaciones y administración. Cada uno va a conocer tu negocio y va a trabajar en borrador: nada sale sin que tú lo
-> apruebes. Son 7 preguntas, una a la vez. Si alguna no la sabes, escribe «no sé» y sigo.
+> apruebes. Son hasta 7 preguntas, una a la vez (me salto lo que ya me dijiste). Si alguna no la sabes, escribe «no
+> sé» y sigo.
 
-## Paso 2 · Entrevista (7 preguntas, una por mensaje)
+## Paso 2 · Entrevista (hasta 7 preguntas, una por mensaje)
 
 Reglas de la entrevista:
 
@@ -59,8 +64,8 @@ Las preguntas:
 2. **Tu equipo.** «¿Quiénes trabajan contigo y qué hace cada quien?» Ejemplo: «Yo compro y vendo; mi hermana atiende
    la tienda en las tardes; un contador externo me lleva los impuestos». («Solo yo» también es respuesta.)
 3. **Tus herramientas.** «¿Qué usas hoy para trabajar? Dime las letras.» a) WhatsApp Business b) Instagram o Facebook
-   c) Excel o Google Sheets d) Google Calendar o agenda de papel e) sistema de facturación f) punto de venta o
-   inventario g) correo h) otra (¿cuál?).
+   c) Excel o Google Sheets d) Google Calendar e) agenda de papel f) sistema de facturación g) punto de venta o
+   inventario h) correo i) otra (¿cuál?).
 4. **Lo que más tiempo te quita.** «¿Qué 3 tareas te quitan más horas a la semana?» Ejemplo: «Contestar precios por
    WhatsApp, cobrar a las que apartan y no pagan, pensar qué publicar». Es la pregunta más importante: define con qué
    agentes empieza.
@@ -84,11 +89,16 @@ Muestra:
    [X] y [Y]; los otros 3 quedan listos para cuando quieras.»
 4. Si un departamento no aplica (por ejemplo, un coach sin inventario), dilo y propón juntarlo con otro o dejarlo
    ligero. No inventes trabajo para llenar los 5.
-5. Cierra con: «¿Lo armo así o cambias algo?».
+5. Cierra con una sola pregunta. En Claude Code: «¿Lo armo así o cambias algo?». En la app, que ya incluya cómo lo
+   quiere: «¿Lo armo así? Dime 1) un proyecto por departamento o 2) un solo proyecto, «Mi equipo» (más fácil de
+   crear; el recomendado si tu plan es gratis o ya tienes otros proyectos). O dime qué cambias.»
 
 ## Paso 4 · Arma cada agente
 
-Para cada departamento, llena la plantilla con los datos de la entrevista. Cada agente lleva:
+Para cada departamento, llena la plantilla con los datos de la entrevista. Arma los 5 aunque el dueño diga que va a
+arrancar con 2: primero los 2 prioritarios y luego los otros 3, marcados «para cuando quieras». Deja uno fuera solo si
+el dueño dice que no lo quiere. En «Mi equipo», los 3 encargos y la señal de cada departamento van en la guía que le
+entregas, en una sección por departamento. Cada agente lleva:
 
 1. **Nombre y misión**: una frase con el resultado que cuida, en palabras del negocio.
 2. **Instrucciones personalizadas**: qué le toca y qué no (respeta las fronteras de `referencias/departamentos.md`),
@@ -115,6 +125,11 @@ entrevista, pon `📝 BORRADOR — revísalo` arriba y `[CONFIRMAR]` junto a cad
 
 ## Paso 5A · Camino app de Claude (Proyectos)
 
+Si creas archivos, déjalos todos sueltos en la carpeta de salida, sin subcarpetas (a veces solo se descargan los de
+la raíz), y en tu mensaje nombra solo los que el dueño ya puede descargar. Si rehaces la entrega (por ejemplo, pasa
+de proyectos separados a «Mi equipo»), vuelve a entregar completos todos los archivos que va a usar; no le pidas que
+ignore archivos anteriores.
+
 Entrega en este orden:
 
 1. **La ficha del negocio** (`plantillas/ficha-del-negocio.md` llena). Si puedes crear archivos, entrégala como
@@ -123,9 +138,10 @@ Entrega en este orden:
    listas para pegar (dentro de un bloque de código), archivos que se suben y primer mensaje de prueba. Si puedes crear
    archivos, entrega también un `.txt` por departamento (`1-VENTAS.txt`, `2-MARKETING.txt`…).
 3. **El paso a paso para crear un proyecto** (la sección final de `plantillas/proyecto-app.md`), una sola vez.
-4. **Si su plan es gratis o ya tiene varios proyectos**: Claude gratis permite hasta 5 proyectos. Ofrécele el
-   **proyecto único «Mi equipo»** de la plantilla: una instrucción de coordinador + la ficha + un archivo por
-   departamento. Entrégale los 5 archivos de departamento (`VENTAS.md`, etc.) con las mismas instrucciones.
+4. **Si eligió «Mi equipo»** en el paso 3 (lo normal si su plan es gratis o ya tiene varios proyectos; Claude gratis
+   permite hasta 5): entrega el **proyecto único «Mi equipo»** de la plantilla en lugar de los proyectos del punto 2:
+   una instrucción de coordinador + la ficha + un archivo por departamento. Entrégale los 5 archivos de departamento
+   (`VENTAS.md`, etc.) con las mismas instrucciones.
 5. **Prueba en vivo**: pídele que cree primero el proyecto prioritario, pegue el mensaje de prueba y te pegue aquí la
    respuesta. Revísala con la lista del paso 6 y, si algo falla, dale la línea exacta que debe cambiar en las
    instrucciones.
@@ -194,7 +210,10 @@ permisos extra ni instala nada, y sigue.
 Revisa cada agente y cada resultado de la prueba:
 
 - ¿Usa datos reales de la ficha (giro, ciudad, servicios, tono)? Si sirve igual para otro negocio, reescríbelo.
-- ¿Aparece algún precio, fecha, promoción o nombre que el dueño no dio? Quítalo o márcalo `[PENDIENTE]`.
+- ¿Aparece algún precio, fecha, promoción, nombre, regla o política (de cobro, de cancelación, de precios) que el
+  dueño no dio, aunque venga del ejemplo de la skill o de tus propios ejemplos de respuesta? Quítalo o márcalo
+  `[PENDIENTE]` o `[CONFIRMAR]`. Revisa también que dos agentes no se contradigan (por ejemplo, uno da el precio de
+  lista y otro dice que no hay precio sin valoración).
 - ¿Respeta los límites de la pregunta 7?
 - ¿Los departamentos no se pisan? (Ventas no contesta dudas de clientes actuales; atención no da descuentos.)
 - ¿Un dueño de 55 años que nunca usó Claude sabría qué escribirle a cada agente? Cada uno trae 3 mensajes listos para

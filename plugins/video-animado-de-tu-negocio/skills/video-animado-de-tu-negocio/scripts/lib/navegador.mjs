@@ -87,7 +87,14 @@ export async function abrirVideo(nav, url) {
     destino.push(`No cargó ${r.url()} (${r.failure()?.errorText || "sin detalle"})`);
   });
   page.on("response", (r) => { if (r.status() >= 400) errores.push(`HTTP ${r.status()}: ${r.url()}`); });
-  await page.goto(url, { waitUntil: "load", timeout: 30000 });
+  // «load» espera a Google Fonts: sin internet (o con la red bloqueada) nunca llega. Se abre con «domcontentloaded»
+  // y se le da un tiempo razonable a que cargue todo (fotos, logo, letras); si no, se sigue con la letra de respaldo.
+  await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
+  await page.waitForLoadState("load", { timeout: 12000 }).catch(async () => {
+    avisosRed.push("La página no terminó de cargar en 12 s (¿sin internet?): sigo con la letra de respaldo.");
+    // Corta lo que sigue colgado (la hoja de Google Fonts): si no, las capturas se quedan esperando la letra.
+    await page.evaluate(() => window.stop());
+  });
   const ok = await page.waitForFunction(() => typeof window.seek === "function" && window.DURACION > 0, null, { timeout: 15000 })
     .then(() => true, () => false);
   if (!ok) throw new Error(`La página no cumple el contrato (window.seek y window.DURACION).\n  ${errores.join("\n  ")}`);

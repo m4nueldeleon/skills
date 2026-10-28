@@ -69,7 +69,9 @@ Claude gratis permite hasta 5 proyectos. Si ya tienes otros, o prefieres no crea
 
 - **Nombre:** `Mi equipo · [Negocio]`
 - **Archivos:** `FICHA-DEL-NEGOCIO.md` + un archivo por departamento con sus instrucciones (`VENTAS.md`, `MARKETING.md`,
-  `ATENCION-A-CLIENTES.md`, `OPERACIONES.md`, `ADMINISTRACION.md`) + tus archivos de datos.
+  `ATENCION-A-CLIENTES.md`, `OPERACIONES.md`, `ADMINISTRACION.md`) + tus archivos de datos. Todos sueltos, sin
+  subcarpetas.
+- **Guía para el dueño:** una sección por departamento con sus 3 mensajes listos para copiar y su «Te sirve si».
 - **Instrucciones del proyecto:**
 
 ```text

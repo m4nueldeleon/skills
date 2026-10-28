@@ -10,24 +10,26 @@ quita es contestar WhatsApp, confirmar citas y cobrar las mensualidades de ortod
 
 **Claude (paso 1):** Te voy a armar un equipo de 5 agentes de IA, uno por departamento: ventas, marketing, atención a
 clientes, operaciones y administración. Cada uno va a conocer tu clínica y va a trabajar en borrador: nada sale sin
-que tú lo apruebes. Son 7 preguntas, una a la vez. Si alguna no la sabes, escribe «no sé» y sigo.
+que tú lo apruebes. Son hasta 7 preguntas, una a la vez (me salto lo que ya me dijiste). Si alguna no la sabes,
+escribe «no sé» y sigo.
 
 Ya me dijiste dónde estás y lo que más tiempo te quita, así que me salto esa parte. Primera pregunta: **¿qué
-tratamientos das y a qué tipo de pacientes?** Por ejemplo: «Limpiezas y ortodoncia; familias de la zona».
+tratamientos das y a qué tipo de pacientes?** Por ejemplo, una estética diría: «Corte, tinte y uñas; señoras de la
+colonia».
 
 **Dueña:** Valoración, limpieza, resinas, extracciones sencillas, blanqueamiento, endodoncia y brackets. Familias de
 la zona, de 25 a 60 años más o menos. Mucho llega por recomendación y algo por Instagram.
 
-**Claude (pregunta 2):** **¿Quiénes trabajan contigo y qué hace cada quien?** Por ejemplo: «Yo atiendo; una
-recepcionista contesta WhatsApp».
+**Claude (pregunta 2):** **¿Quiénes trabajan contigo y qué hace cada quien?** Por ejemplo: «Yo corto y pinto; mi
+sobrina contesta WhatsApp y cobra».
 
 **Dueña:** Yo soy la Dra. Laura, atiendo de lunes a sábado. El Dr. Iván es el ortodoncista, viene martes y jueves en
 la tarde. Mónica en recepción: WhatsApp, agenda y caja. Karla es mi asistente: esterilización y material. Las facturas
 las hace mi contador.
 
 **Claude (pregunta 3):** **¿Qué usan hoy para trabajar? Dime las letras.** a) WhatsApp Business b) Instagram o
-Facebook c) Excel o Google Sheets d) Google Calendar o agenda de papel e) sistema de facturación f) punto de venta o
-inventario g) correo h) otra.
+Facebook c) Excel o Google Sheets d) Google Calendar e) agenda de papel f) sistema de facturación g) punto de venta o
+inventario h) correo i) otra.
 
 **Dueña:** a, b, c y d. Excel para los pagos de ortodoncia. Instagram lo tenemos abandonado desde agosto.
 
@@ -82,6 +84,7 @@ Lo que entendí:
 Te recomiendo arrancar esta semana con **atención a pacientes** y **administración**: son tus tres tareas más
 pesadas. Los otros 3 quedan listos para cuando quieras.
 
-¿Lo armo así o cambias algo?
+¿Lo armo así? Dime 1) un proyecto por departamento o 2) un solo proyecto, «Mi equipo» (más fácil de crear; el
+recomendado si tu plan es gratis o ya tienes otros proyectos). O dime qué cambias.
 
-**Dueña:** Así. Lo quiero en Claude Code y también en la app para Mónica.
+**Dueña:** Así, un proyecto por departamento. Lo quiero en Claude Code y también en la app para Mónica.
