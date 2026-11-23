@@ -62,18 +62,37 @@ def texto_sobre(fondo: str) -> str:
 def asegurar_contraste(color: str, fondo: str, minimo: float = 4.5) -> str:
     """Devuelve `color` o la versión más cercana que cumpla el contraste mínimo.
 
-    Oscurece sobre fondos claros y aclara sobre fondos oscuros, en pasos pequeños,
-    para que el color siga pareciéndose al de la marca.
+    Lo lleva, en pasos pequeños, hacia el blanco o el casi negro (el que más contraste con `fondo`),
+    para que el color siga pareciéndose al de la marca. Sobre un color medio, como un rosa, eso es
+    hacia el casi negro: aclarar ahí nunca llega a 4.5:1.
     """
     color = normalizar(color)
     if contraste(color, fondo) >= minimo:
         return color
-    destino = NEGRO if luminancia(fondo) > 0.35 else BLANCO
+    destino = texto_sobre(fondo)
     for paso in range(1, 21):
         candidato = mezclar(color, destino, paso / 20)
         if contraste(candidato, fondo) >= minimo:
             return candidato
     return destino
+
+
+def par_legible(fondo: str, minimo: float = 4.5) -> tuple[str, str]:
+    """(fondo, letra) que se leen con al menos `minimo` de contraste.
+
+    Primero prueba letra blanca o casi negra sobre el color tal cual. Los colores de marca medios
+    (un rosa, un naranja, un turquesa) a veces no llegan a 4.5:1 con ninguna de las dos: entonces
+    oscurece el fondo en pasos pequeños, para que siga pareciéndose al de la marca, y usa letra blanca.
+    """
+    fondo = normalizar(fondo)
+    letra = texto_sobre(fondo)
+    if contraste(letra, fondo) >= minimo:
+        return fondo, letra
+    for paso in range(1, 41):
+        candidato = mezclar(fondo, NEGRO, paso / 40)
+        if contraste(BLANCO, candidato) >= minimo:
+            return candidato, BLANCO
+    return NEGRO, BLANCO
 
 
 def distintos(a: str, b: str, minimo: float = 1.6) -> bool:

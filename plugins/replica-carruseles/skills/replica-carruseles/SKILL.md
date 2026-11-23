@@ -161,9 +161,12 @@ cierre; 3 a 5 hashtags específicos de su giro y su ciudad.
 4. **Dónde guardar:** en Cowork, en la carpeta que te dieron, dentro de `carruseles/AAAA-MM-DD-tema/`. En el chat,
    trabaja en tu carpeta de trabajo y al final entrega los PNG y `caption.txt` como archivos descargables.
 5. **Lee el reporte del script.** `✖ No cupo` = recorta ese texto y vuelve a correrlo. `!` = avisos (palabras de más,
-   emojis quitados, foto que no encontró): corrígelos.
+   láminas con el mismo título o el mismo texto, emojis quitados, foto que no encontró): corrígelos. Cada aviso nombra
+   la lámina por su lugar en el carrusel y su título: «Lámina 5 de 9 («03 · Te decides solo por la foto»)» es la quinta
+   imagen (`05.png`); el «03» es el número del punto, no el de la lámina. Busca la lámina por su título antes de
+   recortar, y después confirma que ningún texto quedó repetido.
 6. **Mira las imágenes de verdad:** abre `revision.jpg` y, a tamaño completo, la portada, una lámina de adentro y el
-   cierre. Si algo se ve mal, corrige el JSON y vuelve a correr.
+   cierre. Si algo se ve mal, corrige el JSON y vuelve a correr. Si no puedes ver imágenes, sigue el plan B del paso 6.
 7. Si Pillow no se pudo instalar, el script deja `carrusel.html` como vista previa. Dile con honestidad que esta vez
    no salieron los PNG y que lo intente en otra conversación o en Cowork; no le pidas que haga capturas de pantalla.
 
@@ -178,6 +181,11 @@ Repasa esta lista y corrige lo que falle antes de entregar:
 5. ¿Hay alguna cifra, testimonio, precio o promesa que no se pueda respaldar? Quítalo.
 6. ¿El cierre pide una sola acción que la persona sí puede atender hoy?
 7. ¿Nada cortado, encimado ni tapando una cara?
+
+**Plan B, si no puedes ver las imágenes que generaste:** relee `carrusel.json` lámina por lámina y compara número,
+título y texto contra el plan antes de entregar: que cada lámina esté en su lugar, que ningún título ni texto se repita
+y que el recorte quedó en la lámina que era. Dile a la persona que esta vez no pudiste ver las imágenes y que las revise
+antes de publicar.
 
 ## Paso 7 · Entrega, publicación y medición
 

@@ -71,6 +71,70 @@ class Colores(unittest.TestCase):
                 self.assertGreaterEqual(colores.contraste(c.sobre_boton, c.boton), 3.0, (estilo, principal))
 
 
+class Acento(unittest.TestCase):
+    """El acento es el color más vivo de la marca; si es casi tan oscuro como la letra, va el principal."""
+
+    def test_acento_oscuro_usa_el_principal(self) -> None:
+        p = paleta.para("claro", "#E85D8F", "#2D2A32")
+        self.assertEqual(p.acento, colores.asegurar_contraste("#E85D8F", "#FFFFFF", 4.0))
+        self.assertGreaterEqual(colores.contraste(p.acento, p.texto), 3.0)
+        self.assertEqual(paleta.para("oscuro", "#E85D8F", "#2D2A32").acento, "#E85D8F")
+
+    def test_acento_vivo_se_respeta(self) -> None:
+        claro = paleta.para("claro", "#1F3A5F", "#F2B705")
+        self.assertEqual(claro.acento, colores.asegurar_contraste("#F2B705", "#FFFFFF", 4.0))
+        self.assertEqual(paleta.para("oscuro", "#B4432B", "#F2B705").acento, "#F2B705")
+        self.assertFalse(paleta.acento_cambiado("oscuro", "#B4432B", "#FFD400"))
+
+    def test_se_pierde(self) -> None:
+        self.assertTrue(paleta.se_pierde("#2D2A32", "#FFFFFF", paleta.TINTA_CLARA))
+        self.assertTrue(paleta.se_pierde("#101820", paleta.FONDO_OSCURO, paleta.TINTA_OSCURA))
+        self.assertFalse(paleta.se_pierde("#0E7C7B", "#FFFFFF", paleta.TINTA_CLARA))
+
+    def test_aviso_de_acento_oscuro(self) -> None:
+        oscuro = carrusel_minimo()
+        oscuro["marca"]["colores"] = {"principal": "#E85D8F", "acento": "#2D2A32"}
+        vivo = carrusel_minimo()
+        vivo["marca"]["colores"] = {"principal": "#1F3A5F", "acento": "#F2B705"}
+        with tempfile.TemporaryDirectory() as tmp:
+            _, avisos_oscuro = datos.cargar(escribir(Path(tmp), oscuro))
+            _, avisos_vivo = datos.cargar(escribir(Path(tmp), vivo))
+        self.assertTrue(any("#2D2A32" in a and "más vivo" in a for a in avisos_oscuro))
+        self.assertFalse(any("acento" in a for a in avisos_vivo))
+
+
+class ContrasteCierre(unittest.TestCase):
+    """Toda letra sobre un color sólido queda en 4.5:1 o más, también con colores de marca medios."""
+
+    MEDIOS = ("#E85D8F", "#C8507A", "#7A7A7A", "#D9558A", "#E0533A", "#2E86C1", "#0E7C7B", "#FFD400", "#1B1B1B")
+
+    def test_todo_par_de_colores_llega_a_45(self) -> None:
+        for estilo in ("claro", "oscuro", "foto"):
+            for principal in self.MEDIOS:
+                for acento in (None, "#2D2A32", "#F2B705"):
+                    for p in (paleta.para(estilo, principal, acento), paleta.para_cierre(estilo, principal, acento)):
+                        caso = (estilo, principal, acento)
+                        self.assertGreaterEqual(colores.contraste(p.texto, p.fondo), 4.5, caso)
+                        self.assertGreaterEqual(colores.contraste(p.suave, p.fondo), 4.5, caso)
+                        self.assertGreaterEqual(colores.contraste(p.sobre_resaltado, p.resaltado), 4.5, caso)
+                        self.assertGreaterEqual(colores.contraste(p.sobre_boton, p.boton), 4.5, caso)
+
+    def test_rosa_medio_lleva_letra_casi_negra(self) -> None:
+        cierre = paleta.para_cierre("claro", "#E85D8F", None)
+        self.assertEqual(cierre.fondo, "#E85D8F")
+        self.assertEqual(cierre.texto, colores.NEGRO)
+        caja = paleta.para_cierre("foto", "#E85D8F", None)  # el caso de la prueba: blanco sobre rosa a 3.3:1
+        self.assertNotEqual(caja.sobre_resaltado, colores.BLANCO)
+
+    def test_color_sin_letra_legible_oscurece_el_fondo(self) -> None:
+        self.assertLess(max(colores.contraste(colores.BLANCO, "#C8507A"),
+                            colores.contraste(colores.NEGRO, "#C8507A")), 4.5)
+        cierre = paleta.para_cierre("oscuro", "#C8507A", None)
+        self.assertEqual(cierre.texto, colores.BLANCO)
+        self.assertLess(colores.luminancia(cierre.fondo), colores.luminancia("#C8507A"))
+        self.assertLess(colores.contraste(cierre.fondo, "#C8507A"), 1.3)  # sigue pareciéndose a la marca
+
+
 class Texto(unittest.TestCase):
     def test_acentos(self) -> None:
         (parrafo,) = palabras("No esperes a que te *duela la* muela")
@@ -125,6 +189,38 @@ class Datos(unittest.TestCase):
             _, avisos = datos.cargar(escribir(Path(tmp), largo))
         self.assertTrue(any("Lámina 2" in a and "Recórtala" in a for a in avisos))
 
+    def test_aviso_de_largo_nombra_posicion_y_titulo(self) -> None:
+        # La prueba real: «Lámina 5» se confundió con el punto «05». El aviso dice posición, total y título.
+        largo = carrusel_minimo()
+        largo["laminas"][3] = {"tipo": "texto", "numero": "05", "titulo": "Te decides solo por la *foto*",
+                               "texto": " ".join(["palabra"] * 30)}
+        with tempfile.TemporaryDirectory() as tmp:
+            _, avisos = datos.cargar(escribir(Path(tmp), largo))
+        (aviso,) = [a for a in avisos if "palabras" in a and "tope" in a]
+        self.assertTrue(aviso.startswith("Lámina 4 de 5 («05 · Te decides solo por la foto»): tiene 36 palabras"))
+        self.assertIn("el tope es 25", aviso)
+        self.assertIn("04.png", aviso)
+
+    def test_titulo_repetido_avisa(self) -> None:
+        repetido = carrusel_minimo()
+        repetido["laminas"][3]["titulo"] = "guárdalo en tela."
+        with tempfile.TemporaryDirectory() as tmp:
+            _, avisos = datos.cargar(escribir(Path(tmp), repetido))
+        self.assertTrue(any(a.startswith("Lámina 2 de 5 («01 · Guárdalo en tela») y lámina 4 de 5")
+                            and "mismo título" in a for a in avisos), avisos)
+
+    def test_texto_repetido_avisa(self) -> None:
+        repetido = carrusel_minimo()
+        repetido["laminas"][4]["texto"] = "La bolsa de *plástico* lo ablanda"
+        with tempfile.TemporaryDirectory() as tmp:
+            _, avisos = datos.cargar(escribir(Path(tmp), repetido))
+        self.assertTrue(any("Lámina 2 de 5" in a and "lámina 5 de 5" in a and "mismo texto" in a for a in avisos))
+
+    def test_sin_repetidos_no_avisa(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            _, avisos = datos.cargar(escribir(Path(tmp), carrusel_minimo()))
+        self.assertFalse(any("mismo" in a for a in avisos))
+
     def test_json_roto(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             ruta = Path(tmp) / "carrusel.json"
@@ -148,6 +244,19 @@ class Dibujo(unittest.TestCase):
                         self.assertEqual(imagen.size, (1080, 1350))
                 self.assertTrue((Path(tmp) / "laminas" / "revision.jpg").is_file())
                 self.assertIn("#panaderia", (Path(tmp) / "laminas" / "caption.txt").read_text(encoding="utf-8"))
+
+    def test_cierre_con_color_medio_se_dibuja_legible(self) -> None:
+        from PIL import Image
+
+        medio = carrusel_minimo()
+        medio["marca"]["colores"] = {"principal": "#C8507A"}
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertEqual(carrusel.principal([str(escribir(Path(tmp), medio))]), 0)
+            with Image.open(Path(tmp) / "laminas" / "05.png") as imagen:
+                esquina = imagen.convert("RGB").getpixel((8, 8))
+        fondo = paleta.para_cierre("claro", "#C8507A", None).fondo
+        self.assertEqual(esquina, colores.a_rgb(fondo))
+        self.assertGreaterEqual(colores.contraste(colores.BLANCO, fondo), 4.5)
 
     def test_texto_que_no_cabe_devuelve_1(self) -> None:
         enorme = carrusel_minimo()

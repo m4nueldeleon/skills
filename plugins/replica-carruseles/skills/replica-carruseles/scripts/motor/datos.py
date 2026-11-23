@@ -6,10 +6,11 @@ Los avisos (que conviene corregir, pero no impiden dibujar) se devuelven en una 
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from . import colores
+from . import colores, paleta
 from .fuentes import Fuentes, elegir
 
 TIPOS = ("portada", "texto", "lista", "foto", "cierre")
@@ -19,6 +20,7 @@ COLOR_POR_OMISION = "#1F3A5F"
 MAX_LAMINAS = 20  # lo máximo que acepta Instagram en un carrusel
 MAX_PALABRAS = 25
 MAX_PALABRAS_LISTA = 35
+LARGO_NOMBRE = 48  # caracteres del título que se citan en los avisos
 
 
 class ErrorCarrusel(Exception):
@@ -58,6 +60,25 @@ def contar_palabras(lamina: dict) -> int:
     return sum(len(str(p).replace("*", " ").split()) for p in partes if p)
 
 
+def nombre_lamina(lamina: dict) -> str:
+    """Cómo se reconoce la lámina por su contenido: «03 · Te decides solo por la foto».
+
+    El «03» es el número del punto (campo `numero`), que casi nunca coincide con la posición de la lámina.
+    """
+    texto = str(lamina.get("titulo") or lamina.get("texto") or "")
+    texto = " ".join(texto.replace("*", "").split())
+    if len(texto) > LARGO_NOMBRE:
+        texto = texto[:LARGO_NOMBRE].rstrip() + "…"
+    numero = str(lamina.get("numero") or "").strip()
+    return " · ".join(p for p in (numero, texto) if p)
+
+
+def etiqueta(lamina: dict, n: int, total: int) -> str:
+    """«Lámina 5 de 9 («03 · Te decides solo por la foto»)»: la posición es la del archivo 05.png."""
+    nombre = nombre_lamina(lamina) if isinstance(lamina, dict) else ""
+    return f"Lámina {n} de {total}" + (f" («{nombre}»)" if nombre else "")
+
+
 def _leer_json(ruta: Path) -> dict:
     if not ruta.is_file():
         raise ErrorCarrusel(f"No encuentro el archivo {ruta}")
@@ -70,7 +91,7 @@ def _leer_json(ruta: Path) -> dict:
     return datos
 
 
-def _marca(datos: dict, avisos: list) -> dict:
+def _marca(datos: dict, avisos: list, estilo: str, fondo: str | None) -> dict:
     marca = dict(datos.get("marca") or {})
     colores_in = dict(marca.get("colores") or {})
     if not colores_in.get("principal"):
@@ -80,6 +101,9 @@ def _marca(datos: dict, avisos: list) -> dict:
         acento = colores.normalizar(colores_in["acento"]) if colores_in.get("acento") else None
     except ValueError as error:
         raise ErrorCarrusel(f"Color de la marca: {error}") from error
+    if paleta.acento_cambiado(estilo, principal, acento, fondo):
+        avisos.append(f"El color de acento {acento} es casi tan oscuro como la letra y no resaltaría: en la palabra "
+                      f"clave usé el principal {principal}. El acento es el color más vivo de la marca, no el más oscuro.")
     usuario = str(marca.get("usuario") or "").strip()
     if usuario and not usuario.startswith("@"):
         usuario = "@" + usuario
@@ -106,36 +130,62 @@ def _diseno(datos: dict, estilo: str) -> Diseno:
                   fondo=colores.normalizar(fondo) if fondo else None)
 
 
-def _ruta_foto(valor: object, base: Path, n: int, avisos: list) -> Path | None:
+def _ruta_foto(valor: object, base: Path, nombre: str, avisos: list) -> Path | None:
     if not valor:
         return None
     ruta = (base / str(valor)).expanduser()
     if ruta.is_file():
         return ruta
-    avisos.append(f"Lámina {n}: no encontré la foto «{valor}»; la dibujé sin foto.")
+    avisos.append(f"{nombre}: no encontré la foto «{valor}»; la dibujé sin foto.")
     return None
 
 
-def _lamina(cruda: object, n: int, base: Path, avisos: list) -> dict:
+def _lamina(cruda: object, n: int, total: int, base: Path, avisos: list) -> dict:
+    nombre = etiqueta(cruda, n, total)
     if not isinstance(cruda, dict):
-        raise ErrorCarrusel(f"La lámina {n} debe ser un objeto con «tipo»")
+        raise ErrorCarrusel(f"{nombre} debe ser un objeto con «tipo»")
     tipo = cruda.get("tipo")
     if tipo not in TIPOS:
-        raise ErrorCarrusel(f"Lámina {n}: el tipo «{tipo}» no existe. Usa: {', '.join(TIPOS)}")
-    lamina = {**cruda, "n": n, "foto": _ruta_foto(cruda.get("foto"), base, n, avisos)}
+        raise ErrorCarrusel(f"{nombre}: el tipo «{tipo}» no existe. Usa: {', '.join(TIPOS)}")
+    lamina = {**cruda, "n": n, "foto": _ruta_foto(cruda.get("foto"), base, nombre, avisos)}
     if tipo in ("portada", "cierre") and not lamina.get("titulo"):
-        raise ErrorCarrusel(f"Lámina {n} ({tipo}) necesita «titulo»")
+        raise ErrorCarrusel(f"{nombre} ({tipo}) necesita «titulo»")
     if tipo == "texto" and not (lamina.get("titulo") or lamina.get("texto")):
-        raise ErrorCarrusel(f"Lámina {n} (texto) necesita «titulo» o «texto»")
+        raise ErrorCarrusel(f"{nombre} (texto) necesita «titulo» o «texto»")
     if tipo == "lista" and not (2 <= len(lamina.get("items") or []) <= 6):
-        raise ErrorCarrusel(f"Lámina {n} (lista) necesita entre 2 y 6 «items»")
+        raise ErrorCarrusel(f"{nombre} (lista) necesita entre 2 y 6 «items»")
     if tipo == "foto" and lamina["foto"] is None:
         lamina = {**lamina, "tipo": "texto"}
     tope = MAX_PALABRAS_LISTA if tipo == "lista" else MAX_PALABRAS
     palabras = contar_palabras(lamina)
     if palabras > tope:
-        avisos.append(f"Lámina {n}: tiene {palabras} palabras (lo recomendable es {tope} o menos). Recórtala.")
+        avisos.append(f"{nombre}: tiene {palabras} palabras; el tope es {tope}. Recórtala "
+                      f"(es la que sale como {n:02d}.png).")
     return lamina
+
+
+def _clave(valor: object) -> str:
+    """El texto sin asteriscos, signos, mayúsculas ni espacios de más: para encontrar repetidos."""
+    sin_signos = re.sub(r"[^\w\s]", " ", str(valor or "").replace("*", " ").lower())
+    return " ".join(sin_signos.split())
+
+
+def _revisar_repetidos(laminas: list, avisos: list) -> None:
+    """Dos láminas con el mismo título o el mismo texto casi siempre son un error al copiar o recortar."""
+    total = len(laminas)
+    for campo, que in (("titulo", "el mismo título"), ("texto", "el mismo texto")):
+        vistas: dict = {}
+        for lam in laminas:
+            clave = _clave(lam.get(campo))
+            if not clave:
+                continue
+            if clave not in vistas:
+                vistas[clave] = lam
+                continue
+            primera = vistas[clave]
+            otra = etiqueta(lam, lam["n"], total)
+            avisos.append(f"{etiqueta(primera, primera['n'], total)} y {otra[0].lower()}{otra[1:]} tienen {que}. "
+                          "Cada lámina lleva su propia idea: corrige una de las dos.")
 
 
 def _revisar_orden(laminas: list, avisos: list) -> None:
@@ -169,8 +219,10 @@ def cargar(ruta_json: Path, estilo_forzado: str | None = None) -> tuple[Carrusel
     estilo = estilo_forzado or datos.get("estilo", "claro")
     if estilo not in ESTILOS:
         raise ErrorCarrusel(f"El estilo «{estilo}» no existe. Usa: {', '.join(ESTILOS)}")
-    laminas = [_lamina(c, i + 1, base, avisos) for i, c in enumerate(datos["laminas"])]
+    total = len(datos["laminas"])
+    laminas = [_lamina(c, i + 1, total, base, avisos) for i, c in enumerate(datos["laminas"])]
     _revisar_orden(laminas, avisos)
+    _revisar_repetidos(laminas, avisos)
     hashtags = [str(h).strip() for h in datos.get("hashtags") or [] if str(h).strip()]
     hashtags = [h if h.startswith("#") else "#" + h for h in hashtags]
     caption = str(datos.get("caption") or "")
@@ -179,7 +231,8 @@ def cargar(ruta_json: Path, estilo_forzado: str | None = None) -> tuple[Carrusel
         fuentes = elegir(datos.get("fuentes"), estilo, base)
     except ValueError as error:
         raise ErrorCarrusel(str(error)) from error
-    carrusel = Carrusel(marca=_marca(datos, avisos), estilo=estilo, diseno=_diseno(datos, estilo),
+    diseno = _diseno(datos, estilo)
+    carrusel = Carrusel(marca=_marca(datos, avisos, estilo, diseno.fondo), estilo=estilo, diseno=diseno,
                         fuentes=fuentes, laminas=tuple(laminas), base=base,
                         numerar=bool(datos.get("numerar", True)), caption=caption,
                         hashtags=tuple(hashtags), credito=str(datos.get("credito") or "").strip())

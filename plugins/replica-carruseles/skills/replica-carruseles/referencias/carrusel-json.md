@@ -34,7 +34,7 @@ está el JSON. Ejemplo completo: `ejemplos/consultorio-dental/carrusel.json`.
 | Campo | Obligatorio | Qué es |
 |---|---|---|
 | `marca.colores.principal` | Sí (si falta, usa azul marino y avisa) | Color de la marca en hexadecimal (`#0E7C7B`) |
-| `marca.colores.acento` | No | Segundo color para la palabra clave. Si no hay, se usa el principal |
+| `marca.colores.acento` | No | El color más vivo de la marca, el que resalta (un coral, un amarillo, un verde brillante), no el más oscuro: va en la palabra clave y los números. Si no hay, se usa el principal. Si es casi tan oscuro como la letra, el script usa el principal y lo avisa |
 | `marca.usuario` | Recomendado | El @ que va al pie de cada lámina y en el cierre |
 | `marca.nombre` | Recomendado | Va en el cierre, debajo del @ |
 | `marca.logo` | No | PNG (mejor con fondo transparente); va arriba del cierre si el cierre no tiene foto |
@@ -82,7 +82,12 @@ error (el mensaje dice cuál).
 
 Lo que el script hace solo: baja la letra si un texto no cabe (hasta un mínimo legible), empareja los renglones de los
 titulares, evita palabras sueltas al final, cuida el contraste de los colores, quita emojis y cambia los signos que la
-tipografía no tiene. Si no hay Pillow, intenta instalarla con `pip`; si no puede, deja `carrusel.html` como vista
+tipografía no tiene. Toda letra sobre un color sólido (el fondo del cierre, la franja del estilo `foto`, la caja de la
+palabra clave, el botón) queda en 4.5:1 o más: con un color de marca medio, como un rosa, usa letra casi negra, y si ni
+así alcanza, oscurece un poco el fondo y usa letra blanca.
+
+Los avisos nombran cada lámina por su lugar y su título («Lámina 5 de 9 («03 · Te decides solo por la foto»)» es
+`05.png`) y avisan si dos láminas tienen el mismo título o el mismo texto. Si no hay Pillow, intenta instalarla con `pip`; si no puede, deja `carrusel.html` como vista
 previa.
 
 Pruebas del motor: `python3 -m unittest scripts/test_carrusel.py`.

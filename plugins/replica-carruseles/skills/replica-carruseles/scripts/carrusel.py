@@ -98,13 +98,14 @@ def escribir_caption(carrusel: Carrusel, salida: Path) -> Path:
 
 
 def _reporte(carrusel: Carrusel, registros: list, avisos: list) -> int:
-    from motor.datos import contar_palabras
+    from motor.datos import contar_palabras, nombre_lamina
 
     falla = False
     for lam, reg in zip(carrusel.laminas, registros):  # noqa: B905 (mismo largo; strict pide Python 3.10)
         tam = reg.tamanos.get("titulo") or reg.tamanos.get("items") or reg.tamanos.get("texto")
         detalle = f"letra del título {tam} px · " if tam else ""
-        print(f"  {reg.n:02d}.png · {lam['tipo']} · {detalle}{contar_palabras(lam)} palabras")
+        print(f"  {reg.n:02d}.png · lámina {reg.n} de {len(registros)} · {lam['tipo']} · «{nombre_lamina(lam)}» · "
+              f"{detalle}{contar_palabras(lam)} palabras")
         for aviso in dict.fromkeys(reg.avisos):
             print(f"     ! {aviso}")
         if reg.no_cupo:

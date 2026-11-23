@@ -38,7 +38,8 @@
 
 ## 5. Cómo te ves
 
-- **Colores de marca:** [en hexadecimal, por ejemplo #0E7C7B. Si está vacío, propónme dos y espera a que escoja]
+- **Colores de marca:** [en hexadecimal, por ejemplo #0E7C7B. Si está vacío, propónme dos y espera a que escoja. Si son
+  dos, el principal es el de la marca y el acento es el más vivo, el que resalta; no el más oscuro]
 - **Estilo base que me gusta:** [claro / oscuro / foto]
 - **Logo:** [pon tu logo en esta carpeta con el nombre logo.png]
 - **Fotos reales:** [pon de 3 a 10 fotos tuyas o de tu negocio en esta carpeta]
