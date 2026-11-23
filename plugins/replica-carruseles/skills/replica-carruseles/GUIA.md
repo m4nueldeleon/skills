@@ -36,14 +36,17 @@ necesitas un plan de pago.
    - **En Mac con Safari:** a veces el ZIP se abre solo y en Descargas te aparece una carpeta. Si pasa, dale clic
      derecho a la carpeta → **«Comprimir»** y usa el `.zip` que se crea.
    - **En Windows:** si se descomprimió, clic derecho a la carpeta → **Enviar a → Carpeta comprimida (en zip)**.
-2. **Revisa que Claude pueda crear archivos.** En Claude entra a **Configuración → Capacidades** y deja prendida
-   **«Ejecución de código y creación de archivos»**. Casi siempre ya viene prendida.
-3. **Sube la skill.** En la barra de la izquierda entra a **Personalizar → Skills**, toca **«+»** y elige
-   **«Subir Skill»**. Arrastra el ZIP a la ventana (o búscalo en tu computadora).
-4. **Revisa que quede activada:** el interruptor a la derecha de «replica-carruseles» debe estar prendido.
+2. **Revisa que Claude pueda crear archivos.** En Claude entra a **Ajustes → Capacidades** y deja prendido
+   **«Crear y editar archivos»** (dice: «Para usar Skills, esta opción debe estar activada»). Casi siempre ya viene
+   prendido.
+3. **Sube la skill.** En la barra de la izquierda entra a **Plugins**, toca **«Añadir»** y elige **«Subir plugin»**.
+   Aunque diga plugin, ahí se suben también las skills. Elige el ZIP: abajo sale la **vista previa** con
+   «replica-carruseles». Toca **«Subir»**.
+4. **Revisa que quedó:** te sale **«Añadido»** y el aviso de que ya está lista. Con **«Probar en chat»** se abre un
+   chat con `/replica-carruseles` escrito para pedirle tu primer carrusel.
 
-Si en tu pantalla algo se llama un poco distinto («Personalización», «Subir una Skill»), es lo mismo: la app cambia
-sus nombres de vez en cuando.
+Si en tu pantalla algo se llama un poco distinto, es lo mismo: la app cambia sus nombres de vez en cuando (hasta
+noviembre de 2026 esto estaba en «Personalizar → Skills»).
 
 ## Prepara tu carpeta (una sola vez)
 
@@ -166,7 +169,7 @@ mucho: compara al menos cinco.
 
 | Pasa | Qué hacer |
 |---|---|
-| No aparece «Skills» o se ve gris | Prende «Ejecución de código y creación de archivos» (paso 2) |
+| No aparece tu skill o Claude no la usa | Prende «Crear y editar archivos» en Ajustes → Capacidades (paso 2) |
 | Error al subir el ZIP | Bájalo de nuevo y súbelo sin abrirlo. Si se volvió carpeta, comprímela (paso 1) |
 | Claude no usa la skill | Revisa que esté activada; escribe `/` y escógela, o dile «usa la skill replica-carruseles» |
 | No encuentra tus archivos | La app de escritorio tiene que estar abierta y la carpeta conectada |
