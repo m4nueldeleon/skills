@@ -1,0 +1,72 @@
+{
+  "marca": {
+    "nombre": "Tu Consultorio Dental",
+    "usuario": "@tuconsultorio.ejemplo",
+    "colores": { "principal": "#0E7C7B" }
+  },
+  "estilo": "claro",
+  "fuentes": { "titulo": "archivo", "texto": "inter" },
+  "numerar": true,
+  "laminas": [
+    {
+      "tipo": "portada",
+      "titulo": "No esperes a que te *duela* la muela",
+      "subtitulo": "5 señales de que ya te toca ir al dentista, aunque no sientas nada."
+    },
+    {
+      "tipo": "texto",
+      "titulo": "El dolor llega *tarde*",
+      "texto": "Muchos problemas de dientes y encías avanzan sin doler. Cuando por fin duele, el arreglo suele ser más largo."
+    },
+    {
+      "tipo": "texto",
+      "numero": "01",
+      "titulo": "Te sangran las *encías* al cepillarte",
+      "texto": "No es normal, aunque sea poquito. Suele ser la primera señal de encías inflamadas."
+    },
+    {
+      "tipo": "texto",
+      "numero": "02",
+      "titulo": "Sientes una punzada con lo *frío* o lo caliente",
+      "texto": "Puede venir de desgaste, de una caries o de encías que se retiran."
+    },
+    {
+      "tipo": "texto",
+      "numero": "03",
+      "titulo": "Tienes mal aliento que *no se quita*",
+      "texto": "Si sigue aunque te cepilles bien, puede haber sarro o encías inflamadas detrás."
+    },
+    {
+      "tipo": "texto",
+      "numero": "04",
+      "titulo": "Te molesta un diente al *morder*",
+      "texto": "Puede ser una caries, una resina desgastada o una pequeña fisura en el diente."
+    },
+    {
+      "tipo": "foto",
+      "foto": "fotos/consultorio.jpg",
+      "numero": "05",
+      "titulo": "No recuerdas tu última *limpieza*",
+      "texto": "Quita el sarro que el cepillo ya no alcanza. Tu dentista te dice cada cuánto te toca."
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Guárdala para tu próxima *revisión*",
+      "items": [
+        "Encías que sangran al cepillarte",
+        "Punzada con lo frío o lo caliente",
+        "Mal aliento que no se quita",
+        "Molestia al morder",
+        "Limpieza pendiente"
+      ]
+    },
+    {
+      "tipo": "cierre",
+      "titulo": "¿Te identificaste con *alguna*?",
+      "texto": "Agenda tu revisión y sal de dudas.",
+      "accion": "Escríbenos CITA por mensaje"
+    }
+  ],
+  "caption": "Casi nadie va al dentista hasta que le duele. Y para entonces, el arreglo suele ser más largo.\n\nAquí van 5 señales de que ya te toca tu revisión, aunque no sientas nada: encías que sangran, punzadas con lo frío o lo caliente, mal aliento que no se quita, molestia al morder y una limpieza pendiente.\n\nGuárdala para tu próxima cita o mándasela a alguien que lleva años sin ir al dentista.\n\n¿Quieres agendar? Escríbenos CITA por mensaje.",
+  "hashtags": ["#dentista", "#saluddental", "#limpiezadental", "#encias"]
+}

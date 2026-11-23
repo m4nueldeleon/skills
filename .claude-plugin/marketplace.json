@@ -92,6 +92,12 @@
       "strict": false
     },
     {
+      "name": "replica-carruseles",
+      "description": "Arma tu carrusel del día para Instagram y Facebook: toma la receta de carruseles que ya funcionan en tu giro, le pone tu sazón sin copiar y entrega las láminas PNG listas para subir.",
+      "source": "./plugins/replica-carruseles",
+      "strict": false
+    },
+    {
       "name": "video-animado-de-tu-negocio",
       "description": "Crea un video promocional animado de 15 a 30 segundos para un negocio (vertical 9:16, para Reels, TikTok o estados de WhatsApp) como una página HTML animada que se reproduce en Claude, con textos grandes, transiciones y cierre con el contacto, y explica cómo grabarlo para tener el MP4. Úsala cuando alguien pida un video, anuncio animado, reel o promo de su negocio hecho con Claude.",
       "source": "./plugins/video-animado-de-tu-negocio",

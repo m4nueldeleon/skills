@@ -1,0 +1,30 @@
+{
+  "marca": {
+    "nombre": "Tu Consultorio Dental",
+    "usuario": "@tuconsultorio.ejemplo",
+    "colores": { "principal": "#0E7C7B" }
+  },
+  "estilo": "claro",
+  "laminas": [
+    {
+      "tipo": "portada",
+      "foto": "../consultorio-dental/fotos/consultorio.jpg",
+      "titulo": "No esperes a que te *duela* la muela",
+      "subtitulo": "5 señales de que ya te toca ir al dentista."
+    },
+    {
+      "tipo": "texto",
+      "numero": "01",
+      "titulo": "Te sangran las *encías* al cepillarte",
+      "texto": "No es normal, aunque sea poquito. Suele ser la primera señal de encías inflamadas."
+    },
+    {
+      "tipo": "cierre",
+      "titulo": "¿Te identificaste con *alguna*?",
+      "texto": "Agenda tu revisión y sal de dudas.",
+      "accion": "Escríbenos CITA por mensaje"
+    }
+  ],
+  "caption": "Ejemplo de los tres estilos base con el mismo texto.",
+  "hashtags": ["#dentista", "#saluddental", "#limpiezadental"]
+}
